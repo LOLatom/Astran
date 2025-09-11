@@ -14,6 +14,9 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 @Mod(Electron.MODID)
 public class Electron {
+
+    //First
+
     public static final String MODID = "electron";
     public static final Logger LOGGER = LogUtils.getLogger();
 
