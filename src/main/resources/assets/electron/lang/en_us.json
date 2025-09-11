@@ -1,0 +1,13 @@
+{
+  "itemGroup.electron": "Example Mod Tab",
+  "block.electron.example_block": "Example Block",
+  "item.electron.example_item": "Example Item",
+
+  "electron.configuration.title": "Electron Configs",
+  "electron.configuration.section.electron.common.toml": "Electron Configs",
+  "electron.configuration.section.electron.common.toml.title": "Electron Configs",
+  "electron.configuration.items": "Item List",
+  "electron.configuration.logDirtBlock": "Log Dirt Block",
+  "electron.configuration.magicNumberIntroduction": "Magic Number Text",
+  "electron.configuration.magicNumber": "Magic Number"
+}
