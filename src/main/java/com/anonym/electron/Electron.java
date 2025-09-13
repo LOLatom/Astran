@@ -1,5 +1,10 @@
 package com.anonym.electron;
 
+import com.anonym.electron.registries.entities.ElectronEntityRegistry;
+import foundry.veil.api.client.render.VeilRenderSystem;
+import foundry.veil.api.client.render.post.PostProcessingManager;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -12,6 +17,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
 @Mod(Electron.MODID)
 public class Electron {
 
@@ -25,8 +31,10 @@ public class Electron {
 
         NeoForge.EVENT_BUS.register(this);
 
+        ElectronEntityRegistry.ENTITIES.register(modEventBus);
 
         modEventBus.addListener(this::addCreative);
+
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -37,6 +45,8 @@ public class Electron {
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("HELLO from server starting");
+
     }
+
+
 }

@@ -1,0 +1,19 @@
+{
+  "color_buffers": [
+    {
+      "type": "texture",
+      "format": "RGBA8",
+      "levels": 0,
+      "linear": false,
+      "name": "BloomColor"
+    }],
+  "depth": {
+    "filter": {
+      "wrapZ": "clamp_to_border"
+    },
+    "name": "BloomColorDepth"
+  },
+  "filter": {
+    "wrapZ": "clamp_to_border"
+  }
+}
