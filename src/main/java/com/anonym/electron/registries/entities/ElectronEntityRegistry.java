@@ -14,7 +14,7 @@ public class ElectronEntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, Electron.MODID);
 
     public static final DeferredHolder<EntityType<?>,EntityType<TestEntity>> TEST = ENTITIES.register("test", () ->
-            EntityType.Builder.<TestEntity>of(TestEntity::new, MobCategory.MISC).sized(0.2F,0.7F).build(
+            EntityType.Builder.<TestEntity>of(TestEntity::new, MobCategory.MISC).sized(3F,4F).build(
                     ResourceLocation.fromNamespaceAndPath(Electron.MODID, "test").toString()));
 
 }
