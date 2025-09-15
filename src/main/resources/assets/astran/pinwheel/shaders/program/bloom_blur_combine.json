@@ -1,0 +1,5 @@
+{
+  "vertex": "veil:blit_screen",
+  "fragment": "astran:bloom_blur_combine"
+
+}

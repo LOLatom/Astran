@@ -1,0 +1,54 @@
+package com.anonym.astran;
+
+import com.anonym.astran.registries.*;
+import org.slf4j.Logger;
+
+import com.mojang.logging.LogUtils;
+
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
+
+@Mod(Astran.MODID)
+public class Astran {
+
+    //First
+
+    public static final String MODID = "astran";
+    public static final Logger LOGGER = LogUtils.getLogger();
+
+    public Astran(IEventBus modEventBus, ModContainer modContainer) {
+
+
+        NeoForge.EVENT_BUS.register(this);
+
+        AstranEntityRegistry.ENTITIES.register(modEventBus);
+        AstranBlockRegistry.BLOCKS.register(modEventBus);
+        AstranBlockRegistry.ORE_BLOCKS.register(modEventBus);
+        AstranItemRegistry.ITEMS.register(modEventBus);
+        AstranAttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
+        AstranItemBlockRegistry.BLOCK_ITEMS.register(modEventBus);
+        AstranItemBlockRegistry.registerItemsForBlocks();
+
+        modEventBus.addListener(this::addCreative);
+
+
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+
+    }
+
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+
+    }
+
+
+}

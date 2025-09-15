@@ -1,5 +1,0 @@
-{
-  "vertex": "electron:electron_cutout",
-  "fragment": "electron:trail/trail_program"
-
-}

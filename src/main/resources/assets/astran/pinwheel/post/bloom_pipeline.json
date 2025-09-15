@@ -1,0 +1,22 @@
+{
+  "renderStage": "after_block_entities",
+  "stages": [
+    {
+      "type": "veil:blit",
+      "shader": "astran:bloom_blur_combine",
+      "in": "minecraft:main",
+      "out": "veil:post",
+      "clear": true
+    }
+  ],
+  "textures": {
+    "BloomColor": {
+      "type": "framebuffer",
+      "name": "astran:bloom"
+    },
+    "BloomColorDepth": {
+      "type": "framebuffer",
+      "name": "astran:bloom:depth"
+    }
+  }
+}

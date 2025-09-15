@@ -1,0 +1,5 @@
+{
+  "vertex": "astran:electron_cutout",
+  "fragment": "astran:trail/trail_program"
+
+}
