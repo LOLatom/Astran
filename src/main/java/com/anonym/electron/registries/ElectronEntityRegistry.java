@@ -1,4 +1,4 @@
-package com.anonym.electron.registries.entities;
+package com.anonym.electron.registries;
 
 import com.anonym.electron.Electron;
 import com.anonym.electron.server.TestEntity;

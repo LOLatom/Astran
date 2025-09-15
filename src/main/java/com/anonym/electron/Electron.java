@@ -1,10 +1,6 @@
 package com.anonym.electron;
 
-import com.anonym.electron.registries.entities.ElectronEntityRegistry;
-import foundry.veil.api.client.render.VeilRenderSystem;
-import foundry.veil.api.client.render.post.PostProcessingManager;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import com.anonym.electron.registries.*;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -32,6 +28,12 @@ public class Electron {
         NeoForge.EVENT_BUS.register(this);
 
         ElectronEntityRegistry.ENTITIES.register(modEventBus);
+        ElectronBlockRegistry.BLOCKS.register(modEventBus);
+        ElectronBlockRegistry.ORE_BLOCKS.register(modEventBus);
+        ElectronItemRegistry.ITEMS.register(modEventBus);
+        ElectronAttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
+        ElectronItemBlockRegistry.BLOCK_ITEMS.register(modEventBus);
+        ElectronItemBlockRegistry.registerItemsForBlocks();
 
         modEventBus.addListener(this::addCreative);
 

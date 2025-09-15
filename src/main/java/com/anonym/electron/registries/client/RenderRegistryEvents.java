@@ -1,7 +1,7 @@
 package com.anonym.electron.registries.client;
 
 import com.anonym.electron.client.TestRender;
-import com.anonym.electron.registries.entities.ElectronEntityRegistry;
+import com.anonym.electron.registries.ElectronEntityRegistry;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
