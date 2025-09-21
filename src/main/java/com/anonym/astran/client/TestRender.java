@@ -30,7 +30,7 @@ public class TestRender extends EntityRenderer<TestEntity> {
             poseStack.translate(0,-2,0);
             PoseStack.Pose posestack$pose = poseStack.last();
             //System.out.println("CUBE");
-            VertexHelper.uvCube(vertexconsumer, posestack$pose, 3, 4, 3, packedLight);
+            VertexHelper.uvCube(vertexconsumer, posestack$pose, 3, 4, 3, packedLight,255);
             poseStack.popPose();
         }
     }

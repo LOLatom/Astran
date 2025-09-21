@@ -6,6 +6,8 @@
 
   ],
   "client": [
+    "client.IconMixin",
+    "client.MinecraftWindowMixin",
     "client.TestMixin"
   ],
   "injectors": {

@@ -1,6 +1,8 @@
 package com.anonym.astran.registries.client;
 
+import com.anonym.astran.Astran;
 import com.anonym.astran.client.TestRender;
+import com.anonym.astran.client.render.entities.spacial.AstraniumMeteorRender;
 import com.anonym.astran.registries.AstranEntityRegistry;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -16,5 +18,9 @@ public class RenderRegistryEvents {
         event.registerEntityRenderer(
                 AstranEntityRegistry.TEST.get(),
                 TestRender::new);
+
+        event.registerEntityRenderer(
+                AstranEntityRegistry.ASTRANIUM_METEOR.get(),
+                AstraniumMeteorRender::new);
     }
 }

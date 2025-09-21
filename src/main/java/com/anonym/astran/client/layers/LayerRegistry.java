@@ -6,6 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LayerRegistry {
 
+    public static final ModelLayerLocation ASTRANIUM_METEOR = register("astranium_meteor");
+
+
 
     private static ModelLayerLocation register(String loc) {
         return register(loc, "main");

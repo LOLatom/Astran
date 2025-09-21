@@ -17,11 +17,6 @@
       "type": "minecraft:lightmap"
     },
     {
-      "type": "minecraft:write_mask",
-      "color": true,
-      "depth": true
-    },
-    {
       "type": "minecraft:cull",
       "face": "none"
     },

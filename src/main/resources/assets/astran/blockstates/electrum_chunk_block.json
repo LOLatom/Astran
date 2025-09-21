@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [{
+  "model": "astran:block/electrum_chunk_block"
+    },
+    {
+  "model": "astran:block/electrum_chunk_block",
+  "y": 90
+    },
+    {
+  "model": "astran:block/electrum_chunk_block",
+  "y": 180
+    },
+    {
+  "model": "astran:block/electrum_chunk_block",
+  "y": 270
+    }
+    ]
+  }
+}

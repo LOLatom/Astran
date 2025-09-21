@@ -85,5 +85,6 @@ void main()
 
     //fragColor = vec4(1.,1.,1.,1.);
     //fragColor = texture(Sampler0,texCoord0);
-    fragColor = (vec4( f, f, f, 0.0 ) * vec4(2.4,1.4,1.8,1.));
+    fragColor = (vec4( f, f, f, 1. ) * vec4(2.4,1.4,1.8,1.)) * vertexColor.aaaa;
+    //fragColor = texture(Sampler0, texCoord0).aaaa;
 }
