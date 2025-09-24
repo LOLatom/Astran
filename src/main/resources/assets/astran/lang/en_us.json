@@ -1,7 +1,9 @@
 {
   "itemGroup.electron": "Example Mod Tab",
-  "block.electron.example_block": "Example Block",
-  "item.electron.example_item": "Example Item",
+  "block.astran.electrum_chunk_block": "Electrum Chunk Block",
+  "item.astran.steel_heart": "Steel Heart",
+  "item.astran.astranium_node": "Astranium Node",
+
 
   "electron.configuration.title": "Electron Configs",
   "electron.configuration.section.electron.common.toml": "Electron Configs",
