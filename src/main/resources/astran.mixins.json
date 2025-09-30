@@ -8,7 +8,10 @@
   "client": [
     "client.IconMixin",
     "client.MinecraftWindowMixin",
-    "client.TestMixin"
+    "client.TestMixin",
+    "client.MouseHandlerMixin",
+    "client.CameraMixin",
+    "client.PlayerAnimationMixin"
   ],
   "injectors": {
     "defaultRequire": 1

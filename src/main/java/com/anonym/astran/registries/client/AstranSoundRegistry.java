@@ -12,6 +12,16 @@ public class AstranSoundRegistry {
 
     public static final DeferredHolder<SoundEvent,SoundEvent> STEEL_HEART_INSERT = createEvent("steel_heart_insert");
 
+    public static final DeferredHolder<SoundEvent,SoundEvent> INTERFACE_SLOT_SELECT = createEvent("interface_slot_select");
+
+    public static final DeferredHolder<SoundEvent,SoundEvent> INTERFACE_SLOT_OPEN = createEvent("interface_slot_open");
+
+    public static final DeferredHolder<SoundEvent,SoundEvent> INTERFACE_CLOSE = createEvent("interface_close");
+
+    public static final DeferredHolder<SoundEvent,SoundEvent> INTERFACE_ERROR = createEvent("interface_error");
+
+    public static final DeferredHolder<SoundEvent,SoundEvent> INTERFACE_START = createEvent("interface_start");
+
 
 
     private static DeferredHolder<SoundEvent, SoundEvent> createEvent(String sound) {

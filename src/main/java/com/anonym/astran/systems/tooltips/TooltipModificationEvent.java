@@ -86,6 +86,8 @@ public class TooltipModificationEvent {
 
             float desProgress = heartShowDescriptionProgress / 30f;
 
+
+
             float addedTicks = Minecraft.getInstance().player.tickCount + Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 
             float effect = Easing.EASE_IN_OUT_QUAD.ease(desProgress);
@@ -98,10 +100,10 @@ public class TooltipModificationEvent {
                 event.getGraphics().blit(node1.getNodeTexture(),-10,18,0,0,20,27,20,27);
             }
             if (node2 != null) {
-                event.getGraphics().blit(node1.getNodeTexture(),-34,18,0,0,20,27,20,27);
+                event.getGraphics().blit(node2.getNodeTexture(),-34,18,0,0,20,27,20,27);
             }
             if (node3 != null) {
-                event.getGraphics().blit(node1.getNodeTexture(),14,18,0,0,20,27,20,27);
+                event.getGraphics().blit(node3.getNodeTexture(),14,18,0,0,20,27,20,27);
             }
 
             event.getGraphics().pose().translate((73*effect2),0,-3);

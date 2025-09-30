@@ -4,5 +4,41 @@
     "sounds": [
       "astran:steel_heart_insert"
     ]
+  },
+  "interface_slot_select": {
+    "subtitle": "sounds.astran.interface_slot_select",
+    "sounds": [
+      "astran:interface_slot_select"
+    ]
+  },
+  "interface_slot_click": {
+    "subtitle": "sounds.astran.interface_slot_click",
+    "sounds": [
+      "astran:interface_slot_click"
+    ]
+  },
+  "interface_start": {
+    "subtitle": "sounds.astran.interface_start",
+    "sounds": [
+      "astran:interface_start"
+    ]
+  },
+  "interface_error": {
+    "subtitle": "sounds.astran.interface_error",
+    "sounds": [
+      "astran:interface_error"
+    ]
+  },
+  "interface_close": {
+    "subtitle": "sounds.astran.interface_close",
+    "sounds": [
+      "astran:interface_close"
+    ]
+  },
+  "interface_slot_open": {
+    "subtitle": "sounds.astran.interface_slot_open",
+    "sounds": [
+      "astran:interface_slot_open"
+    ]
   }
 }

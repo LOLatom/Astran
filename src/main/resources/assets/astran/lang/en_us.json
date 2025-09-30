@@ -3,6 +3,8 @@
   "block.astran.electrum_chunk_block": "Electrum Chunk Block",
   "item.astran.steel_heart": "Steel Heart",
   "item.astran.astranium_node": "Astranium Node",
+  "key.categories.astran.cyber": "Cybernetics",
+  "key.astran.modula": "Mode Switch",
 
 
   "electron.configuration.title": "Electron Configs",

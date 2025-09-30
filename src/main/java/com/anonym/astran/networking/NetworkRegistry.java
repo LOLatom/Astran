@@ -2,6 +2,8 @@ package com.anonym.astran.networking;
 
 import com.anonym.astran.systems.entity.breakableentity.BreakingStageHandler;
 import com.anonym.astran.systems.entity.breakableentity.BreakingStagePayload;
+import com.anonym.astran.systems.cybernetics.core.SetSteelHeartHandler;
+import com.anonym.astran.systems.cybernetics.core.SetSteelHeartPayload;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -23,6 +25,11 @@ public class NetworkRegistry {
                     BreakingStageHandler.Client::handleDataOnNetwork,
                     BreakingStageHandler.Server::handleDataOnNetwork
                 ));
+
+        registrar.playToServer(
+                SetSteelHeartPayload.TYPE,
+                SetSteelHeartPayload.STREAM_CODEC,
+                SetSteelHeartHandler.Client::handleDataOnNetwork);
 
     }
 }
