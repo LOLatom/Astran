@@ -2,7 +2,6 @@ package com.anonym.astran.systems.energy.node;
 
 import com.anonym.astran.Astran;
 import com.anonym.astran.systems.energy.CoreNodeItem;
-import foundry.veil.api.client.color.Colorc;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 

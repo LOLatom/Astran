@@ -92,12 +92,16 @@ public class DiamondDetectionButton extends Button implements IGlowModifier, IHa
 
     @Override
     public void playDownSound(SoundManager handler) {
-        if (this.isLocked) {
+        if (this.isLocked()) {
             handler.play(SimpleSoundInstance.forUI(AstranSoundRegistry.INTERFACE_ERROR, 1.0F));
             this.shakeDecrease = 10f;
         } else {
             handler.play(SimpleSoundInstance.forUI(AstranSoundRegistry.INTERFACE_SLOT_OPEN, 1.0F));
         }
+    }
+
+    public boolean isLocked() {
+        return this.isLocked;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.anonym.astran.systems.gui.theinterface.pages;
 
 import com.anonym.astran.systems.gui.theinterface.CameraCyberInterfaceScreen;
-import foundry.veil.api.client.util.Easing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -21,7 +20,6 @@ public class HeadCyberInterface extends CameraCyberInterfaceScreen {
     public HeadCyberInterface() {
         super(8, 9, false);
         Player player = Minecraft.getInstance().player;
-        Vec3 transformed = player.position();
         Vec3 dir = player.getViewVector(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true));
         Vec3 normalizeDir = dir.subtract(0,dir.y,0).normalize();
 
