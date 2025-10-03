@@ -2,6 +2,7 @@ package com.anonym.astran;
 
 import com.anonym.astran.registries.*;
 import com.anonym.astran.registries.client.AstranSoundRegistry;
+import com.anonym.astran.registries.custom.AstranAssemblyRecipesRegistry;
 import com.anonym.astran.registries.custom.AstranCyberModuleRegistry;
 import com.anonym.astran.registries.custom.AstranMaterialTypeRegistry;
 import net.minecraft.resources.ResourceLocation;
@@ -44,6 +45,7 @@ public class Astran {
         AstranItemBlockRegistry.BLOCK_ITEMS.register(modEventBus);
         AstranMaterialTypeRegistry.MATERIAL_TYPE.register(modEventBus);
         AstranCyberModuleRegistry.CYBER_MODULE_TYPE.register(modEventBus);
+        AstranAssemblyRecipesRegistry.ASSEMBLY_RECIPES.register(modEventBus);
         AstranItemBlockRegistry.registerItemsForBlocks();
 
         modEventBus.addListener(this::addCreative);

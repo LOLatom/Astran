@@ -8,7 +8,6 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -23,6 +22,7 @@ public class CyberModule {
     public Quality quality;
     public int tier;
     public int color1,color2,color3;
+    public List<MaterialType> materials;
 
 
     public static final Codec<LimbType> LIMB_TYPE_CODEC = Codec.STRING.xmap(LimbType::valueOf, Enum::name);
@@ -40,12 +40,15 @@ public class CyberModule {
                         list.add(cyberModule.getColor2());
                         list.add(cyberModule.getColor3());
                         return list;
-                    })
+                    }),
+                    Codec.list(MaterialType.CODEC).fieldOf("materials").forGetter(CyberModule::getMaterials)
             ).apply(questInstance, CyberModule::new));
     public static final StreamCodec<ByteBuf, CyberModule> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
 
-    public CyberModule(String moduleID, LimbType attachment,Quality quality, int tier, int color1, int color2, int color3) {
+    public CyberModule(String moduleID, LimbType attachment,Quality quality, int tier,
+                       int color1, int color2, int color3,
+                       List<MaterialType> materials) {
         this.moduleID = moduleID;
         this.attachment = attachment;
         this.quality = quality;
@@ -53,25 +56,46 @@ public class CyberModule {
         this.color1 = color1;
         this.color2 = color2;
         this.color3 = color3;
+        this.materials = materials;
     }
-    public CyberModule(String moduleID,LimbType attachment, Quality quality, int tier, List<Integer> colors) {
-        this(moduleID,attachment,quality,tier,colors.get(0),colors.get(1), colors.get(3));
+    public CyberModule(String moduleID,LimbType attachment, Quality quality, int tier, List<Integer> colors, List<MaterialType> materials) {
+        this(moduleID,attachment,quality,tier,colors.get(0),colors.get(1), colors.get(3), materials);
     }
-    public CyberModule(String moduleID, LimbType attachment, Quality quality, int tier) {
-        this(moduleID,attachment,quality,tier, Color.WHITE.getRGB(),Color.WHITE.getRGB(), Color.WHITE.getRGB());
+    public CyberModule(String moduleID, LimbType attachment, Quality quality, int tier , List<MaterialType> materials) {
+        this(moduleID,attachment,quality,tier, Color.WHITE.getRGB(),Color.WHITE.getRGB(), Color.WHITE.getRGB(), materials);
     }
-    public CyberModule(String moduleID, LimbType attachment, Quality quality) {
-        this(moduleID,attachment,quality,1);
+    public CyberModule(String moduleID, LimbType attachment, Quality quality, List<MaterialType> materials) {
+        this(moduleID,attachment,quality,1, materials);
     }
-    public CyberModule(String moduleID, LimbType attachment) {
-        this(moduleID,attachment,Quality.NORMAL);
+    public CyberModule(String moduleID, LimbType attachment, List<MaterialType> materials) {
+        this(moduleID,attachment,Quality.NORMAL, materials);
     }
 
     @OnlyIn(Dist.CLIENT)
     public void render(AbstractClientPlayer entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
 
     }
+    public CyberModule withColor(Color first, Color second, Color third) {
+        this.color1 = first.getRGB();
+        this.color2 = second.getRGB();
+        this.color3 = third.getRGB();
+        return this;
+    }
 
+    public CyberModule withQuality(Quality quality) {
+        this.quality = quality;
+        return this;
+    }
+
+    public CyberModule withMaterials(List<MaterialType> materials) {
+        this.materials = materials;
+        return this;
+    }
+
+
+    public List<MaterialType> getMaterials() {
+        return this.materials;
+    }
 
     public String getModuleID() {
         return this.moduleID;

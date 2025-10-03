@@ -105,11 +105,11 @@ public class MaterialType {
         }
 
         public Color getLighter() {
-            return this.colorPalette.getLast();
+            return this.colorPalette.getFirst();
         }
 
         public Color getDarker() {
-            return this.colorPalette.getFirst();
+            return this.colorPalette.getLast();
         }
 
 

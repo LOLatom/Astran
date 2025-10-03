@@ -11,5 +11,6 @@ public class AstranRegistriesInitiation {
     static void initialiseConsoleRegistries(NewRegistryEvent event) {
         event.register(AstranRegistries.CYBER_MODULE_REGISTRY);
         event.register(AstranRegistries.MATERIAL_TYPE_REGISTRY);
+        event.register(AstranRegistries.ASSEMBLY_RECIPES_REGISTRY);
     }
 }

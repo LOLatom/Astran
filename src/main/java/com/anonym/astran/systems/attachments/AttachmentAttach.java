@@ -10,7 +10,9 @@ public class AttachmentAttach {
 
     @SubscribeEvent
     public static void attachToPlayer(PlayerEvent.Clone event) {
-        System.out.println("[ASTRAN/DEBUG]: " + " Steel Heart Data Created : \n" + event.getEntity().getData(AstranAttachmentTypeRegistry.STEEL_HEART_RESSERVOIR.get()));
+        System.out.println("[ASTRAN/DEBUG]: " + " Steel Heart Data Created : \n" + event.getEntity().getData(AstranAttachmentTypeRegistry.STEEL_HEART_RESSERVOIR));
+        System.out.println("[ASTRAN/DEBUG]: " + " Interface Storage Created : \n" + event.getEntity().getData(AstranAttachmentTypeRegistry.INTERFACE_STORAGE_DATA));
+
     }
 
 }

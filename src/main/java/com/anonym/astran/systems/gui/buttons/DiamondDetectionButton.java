@@ -1,5 +1,6 @@
 package com.anonym.astran.systems.gui.buttons;
 
+import com.anonym.astran.Astran;
 import com.anonym.astran.registries.client.AstranSoundRegistry;
 import com.anonym.astran.systems.gui.theinterface.CyberInterfaceScreen;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -17,7 +18,10 @@ import java.awt.*;
 public class DiamondDetectionButton extends Button implements IGlowModifier, IHasInterfaceName {
 
 
-    private static final Color BRONZITE_COLOR = new Color(201,152,93);
+    private static final Color BRONZINE_COLOR = new Color(201,152,93);
+    private static final Color LOCKED_COLOR = new Color(213, 26, 26);
+    private static final ResourceLocation LOCKED =
+            ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/interface_locked_part.png");
 
     private float radius;
     private ResourceLocation texture;
@@ -39,7 +43,13 @@ public class DiamondDetectionButton extends Button implements IGlowModifier, IHa
         this.name = name;
     }
 
-    @Override
+    public DiamondDetectionButton(ResourceLocation texture, float x, float y, int size, OnPress onPress, CyberInterfaceScreen screen, String name, boolean isLocked) {
+        this(texture,x,y,size,onPress,screen,name);
+        this.isLocked = isLocked;
+
+    }
+
+        @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 
         if (this.shakeDecrease > 0) {
@@ -84,7 +94,7 @@ public class DiamondDetectionButton extends Button implements IGlowModifier, IHa
                 (colored[2] * 0.6f) + (colored[2] * color),
                 colored[3]);
 
-        guiGraphics.blit(this.texture,0,0,0,0,36,36,36,36);
+        guiGraphics.blit(this.isLocked() ? LOCKED : this.texture,0,0,0,0,36,36,36,36);
         guiGraphics.pose().popPose();
         guiGraphics.setColor(1,1,1,1f);
 
@@ -133,13 +143,21 @@ public class DiamondDetectionButton extends Button implements IGlowModifier, IHa
     }
 
     @Override
+    public Color getGlowColor() {
+        if (this.isLocked) return LOCKED_COLOR;
+        return IGlowModifier.super.getGlowColor();
+    }
+
+    @Override
     public String name() {
+        if (this.isLocked) return "LOCKED";
         return this.name;
     }
 
     @Override
     public Color nameColor() {
-        return BRONZITE_COLOR;
+        if (this.isLocked) return LOCKED_COLOR;
+        return BRONZINE_COLOR;
     }
 
 }
