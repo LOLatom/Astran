@@ -1,5 +1,6 @@
 package com.anonym.astran.systems.cybernetics;
 
+import com.anonym.astran.registries.custom.AstranMaterialTypeRegistry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -70,6 +71,11 @@ public class CyberModule {
     public CyberModule(String moduleID, LimbType attachment, List<MaterialType> materials) {
         this(moduleID,attachment,Quality.NORMAL, materials);
     }
+    public CyberModule(String moduleID, LimbType attachment) {
+        this(moduleID,attachment,Quality.NORMAL, new ArrayList<>());
+        List<MaterialType> types = new ArrayList<>();
+        types.add(AstranMaterialTypeRegistry.ELECTRUM.get());
+    }
 
     @OnlyIn(Dist.CLIENT)
     public void render(AbstractClientPlayer entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
@@ -90,6 +96,10 @@ public class CyberModule {
     public CyberModule withMaterials(List<MaterialType> materials) {
         this.materials = materials;
         return this;
+    }
+
+    public int getMaterialNeededCount() {
+        return 1;
     }
 
 

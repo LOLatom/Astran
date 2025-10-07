@@ -2,6 +2,7 @@ package com.anonym.astran.systems.assembly;
 
 import com.anonym.astran.systems.cybernetics.CyberModule;
 import com.anonym.astran.systems.cybernetics.MaterialType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +34,12 @@ public class BasicAssemblyRecipe extends AssemblyAbstractRecipe{
     }
 
     @Override
-    public Optional<ItemStack> getResultStack(CyberModule.Quality quality) {
+    public Optional<ItemStack> getResultStack() {
         return Optional.empty();
+    }
+
+    @Override
+    public Component getRecipeName() {
+        return null;
     }
 }

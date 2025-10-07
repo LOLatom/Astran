@@ -24,6 +24,10 @@ public class InformativeButton extends InterfaceButton implements IGlowModifier{
         super(x, y, width, height, onPress);
     }
 
+    public boolean hasSound() {
+        return true;
+    }
+
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
@@ -34,7 +38,9 @@ public class InformativeButton extends InterfaceButton implements IGlowModifier{
 
         if (this.isMouseOver(mouseX,mouseY)) {
             if (this.addedScaleXY ==0f) {
-                Minecraft.getInstance().player.playSound(AstranSoundRegistry.INTERFACE_SLOT_SELECT.get(),0.7f,1f);
+                if (hasSound()) {
+                    Minecraft.getInstance().player.playSound(AstranSoundRegistry.INTERFACE_SLOT_SELECT.get(), 0.7f, 1f);
+                }
             }
             this.addedScaleXY = Math.clamp((this.addedScaleXY + 0.05f),0,1);
         } else if (this.addedScaleXY > 0) {
@@ -104,7 +110,7 @@ public class InformativeButton extends InterfaceButton implements IGlowModifier{
         guiGraphics.setColor(colored[0],
                 colored[1],
                 colored[2],
-                colored[3] * 0.03f);
+                colored[3] * 0.06f);
         guiGraphics.blit(INFORMATIONAL_BUTTON_BACKGROUND, (int) x + 7, (int) y + 7,(addedTicks * 0.4f),addedTicks * 0.3f,scWidth,scHeight,28,28);
         guiGraphics.blit(INFORMATIONAL_BUTTON_BACKGROUND, (int) x + 7, (int) y + 7,(addedTicks * -0.4f),addedTicks * 0.3f,scWidth,scHeight,28,28);
 

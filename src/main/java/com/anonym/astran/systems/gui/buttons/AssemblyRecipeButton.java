@@ -1,11 +1,20 @@
 package com.anonym.astran.systems.gui.buttons;
 
 import com.anonym.astran.Astran;
+import com.anonym.astran.systems.assembly.AssemblyAbstractRecipe;
 import com.anonym.astran.systems.cybernetics.LimbType;
+import com.anonym.astran.systems.gui.theinterface.pages.AssemblyCyberInterface;
 import com.mojang.blaze3d.systems.RenderSystem;
 import foundry.veil.api.client.util.Easing;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+
+import java.awt.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 
 public class AssemblyRecipeButton extends InformativeButton{
 
@@ -20,12 +29,41 @@ public class AssemblyRecipeButton extends InformativeButton{
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_right_shoulder.png");
 
 
+    private final AssemblyAbstractRecipe recipe;
+    private boolean canBeCrafted = false;
+    private AssemblyCyberInterface screen;
 
-    public AssemblyRecipeButton(float x, float y, float width, float height, OnPress onPress, LimbType type) {
-        super(x, y, width, height, onPress);
+
+    public AssemblyRecipeButton(float x, float y, float width, float height, LimbType type, AssemblyCyberInterface screen, AssemblyAbstractRecipe recipe) {
+        super(x, y, width, height, (button) -> {
+            if (screen.selectedRecipe != null) {
+                if (!screen.selectedRecipe.equals(recipe)) {
+                    screen.selectedRecipe = recipe;
+                } else {
+                    screen.selectedRecipe = null;
+                }
+            } else {
+                screen.selectedRecipe = recipe;
+            }
+        });
         this.type = type;
+        this.recipe = recipe;
+        this.screen = screen;
+        LinkedHashMap<String,List<ItemStack>> stack = this.recipe.getInInventoryIngredients(Minecraft.getInstance().player);
+        if (this.recipe.canBeCrafted(stack)) {
+            this.canBeCrafted = true;
+        }
     }
 
+    @Override
+    public float getRealY() {
+        return super.getRealY() - this.screen.scrollOffsetY;
+    }
+
+    @Override
+    public float getRealX() {
+        return super.getRealX() - this.screen.infoOffsetX;
+    }
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
@@ -43,6 +81,22 @@ public class AssemblyRecipeButton extends InformativeButton{
         if (this.type == LimbType.HEAD) texture = HEAD;
         guiGraphics.blit(texture,0,0,0,0,36,36,36,36);
         guiGraphics.pose().popPose();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(this.getRealX() + 7 + ((float) (this.width * 16) /2) - ((float) Minecraft.getInstance().font.width(recipe.getRecipeName()) /4), this.getRealY() + 7 + 5,0);
+        guiGraphics.drawString(Minecraft.getInstance().font, this.recipe.getRecipeName(),0,0, Color.WHITE.getRGB(),false);
+        guiGraphics.pose().popPose();
+        float side = (this.width*16)+17+17- (7+42+7);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(this.getRealX() + 7 + 40, this.getRealY() + 7 + 16,0);
+        String thing = this.recipe.getDescription().getString().length() >= 23 ?
+                this.recipe.getDescription().getString(23) + "..." :
+                this.recipe.getDescription().toString();
+        guiGraphics.drawString(Minecraft.getInstance().font,thing ,0,0, Color.GRAY.getRGB(),false);
+        guiGraphics.pose().translate(this.canBeCrafted ? 10 : 15,10,0);
+        guiGraphics.drawString(Minecraft.getInstance().font,this.canBeCrafted ? "Can Be Crafted" : "Not Craft-able" ,0,0, this.canBeCrafted ? Color.GREEN.getRGB() : Color.RED.getRGB(),false);
+        guiGraphics.pose().popPose();
+
         guiGraphics.setColor(1,1,1,1);
     }
 }

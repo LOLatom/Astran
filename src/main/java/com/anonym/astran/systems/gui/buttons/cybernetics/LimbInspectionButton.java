@@ -8,13 +8,13 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LimbInspectionButton extends DiamondDetectionButton {
 
-    private static final ResourceLocation HEAD =
+    public static final ResourceLocation HEAD =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_head.png");
-    private static final ResourceLocation TORSO =
+    public static final ResourceLocation TORSO =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_torso.png");
-    private static final ResourceLocation LEFT_SHOULDER =
+    public static final ResourceLocation LEFT_SHOULDER =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_left_shoulder.png");
-    private static final ResourceLocation RIGHT_SHOULDER =
+    public static final ResourceLocation RIGHT_SHOULDER =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_right_shoulder.png");
 
 
@@ -24,6 +24,13 @@ public class LimbInspectionButton extends DiamondDetectionButton {
                 type == LimbType.TORSO ? TORSO :
                         type == LimbType.LEFT_SHOULDER ? LEFT_SHOULDER :
                                 type == LimbType.RIGHT_SHOULDER ? RIGHT_SHOULDER : RIGHT_SHOULDER, x, y, 36, onPress, screen, name);
+    }
+
+    public LimbInspectionButton(LimbType type, float x, float y, OnPress onPress, CyberInterfaceScreen screen, String name, boolean isLocked) {
+        super(type == LimbType.HEAD ? HEAD :
+                type == LimbType.TORSO ? TORSO :
+                        type == LimbType.LEFT_SHOULDER ? LEFT_SHOULDER :
+                                type == LimbType.RIGHT_SHOULDER ? RIGHT_SHOULDER : RIGHT_SHOULDER, x, y, 36, onPress, screen, name, isLocked);
     }
 
 

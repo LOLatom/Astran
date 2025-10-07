@@ -97,6 +97,11 @@ public class CyberInterfaceScreen extends Screen {
         this.glowingWidgets.add(widget);
         return (T)this.addWidget(widget);
     }
+    protected <T extends AbstractWidget & Renderable> T addGlowingRenderableOnly(T renderable) {
+        this.renderables.add(renderable);
+        this.glowingWidgets.add(renderable);
+        return renderable;
+    }
 
     public void addTransition(CyberInterfaceScreen transitionedScreen, float transitionTime , Easing transitionEase)  {
         this.transitionEase = transitionEase;

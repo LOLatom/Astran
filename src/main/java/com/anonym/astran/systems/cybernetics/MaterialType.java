@@ -90,7 +90,9 @@ public class MaterialType {
         return this;
     }
 
-
+    public MaterialPalette getColorPaletteModifier() {
+        return this.colorPaletteModifier;
+    }
 
     public static class MaterialPalette {
 

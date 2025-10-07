@@ -2,7 +2,9 @@ package com.anonym.astran.systems.assembly;
 
 import com.anonym.astran.systems.cybernetics.CyberModule;
 import com.anonym.astran.systems.cybernetics.MaterialType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
@@ -21,7 +23,13 @@ public abstract class AssemblyAbstractRecipe {
 
     public abstract boolean hasAssemblyBlueprint(Player player);
     public abstract Optional<CyberModule> getResultModule();
-    public abstract Optional<ItemStack> getResultStack(CyberModule.Quality quality);
+    public abstract Optional<ItemStack> getResultStack();
+
+    public abstract Component getRecipeName();
+
+    public Component getDescription() {
+        return Component.empty();
+    }
 
     public LinkedHashMap<String, List<ItemStack>> getNamedIngredients() {
         return this.namedIngredients;
@@ -30,20 +38,40 @@ public abstract class AssemblyAbstractRecipe {
     public LinkedHashMap<String, List<ItemStack>> getInInventoryIngredients(Player player) {
         LinkedHashMap<String, List<ItemStack>> mapping = new LinkedHashMap<>();
 
-        for (int i = 0; i < this.namedIngredients.size(); i++) {
+        Map<Item, Integer> mergedInventory = new HashMap<>();
+        for (ItemStack stack : player.getInventory().items) {
+            if (!stack.isEmpty()) {
+                mergedInventory.merge(stack.getItem(), stack.getCount(), Integer::sum);
+            }
+        }
+
+        int i = 0;
+        for (Map.Entry<String, List<ItemStack>> entry : this.namedIngredients.entrySet()) {
+            String name = entry.getKey();
+            List<ItemStack> requiredVariants = entry.getValue();
             List<ItemStack> stackList = new ArrayList<>();
-            String name = this.namedIngredients.keySet().stream().toList().get(i);
-            for (ItemStack stack : player.getInventory().items) {
-                if (this.namedIngredients.values().stream().toList().get(i).contains(stack.getItem().getDefaultInstance())) {
-                    stackList.add(stack);
+
+            for (ItemStack ingredient : requiredVariants) {
+                int availableCount = mergedInventory.getOrDefault(ingredient.getItem(), 0);
+                if (availableCount >= ingredient.getCount()) {
+                    stackList.add(new ItemStack(ingredient.getItem(), availableCount));
                 }
             }
             if (!stackList.isEmpty()) {
                 mapping.put(name, stackList);
             }
+            i++;
         }
 
         return mapping;
+    }
+
+    public boolean canBeCrafted(LinkedHashMap<String, List<ItemStack>> ingredientsInInventory) {
+        boolean hasIngredients = true;
+        for (String ing : this.getNamedIngredients().keySet()) {
+            if (!ingredientsInInventory.containsKey(ing)) hasIngredients = false;
+        }
+        return hasIngredients;
     }
 
     public LinkedHashMap<String, ItemStack> getSelectedStacks(LinkedHashMap<String, List<ItemStack>> ingredientChoices, int[] indexes) {
@@ -81,6 +109,7 @@ public abstract class AssemblyAbstractRecipe {
     }
 
 
+
     public AssemblyType getAssemblyType() {
         return this.assemblyType;
     }
@@ -88,5 +117,33 @@ public abstract class AssemblyAbstractRecipe {
     public enum AssemblyType {
         MODULE,
         ITEM
+    }
+
+    public class Builder {
+
+        private LinkedHashMap<String,List<ItemStack>> hash = new LinkedHashMap<>();
+
+        public Builder() {
+        }
+
+        private LinkedHashMap<String, List<ItemStack>> getHash() {
+            return this.hash;
+        }
+
+        public Builder addIngredientsUnder(String name, Item item, int count) {
+            List<ItemStack> stacks = new ArrayList<>();
+            if (getHash().containsKey(name)) stacks = getHash().get(name);
+            stacks.add(new ItemStack(item,count));
+            if (getHash().containsKey(name)) {
+                getHash().replace(name,stacks);
+            } else {
+                getHash().put(name,stacks);
+            }
+            return this;
+        }
+
+        public LinkedHashMap<String,List<ItemStack>> build() {
+            return new LinkedHashMap<>(this.hash);
+        }
     }
 }
