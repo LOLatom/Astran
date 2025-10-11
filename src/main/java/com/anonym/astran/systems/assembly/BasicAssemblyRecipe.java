@@ -1,13 +1,10 @@
 package com.anonym.astran.systems.assembly;
 
 import com.anonym.astran.systems.cybernetics.CyberModule;
-import com.anonym.astran.systems.cybernetics.MaterialType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;

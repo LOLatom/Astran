@@ -35,6 +35,7 @@ public class Astran {
         NeoForge.EVENT_BUS.register(this);
 
 
+        AstranMaterialTypeRegistry.MATERIAL_TYPE.register(modEventBus);
         AstranSoundRegistry.SOUND_EVENTS.register(modEventBus);
         AstranDataComponentRegistry.DATA_COMPONENTS.register(modEventBus);
         AstranEntityRegistry.ENTITIES.register(modEventBus);
@@ -43,9 +44,9 @@ public class Astran {
         AstranItemRegistry.ITEMS.register(modEventBus);
         AstranAttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
         AstranItemBlockRegistry.BLOCK_ITEMS.register(modEventBus);
-        AstranMaterialTypeRegistry.MATERIAL_TYPE.register(modEventBus);
         AstranCyberModuleRegistry.CYBER_MODULE_TYPE.register(modEventBus);
         AstranAssemblyRecipesRegistry.ASSEMBLY_RECIPES.register(modEventBus);
+        AstranItemTabs.CREATIVE_MODE_TABS.register(modEventBus);
         AstranItemBlockRegistry.registerItemsForBlocks();
 
         modEventBus.addListener(this::addCreative);

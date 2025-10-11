@@ -3,7 +3,7 @@ package com.anonym.astran.registries.custom;
 import com.anonym.astran.Astran;
 import com.anonym.astran.systems.assembly.AssemblyAbstractRecipe;
 import com.anonym.astran.systems.cybernetics.CyberModule;
-import com.anonym.astran.systems.cybernetics.MaterialType;
+import com.anonym.astran.systems.cybernetics.material.MaterialType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;

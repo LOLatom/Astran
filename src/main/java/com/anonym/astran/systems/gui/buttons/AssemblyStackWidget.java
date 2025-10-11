@@ -8,13 +8,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.MinecartItem;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.util.List;
 
 public class AssemblyStackWidget extends InterfaceButton implements IGlowModifier {
@@ -37,150 +37,128 @@ public class AssemblyStackWidget extends InterfaceButton implements IGlowModifie
     }
 
 
+
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if (this.isMouseOver(mouseX,mouseY)) {
-            if (!this.screen.scrollDisabled[this.id]) {
-                this.screen.scrollDisabled[this.id] = true;
-            }
+        if (this.isMouseOver(mouseX, mouseY)) {
+            if (!this.screen.scrollDisabled[this.id]) this.screen.scrollDisabled[this.id] = true;
         } else {
-            if (this.screen.scrollDisabled[this.id]) {
-                this.screen.scrollDisabled[this.id] = false;
-            }
+            if (this.screen.scrollDisabled[this.id]) this.screen.scrollDisabled[this.id] = false;
         }
+
         float addedTicks = Minecraft.getInstance().player.tickCount + partialTick;
-        if (this.screen.selectedRecipe != null) {
-            AssemblyAbstractRecipe recipe = this.screen.selectedRecipe;
-            LinkedHashMap<String, List<ItemStack>> itemInInv = recipe.getInInventoryIngredients(Minecraft.getInstance().player);
-            LinkedHashMap<String, List<ItemStack>> recipeItems = recipe.getNamedIngredients();
-            //LinkedHashMap<String, ItemStack> selectedItems = recipe.getSelectedStacks()
 
-            List<ItemStack> list =
-                    recipeItems.values().stream().toList().size() -1 >= this.id ?
-                            recipeItems.values().stream().toList().get(this.id) : new ArrayList<>();
-            System.out.println(list.size());
-            if (!list.isEmpty()) {
-                if (this.screen.selectedIngredients.length >= this.id && list.size() >= this.id) {
-                    if (list.size() -1 >= this.screen.selectedIngredients[this.id]) {
-                        //System.out.println(recipeItems.values());
+        if (this.screen.selectedRecipe == null) return;
 
-                        int s = list.size();
-                        guiGraphics.pose().pushPose();
-                        guiGraphics.pose().translate(this.getRealX() + 4,this.getRealY(),0);
-                        //guiGraphics.pose().scale(2f,2f,0);
+        Player player = Minecraft.getInstance().player;
+        AssemblyAbstractRecipe recipe = this.screen.selectedRecipe;
+        LinkedHashMap<String, List<ItemStack>> recipeItems = recipe.getNamedIngredients();
+        List<List<ItemStack>> recipeValues = new ArrayList<>(recipeItems.values());
 
-                        Color color = AstranMaterialTypeRegistry.BRONZINE.get().getColorPaletteModifier().getLighter();
+        List<ItemStack> list = (this.id >= 0 && this.id < recipeValues.size()) ? recipeValues.get(this.id) : Collections.emptyList();
+        if (list.isEmpty()) return;
 
-                        if (s > 1) {
-                            guiGraphics.blit(LEFT_STACK_BORDER,-26,0,0,0,12,16,12,16);
-                            guiGraphics.blit(RIGHT_STACK_BORDER,22,0,0,0,12,16,12,16);
+        final int s = list.size();
+        int sel = 0;
+        if (this.screen.selectedIngredients != null && this.screen.selectedIngredients.length > this.id) {
+            sel = Math.floorMod(this.screen.selectedIngredients[this.id], s);
+        }
+        int nextIndex = (sel + 1) % s;
+        int prevIndex = (sel - 1 + s) % s;
 
-                        } else {
-                            guiGraphics.blit(LEFT_STACK_BORDER,-19,0,0,0,12,16,12,16);
-                            guiGraphics.blit(RIGHT_STACK_BORDER,14,0,0,0,12,16,12,16);
+        LinkedHashMap<String, List<ItemStack>> itemInInv = this.screen.getCachedInventoryIngredients(recipe);
 
-                        }
-                        guiGraphics.pose().popPose();
-                        guiGraphics.pose().pushPose();
-                        guiGraphics.pose().translate(this.getRealX(),this.getRealY(),0);
-                        guiGraphics.blit(STACK_SELECTION,0,0,0,0,18,18,18,18);
+        List<String> recipeKeys = new ArrayList<>(recipeItems.keySet());
+        String ingredientName = (this.id >= 0 && this.id < recipeKeys.size()) ? recipeKeys.get(this.id) : null;
 
-                        guiGraphics.pose().popPose();
+        ItemStack required = list.get(sel);
+        int requiredCount = required.getCount();
 
-
-                        guiGraphics.pose().pushPose();
-                        guiGraphics.pose().translate(this.getRealX(),this.getRealY(),-150.5);
-                        guiGraphics.pose().pushPose();
-                        guiGraphics.pose().translate(8,8,0);
-                        guiGraphics.pose().scale(
-                                (float) (1+(Math.sin(addedTicks*0.1)*0.1)),
-                                (float) (1+(Math.sin(addedTicks*0.1)*0.1)),
-                                1);
-                        guiGraphics.renderItem(list.get(this.screen.selectedIngredients[this.id]),-8,-8);
-                        guiGraphics.pose().popPose();
-                        if (s -1 >= this.screen.selectedIngredients[this.id] +1) {
-                            guiGraphics.setColor(1f,1f,1f,0.4f);
-                            guiGraphics.pose().pushPose();
-                            guiGraphics.pose().translate(14+8,8,0);
-
-                            guiGraphics.pose().scale(
-                                    (float) (0.6+(Math.sin(addedTicks*0.1)*0.2)),
-                                    (float) (0.6+(Math.sin(addedTicks*0.1)*0.2)),
-                                    1);
-                            guiGraphics.renderItem(list.get(this.screen.selectedIngredients[this.id] +1),-8,-8);
-                            guiGraphics.pose().popPose();
-                            if (this.screen.selectedIngredients[this.id] == 0) {
-                                guiGraphics.pose().pushPose();
-                                guiGraphics.pose().translate(-(8),8,0);
-                                guiGraphics.pose().scale(
-                                        (float) (0.6+(Math.sin(addedTicks*0.1)*0.2)),
-                                        (float) (0.6+(Math.sin(addedTicks*0.1)*0.2)),
-                                        1);
-                                guiGraphics.renderItem(list.get(s-1),-8,-8);
-                                guiGraphics.pose().popPose();
-                            } else {
-                                guiGraphics.pose().pushPose();
-                                guiGraphics.pose().translate(-(8),8,0);
-                                guiGraphics.pose().scale(
-                                        (float) (0.6+(Math.sin(addedTicks*0.1)*0.2)),
-                                        (float) (0.6+(Math.sin(addedTicks*0.1)*0.2)),
-                                        1);
-                                guiGraphics.renderItem(list.get(this.screen.selectedIngredients[this.id] -1),-8,-8);
-                                guiGraphics.pose().popPose();
-                            }
-                        } else if (this.screen.selectedIngredients[this.id] > 0) {
-                            guiGraphics.setColor(1f,1f,1f,0.4f);
-
-                            if (s - 1 > this.screen.selectedIngredients[this.id]) {
-                                guiGraphics.pose().pushPose();
-                                guiGraphics.pose().translate(14 + 8, 8, 0);
-                                guiGraphics.pose().scale(
-                                        (float) (0.6 + (Math.sin(addedTicks * 0.1) * 0.2)),
-                                        (float) (0.6 + (Math.sin(addedTicks * 0.1) * 0.2)),
-                                        1);
-                                guiGraphics.renderItem(list.get(this.screen.selectedIngredients[this.id] + 1), -8, -8);
-                                guiGraphics.pose().popPose();
-                            } else {
-                                guiGraphics.pose().pushPose();
-                                guiGraphics.pose().translate(14 + 8, 8, 0);
-                                guiGraphics.pose().scale(
-                                        (float) (0.6 + (Math.sin(addedTicks * 0.1) * 0.2)),
-                                        (float) (0.6 + (Math.sin(addedTicks * 0.1) * 0.2)),
-                                        1);
-                                guiGraphics.renderItem(list.get(0), -8, -8);
-                                guiGraphics.pose().popPose();
-                            }
-                            guiGraphics.pose().pushPose();
-                            guiGraphics.pose().translate(-(8),8,0);
-                            guiGraphics.pose().scale(
-                                    (float) (0.6+(Math.sin(addedTicks*0.1)*0.2)),
-                                    (float) (0.6+(Math.sin(addedTicks*0.1)*0.2)),
-                                    1);
-                            guiGraphics.renderItem(list.get(this.screen.selectedIngredients[this.id] -1),-8,-8);
-                            guiGraphics.pose().popPose();
-                        }
-
-                        guiGraphics.setColor(1f,1f,1f,1f);
-
-                        guiGraphics.pose().popPose();
-                        guiGraphics.pose().pushPose();
-                        guiGraphics.pose().translate(this.getRealX(),this.getRealY()+10,-0.03);
-                        guiGraphics.drawString(Minecraft.getInstance().font,
-                                String.valueOf(list.get(this.screen.selectedIngredients[this.id]).getCount()),
-                                0,0,Color.DARK_GRAY.getRGB());
-                        guiGraphics.pose().translate(-0.8,-0.8,0);
-                        guiGraphics.drawString(Minecraft.getInstance().font,
-                                String.valueOf(list.get(this.screen.selectedIngredients[this.id]).getCount()),
-                                0,0,Color.WHITE.getRGB());
-                        guiGraphics.pose().popPose();
-
-                    }
+        int playerHas = 0;
+        if (ingredientName != null && itemInInv != null && itemInInv.containsKey(ingredientName)) {
+            for (ItemStack cachedStack : itemInInv.getOrDefault(ingredientName, Collections.emptyList())) {
+                if (cachedStack.getItem().equals(required.getItem())) {
+                    playerHas = cachedStack.getCount();
+                    break;
                 }
             }
-
         }
-        //guiGraphics.renderItem(this.stackUsed,0,0);
+
+        Color countColor;
+        if (playerHas >= requiredCount) {
+            countColor = new Color(0, 255, 0);
+        } else {
+            countColor = new Color(255, 50, 50);
+        }
+
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(this.getRealX() + 4, this.getRealY(), 0);
+        if (s > 1) {
+            guiGraphics.blit(LEFT_STACK_BORDER, -26, 0, 0, 0, 12, 16, 12, 16);
+            guiGraphics.blit(RIGHT_STACK_BORDER, 22, 0, 0, 0, 12, 16, 12, 16);
+        } else {
+            guiGraphics.blit(LEFT_STACK_BORDER, -19, 0, 0, 0, 12, 16, 12, 16);
+            guiGraphics.blit(RIGHT_STACK_BORDER, 14, 0, 0, 0, 12, 16, 12, 16);
+        }
+        guiGraphics.pose().popPose();
+
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(this.getRealX(), this.getRealY(), 0);
+        guiGraphics.blit(STACK_SELECTION, 0, 0, 0, 0, 18, 18, 18, 18);
+        guiGraphics.pose().popPose();
+
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(this.getRealX(), this.getRealY(), 0);
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(8, 8, 0);
+        guiGraphics.pose().scale(
+                (float)(1 + (Math.sin(addedTicks * 0.1) * 0.1)),
+                (float)(1 + (Math.sin(addedTicks * 0.1) * 0.1)),
+                1);
+        guiGraphics.renderItem(required, -8, -8);
+        guiGraphics.pose().popPose();
+
+        if (s > 1) {
+            guiGraphics.setColor(1f, 1f, 1f, 0.4f);
+            // next
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(14 + 8, 8, 0);
+            guiGraphics.pose().scale(
+                    (float)(0.6 + (Math.sin(addedTicks * 0.1) * 0.2)),
+                    (float)(0.6 + (Math.sin(addedTicks * 0.1) * 0.2)),
+                    1);
+            guiGraphics.renderItem(list.get(nextIndex), -8, -8);
+            guiGraphics.pose().popPose();
+
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(-8, 8, 0);
+            guiGraphics.pose().scale(
+                    (float)(0.6 + (Math.sin(addedTicks * 0.1) * 0.2)),
+                    (float)(0.6 + (Math.sin(addedTicks * 0.1) * 0.2)),
+                    1);
+            guiGraphics.renderItem(list.get(prevIndex), -8, -8);
+            guiGraphics.pose().popPose();
+
+            guiGraphics.setColor(1f, 1f, 1f, 1f);
+        }
+        guiGraphics.pose().popPose();
+
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(this.getRealX(), this.getRealY() + 10, 180);
+
+        guiGraphics.drawString(Minecraft.getInstance().font,
+                String.valueOf(requiredCount),
+                0, 0, countColor.darker().darker().darker().getRGB(), false);
+
+        guiGraphics.pose().translate(-0.8, -0.8, 0);
+
+        guiGraphics.drawString(Minecraft.getInstance().font,
+                String.valueOf(requiredCount),
+                0, 0, countColor.getRGB(), false);
+
+        guiGraphics.pose().popPose();
     }
+
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
@@ -212,6 +190,7 @@ public class AssemblyStackWidget extends InterfaceButton implements IGlowModifie
                         this.screen.selectedIngredients[this.id] = list.size() - 1;
                     }
                 }
+                this.screen.cyberModuleDirty = true;
 
             }
         }

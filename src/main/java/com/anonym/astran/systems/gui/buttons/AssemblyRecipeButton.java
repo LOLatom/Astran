@@ -45,6 +45,7 @@ public class AssemblyRecipeButton extends InformativeButton{
             } else {
                 screen.selectedRecipe = recipe;
             }
+            screen.cyberModuleDirty = true;
         });
         this.type = type;
         this.recipe = recipe;

@@ -1,9 +1,7 @@
 package com.anonym.astran.registries.custom;
 
 import com.anonym.astran.Astran;
-import com.anonym.astran.systems.cybernetics.CyberModule;
-import com.anonym.astran.systems.cybernetics.MaterialType;
-import foundry.veil.platform.registry.RegistryObject;
+import com.anonym.astran.systems.cybernetics.material.MaterialType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 

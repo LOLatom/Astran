@@ -305,11 +305,6 @@ public class CyberInterfaceScreen extends Screen {
 
 
 
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(mouseX,mouseY,0);
-        guiGraphics.blit(INTERFACE_MOUSE,0,0,0,0,12,12,12,12);
-
-        guiGraphics.pose().popPose();
 
 
         if (this.showButtonName() && this.currentFocused() != null) {
@@ -346,7 +341,11 @@ public class CyberInterfaceScreen extends Screen {
             }
         }
 
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(mouseX,mouseY,210);
+        guiGraphics.blit(INTERFACE_MOUSE,0,0,0,0,12,12,12,12);
 
+        guiGraphics.pose().popPose();
 
     }
 

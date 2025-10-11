@@ -3,6 +3,17 @@
   "block.astran.electrum_chunk_block": "Electrum Chunk Block",
   "item.astran.steel_heart": "Steel Heart",
   "item.astran.astranium_node": "Astranium Node",
+
+  "item.astran.electrum_ingot": "Electrum Ingot",
+  "item.astran.electrum_plate": "Electrum Plate",
+  "item.astran.electrum_adaptor": "Electrum Adaptor",
+  "item.astran.electrum_cluster": "Electrum Cluster",
+  "item.astran.electrum_node_bracket": "Electrum Node Bracket",
+
+  "item.astran.bronzine_ingot": "Bronzine Ingot",
+  "item.astran.bronzine_plate": "Bronzine Plate",
+  "item.astran.bronzine_adaptor": "Bronzine Adaptor",
+
   "key.categories.astran.cyber": "Cybernetics",
   "key.astran.modula": "Mode Switch",
 

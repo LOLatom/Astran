@@ -1,7 +1,7 @@
 package com.anonym.astran.systems.assembly;
 
 import com.anonym.astran.systems.cybernetics.CyberModule;
-import com.anonym.astran.systems.cybernetics.MaterialType;
+import com.anonym.astran.systems.cybernetics.material.MaterialType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -74,38 +74,46 @@ public abstract class AssemblyAbstractRecipe {
         return hasIngredients;
     }
 
-    public LinkedHashMap<String, ItemStack> getSelectedStacks(LinkedHashMap<String, List<ItemStack>> ingredientChoices, int[] indexes) {
+    public LinkedHashMap<String, ItemStack> getSelectedStacks(int[] indexes) {
         LinkedHashMap<String, ItemStack> mapping = new LinkedHashMap<>();
 
+        Map<String, List<ItemStack>> namedIngredients = this.getNamedIngredients();
 
-        for(int i = 0; i < ingredientChoices.size(); i++) {
-            ItemStack stack = ingredientChoices.values().stream().toList().get(i).get(indexes[i]);
-            String name = ingredientChoices.keySet().stream().toList().get(i);
-            mapping.put(name,stack);
+        int i = 0;
+        for (Map.Entry<String, List<ItemStack>> entry : namedIngredients.entrySet()) {
+            String name = entry.getKey();
+            List<ItemStack> stacks = entry.getValue();
+            int index = Math.min(indexes[i], stacks.size() - 1);
+            ItemStack selected = stacks.get(index);
+
+            mapping.put(name, selected);
+            i++;
         }
 
         return mapping;
     }
 
-    public Optional<CyberModule> buildCyberModule(LinkedHashMap<String, ItemStack> map) {
-        Optional<CyberModule> module = this.getResultModule();
+    public Optional<CyberModule> buildCyberModule(LinkedHashMap<String, ItemStack> inputMap) {
+        Optional<CyberModule> optional = this.getResultModule();
+        if (optional.isEmpty()) return Optional.empty();
 
-        if (module.isPresent()) {
-            CyberModule mod = module.get();
-            List<MaterialType> materials = new ArrayList<>();
-            for (ItemStack stack : map.values()) {
-                if (stack.getItem() instanceof IAssemblyComponent component) {
-                    if (!materials.contains(component.getMaterial())) {
-                        materials.add(component.getMaterial());
-                    }
+        CyberModule module = optional.get();
+
+        Map<String, MaterialType> materialMap = new HashMap<>();
+
+        for (Map.Entry<String, ItemStack> entry : inputMap.entrySet()) {
+            String slotName = entry.getKey();
+            ItemStack stack = entry.getValue();
+
+            if (stack.getItem() instanceof IAssemblyComponent component) {
+                MaterialType material = component.getMaterial();
+                if (material != null) {
+                    materialMap.put(slotName, material);
                 }
             }
-            mod.withMaterials(materials);
-            return Optional.of(mod);
-        } else {
-            return Optional.empty();
         }
 
+        return Optional.of(module.withMaterials(materialMap));
     }
 
 

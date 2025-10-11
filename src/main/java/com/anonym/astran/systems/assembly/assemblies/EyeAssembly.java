@@ -1,5 +1,6 @@
 package com.anonym.astran.systems.assembly.assemblies;
 
+import com.anonym.astran.registries.AstranItemRegistry;
 import com.anonym.astran.systems.assembly.AssemblyAbstractRecipe;
 import com.anonym.astran.systems.cybernetics.CyberModule;
 import com.anonym.astran.systems.cybernetics.head.EyeModule;
@@ -19,14 +20,14 @@ public class EyeAssembly extends AssemblyAbstractRecipe {
     @Override
     public LinkedHashMap<String, List<ItemStack>> namedIngredientsSetup() {
         Builder builder = new Builder();
-        builder.addIngredientsUnder("plates",Items.COAL,5)
-                .addIngredientsUnder("plates",Items.RAW_GOLD,10)
-                .addIngredientsUnder("raw",Items.COPPER_INGOT,8)
-                .addIngredientsUnder("flat",Items.BIRCH_WOOD,115)
-                .addIngredientsUnder("flat",Items.ACACIA_WOOD,115)
-                .addIngredientsUnder("flat",Items.DARK_OAK_WOOD,115)
-                .addIngredientsUnder("blist",Items.IRON_NUGGET,25)
-                .addIngredientsUnder("blist",Items.GOLD_NUGGET,25);
+        builder.addIngredientsUnder("plate", AstranItemRegistry.ELECTRUM_PLATE.get(),3);
+        builder.addIngredientsUnder("plate", AstranItemRegistry.BRONZINE_PLATE.get(),3);
+        builder.addIngredientsUnder("adaptor", AstranItemRegistry.ELECTRUM_ADAPTOR.get(),4);
+        builder.addIngredientsUnder("adaptor", AstranItemRegistry.BRONZINE_ADAPTOR.get(),4);
+        builder.addIngredientsUnder("ingot", AstranItemRegistry.ELECTRUM_INGOT.get(),2);
+        builder.addIngredientsUnder("ingot", AstranItemRegistry.BRONZINE_INGOT.get(),2);
+
+
         return builder.build();
     }
 

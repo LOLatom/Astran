@@ -1,22 +1,20 @@
 package com.anonym.astran.systems.gui.theinterface.pages;
 
-import com.anonym.astran.registries.custom.AstranAssemblyRecipesRegistry;
 import com.anonym.astran.registries.custom.AstranRegistries;
 import com.anonym.astran.systems.assembly.AssemblyAbstractRecipe;
 import com.anonym.astran.systems.cybernetics.CyberModule;
-import com.anonym.astran.systems.cybernetics.LimbType;
-import com.anonym.astran.systems.gui.buttons.AssemblyRecipeButton;
-import com.anonym.astran.systems.gui.buttons.AssemblyRecipeInfoWidget;
-import com.anonym.astran.systems.gui.buttons.AssemblyStackWidget;
-import com.anonym.astran.systems.gui.buttons.InformativeButton;
+import com.anonym.astran.systems.gui.buttons.*;
 import com.anonym.astran.systems.gui.theinterface.CyberInterfaceScreen;
 import foundry.veil.api.client.util.Easing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class AssemblyCyberInterface extends CyberInterfaceScreen {
 
@@ -29,6 +27,15 @@ public class AssemblyCyberInterface extends CyberInterfaceScreen {
     public float initialWidth = 5.8f;
     public float initialHeight = 9f;
     public int[] selectedIngredients = {0,0,0,0,0};
+
+    private LinkedHashMap<String, List<ItemStack>> cachedInventoryIngredients = new LinkedHashMap<>();
+    private int lastCacheTick = -1;
+    private AssemblyAbstractRecipe lastRecipe = null;
+
+    public Optional<CyberModule> moduleCache = Optional.empty();
+    public boolean cyberModuleDirty = false;
+
+
 
     public AssemblyCyberInterface() {
         super(5.8f,9,false);
@@ -57,14 +64,32 @@ public class AssemblyCyberInterface extends CyberInterfaceScreen {
                 this));
 
         for (int v = 0; v < 6; v++) {
-            this.addGlowingRenderable(new AssemblyStackWidget(
+            this.addRenderableWidget(new AssemblyStackWidget(
                     this.getOffsetX() + ((6f*16)) + 31,
                     this.getOffsetY() + (v * 19) - 18
                     ,16,16,this,v));
 
         }
 
+        this.addRenderableWidget(new AssemblyCraftButton(
+                this.getOffsetX() + 13,
+                this.getOffsetY() + 55,this
+                ));
+
     }
+
+    public LinkedHashMap<String, List<ItemStack>> getCachedInventoryIngredients(AssemblyAbstractRecipe recipe) {
+        Player player = Minecraft.getInstance().player;
+        if (player == null) return cachedInventoryIngredients;
+
+        if (player.tickCount % 5 == 0 || recipe != this.lastRecipe) {
+            this.cachedInventoryIngredients = recipe.getInInventoryIngredients(player);
+            this.lastRecipe = recipe;
+        }
+
+        return this.cachedInventoryIngredients;
+    }
+
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
@@ -87,10 +112,8 @@ public class AssemblyCyberInterface extends CyberInterfaceScreen {
         float x2 =  (float) getOffsetX() + (((128) + (16f*getInterfaceWidth()))/2) - 16;
         float y2 = (float)  getOffsetY() + (((96) + (16f*getInterfaceHeight()))/2) - 16;
         if (mouseX > x && mouseX < x2 && mouseY > y && mouseY < y2) {
-            System.out.println("INSIDE  x:" + mouseX + " y:" + mouseY );
             return super.mouseClicked(mouseX, mouseY, button);
         } else {
-            System.out.println("OUTSIDE  x:" + mouseX + " y:" + mouseY );
             return false;
         }
     }
@@ -106,5 +129,25 @@ public class AssemblyCyberInterface extends CyberInterfaceScreen {
             this.scrollOffsetY = (float) Math.clamp(this.scrollOffsetY - (scrollY * 10f), 0f, AstranRegistries.ASSEMBLY_RECIPES_REGISTRY.stream().toList().size() * (52));
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.cyberModuleDirty) {
+            if (this.selectedRecipe != null) {
+                LinkedHashMap<String, ItemStack> map = this.selectedRecipe.getSelectedStacks(this.selectedIngredients);
+                Optional<CyberModule> optModule = this.selectedRecipe.buildCyberModule(map);
+                if (optModule.isPresent()) {
+                    this.moduleCache = optModule;
+                } else {
+                    this.moduleCache = Optional.empty();
+                }
+            } else {
+                this.moduleCache = Optional.empty();
+            }
+            this.cyberModuleDirty = false;
+            System.out.println("MODULE INSTANCE CACHED");
+        }
     }
 }

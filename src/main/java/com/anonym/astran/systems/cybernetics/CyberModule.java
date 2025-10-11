@@ -1,55 +1,100 @@
 package com.anonym.astran.systems.cybernetics;
 
-import com.anonym.astran.registries.custom.AstranMaterialTypeRegistry;
+import com.anonym.astran.client.models.modules.ModuleModel;
+import com.anonym.astran.systems.cybernetics.material.MaterialType;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.realmsclient.dto.Ops;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.tags.TagNetworkSerialization;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class CyberModule {
 
-    public String moduleID;
-    public LimbType attachment;
-    public Quality quality;
-    public int tier;
-    public int color1,color2,color3;
-    public List<MaterialType> materials;
+    protected final Color ADJUSTMENT_COLOR = new Color(15,15,15);
 
+    private final UUID instanceId;
+
+    private String moduleID;
+    private LimbType attachment;
+    private Quality quality;
+    private int tier;
+    private Integer color1, color2, color3;
+    private Map<String, MaterialType> materials = new HashMap<>();
+
+    private ModuleModel model = null;
+
+    @Nullable
+    private CompoundTag additionalData = null;
+
+    public static final Codec<Map<String, MaterialType>> MATERIAL_MAP_CODEC =
+            Codec.unboundedMap(Codec.STRING, MaterialType.CODEC);
 
     public static final Codec<LimbType> LIMB_TYPE_CODEC = Codec.STRING.xmap(LimbType::valueOf, Enum::name);
     public static final Codec<Quality> QUALITY_CODEC = Codec.STRING.xmap(Quality::valueOf, Enum::name);
 
-    public static final Codec<CyberModule> CODEC = RecordCodecBuilder.create(questInstance ->
-            questInstance.group(
+    public static final Codec<CyberModule> CODEC = RecordCodecBuilder.create(instance ->
+            instance.group(
+                    UUIDUtil.CODEC.optionalFieldOf("instanceId").forGetter(cm -> Optional.ofNullable(cm.instanceId)),
                     Codec.STRING.fieldOf("moduleID").forGetter(CyberModule::getModuleID),
                     LIMB_TYPE_CODEC.fieldOf("attachment").forGetter(CyberModule::getAttachment),
                     QUALITY_CODEC.fieldOf("quality").forGetter(CyberModule::getQuality),
                     Codec.INT.fieldOf("tier").forGetter(CyberModule::getTier),
-                    Codec.list(Codec.INT,3,3).fieldOf("colors").forGetter(cyberModule -> {
-                        List<Integer> list = new ArrayList<>();
-                        list.add(cyberModule.getColor1());
-                        list.add(cyberModule.getColor2());
-                        list.add(cyberModule.getColor3());
-                        return list;
-                    }),
-                    Codec.list(MaterialType.CODEC).fieldOf("materials").forGetter(CyberModule::getMaterials)
-            ).apply(questInstance, CyberModule::new));
+
+                    Codec.INT.optionalFieldOf("color1").forGetter(cm -> Optional.ofNullable(cm.color1)),
+                    Codec.INT.optionalFieldOf("color2").forGetter(cm -> Optional.ofNullable(cm.color2)),
+                    Codec.INT.optionalFieldOf("color3").forGetter(cm -> Optional.ofNullable(cm.color3)),
+
+                    Codec.list(Codec.INT).optionalFieldOf("colors").forGetter(cm -> Optional.empty()),
+
+                    MATERIAL_MAP_CODEC.fieldOf("materials").forGetter(CyberModule::getMaterials),
+                    CompoundTag.CODEC.optionalFieldOf("additionalData").forGetter(cm -> Optional.ofNullable(cm.additionalData))
+            ).apply(instance, (idOpt, moduleID, attachment, quality, tier,
+                               color1Opt, color2Opt, color3Opt,
+                               legacyColorsOpt,
+                               materials,tagOpt) -> {
+
+                Integer finalC1 = color1Opt.orElseGet(() ->
+                        legacyColorsOpt.map(l -> l.size() > 0 ? l.get(0) : null).orElse(null));
+                Integer finalC2 = color2Opt.orElseGet(() ->
+                        legacyColorsOpt.map(l -> l.size() > 1 ? l.get(1) : null).orElse(null));
+                Integer finalC3 = color3Opt.orElseGet(() ->
+                        legacyColorsOpt.map(l -> l.size() > 2 ? l.get(2) : null).orElse(null));
+
+                return new CyberModule(
+                        idOpt.orElse(UUID.randomUUID()),
+                        moduleID,
+                        attachment,
+                        quality,
+                        tier,
+                        finalC1,
+                        finalC2,
+                        finalC3,
+                        materials,
+                        tagOpt.orElse(null)
+                );
+            })
+    );
+
     public static final StreamCodec<ByteBuf, CyberModule> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
-
-    public CyberModule(String moduleID, LimbType attachment,Quality quality, int tier,
-                       int color1, int color2, int color3,
-                       List<MaterialType> materials) {
+    public CyberModule(UUID instanceId, String moduleID, LimbType attachment, Quality quality, int tier,
+                       Integer color1, Integer color2, Integer color3, Map<String, MaterialType> materials ,
+                       @Nullable CompoundTag data) {
+        this.instanceId = instanceId;
         this.moduleID = moduleID;
         this.attachment = attachment;
         this.quality = quality;
@@ -58,33 +103,53 @@ public class CyberModule {
         this.color2 = color2;
         this.color3 = color3;
         this.materials = materials;
+        this.additionalData = data;
     }
-    public CyberModule(String moduleID,LimbType attachment, Quality quality, int tier, List<Integer> colors, List<MaterialType> materials) {
-        this(moduleID,attachment,quality,tier,colors.get(0),colors.get(1), colors.get(3), materials);
+
+    public CyberModule(String moduleID, LimbType attachment, Quality quality, int tier,
+                       int color1, int color2, int color3, Map<String, MaterialType> materials, @Nullable CompoundTag data) {
+        this(UUID.randomUUID(), moduleID, attachment, quality, tier, color1, color2, color3, materials, data);
     }
-    public CyberModule(String moduleID, LimbType attachment, Quality quality, int tier , List<MaterialType> materials) {
-        this(moduleID,attachment,quality,tier, Color.WHITE.getRGB(),Color.WHITE.getRGB(), Color.WHITE.getRGB(), materials);
+
+    public CyberModule(String moduleID, LimbType attachment, Quality quality, int tier, Map<String, MaterialType> materials, @Nullable CompoundTag data) {
+        this(UUID.randomUUID(), moduleID, attachment, quality, tier, null, null, null, materials, data);
     }
-    public CyberModule(String moduleID, LimbType attachment, Quality quality, List<MaterialType> materials) {
-        this(moduleID,attachment,quality,1, materials);
+
+    public CyberModule(String moduleID, LimbType attachment, Quality quality, Map<String, MaterialType> materials) {
+        this(moduleID, attachment, quality, 1, materials,null);
     }
-    public CyberModule(String moduleID, LimbType attachment, List<MaterialType> materials) {
-        this(moduleID,attachment,Quality.NORMAL, materials);
+
+    public CyberModule(String moduleID, LimbType attachment, Map<String, MaterialType> materials) {
+        this(moduleID, attachment, Quality.NORMAL, materials);
     }
+
     public CyberModule(String moduleID, LimbType attachment) {
-        this(moduleID,attachment,Quality.NORMAL, new ArrayList<>());
-        List<MaterialType> types = new ArrayList<>();
-        types.add(AstranMaterialTypeRegistry.ELECTRUM.get());
+        this(moduleID, attachment, Quality.NORMAL, new HashMap<>());
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void render(AbstractClientPlayer entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
-
+    public void render(CyberModule module, AbstractClientPlayer entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, boolean inDisplay) {
+        this.setModelIfAbsent();
     }
+
+    public CyberModule withColor(Integer first, Integer second, Integer third) {
+        this.color1 = first;
+        this.color2 = second;
+        this.color3 = third;
+        return this;
+    }
+
     public CyberModule withColor(Color first, Color second, Color third) {
-        this.color1 = first.getRGB();
-        this.color2 = second.getRGB();
-        this.color3 = third.getRGB();
+        this.color1 = first != null ? first.getRGB() : null;
+        this.color2 = second != null ? second.getRGB() : null;
+        this.color3 = third != null ? third.getRGB() : null;
+        return this;
+    }
+
+    public CyberModule clearColors() {
+        this.color1 = null;
+        this.color2 = null;
+        this.color3 = null;
         return this;
     }
 
@@ -93,7 +158,7 @@ public class CyberModule {
         return this;
     }
 
-    public CyberModule withMaterials(List<MaterialType> materials) {
+    public CyberModule withMaterials(Map<String, MaterialType> materials) {
         this.materials = materials;
         return this;
     }
@@ -102,8 +167,21 @@ public class CyberModule {
         return 1;
     }
 
+    public void setModelIfAbsent() {
+        if (this.model == null) {
+            this.model = this.getModelLayer();
+        }
+    }
 
-    public List<MaterialType> getMaterials() {
+    public ModuleModel model() {
+        return this.model;
+    }
+
+    public ModuleModel getModelLayer() {
+        return null;
+    }
+
+    public Map<String, MaterialType> getMaterials() {
         return this.materials;
     }
 
@@ -119,20 +197,54 @@ public class CyberModule {
         return this.quality;
     }
 
-    public int getColor1() {
-        return this.color1;
+    public Optional<Integer> getColor1Optional() { return Optional.ofNullable(this.color1); }
+    public Optional<Integer> getColor2Optional() { return Optional.ofNullable(this.color2); }
+    public Optional<Integer> getColor3Optional() { return Optional.ofNullable(this.color3); }
+
+    public int getColor1() { return this.color1 != null ? this.color1 : Color.WHITE.getRGB(); }
+    public int getColor2() { return this.color2 != null ? this.color2 : Color.WHITE.getRGB(); }
+    public int getColor3() { return this.color3 != null ? this.color3 : Color.WHITE.getRGB(); }
+
+    public boolean hasAnyColor() {
+        return this.color1 != null || this.color2 != null || this.color3 != null;
     }
 
-    public int getColor2() {
-        return this.color2;
-    }
-
-    public int getColor3() {
-        return this.color3;
+    public boolean hasAllColors() {
+        return this.color1 != null && this.color2 != null && this.color3 != null;
     }
 
     public int getTier() {
         return this.tier;
+    }
+
+    public UUID getInstanceId() {
+        return this.instanceId;
+    }
+
+    @Nullable
+    public Optional<CompoundTag> getAdditionalData() {
+        return Optional.ofNullable(this.additionalData);
+    }
+
+    public CompoundTag getOrCreateTag() {
+        if (this.additionalData == null) this.additionalData = new CompoundTag();
+        return this.additionalData;
+    }
+
+
+    public CyberModule copy() {
+        return new CyberModule(
+                UUID.randomUUID(),
+                this.moduleID,
+                this.attachment,
+                this.quality,
+                this.tier,
+                this.color1,
+                this.color2,
+                this.color3,
+                new HashMap<>(this.materials),
+                this.additionalData
+        );
     }
 
     public enum Quality {
