@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 public class ModuleLayerRegistry {
 
     public static final ModelLayerLocation EYE_MODULE = register("eye_module");
+    public static final ModelLayerLocation AQUA_LUNGS_MODULE = register("aqua_lungs_module");
+    public static final ModelLayerLocation POISON_FILTER_MODULE = register("poison_filter_module");
 
 
 

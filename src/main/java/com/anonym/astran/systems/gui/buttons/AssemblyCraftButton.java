@@ -1,6 +1,7 @@
 package com.anonym.astran.systems.gui.buttons;
 
 import com.anonym.astran.Astran;
+import com.anonym.astran.systems.gui.theinterface.AssemblyMiniGame;
 import com.anonym.astran.systems.gui.theinterface.pages.AssemblyCyberInterface;
 import com.mojang.math.Axis;
 import foundry.veil.api.client.util.Easing;
@@ -18,7 +19,13 @@ public class AssemblyCraftButton extends InterfaceButton{
     private static final ResourceLocation TEXTURE_IN =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID, "textures/gui/interface/craft_button_inside.png");
     public AssemblyCraftButton(float x, float y, AssemblyCyberInterface screen) {
-        super(x, y, 72, 36, (button) -> {});
+        super(x, y, 72, 36, (button) -> {
+            if (screen.selectedRecipe.canCraftWithChosen(Minecraft.getInstance().player,
+                    screen.selectedRecipe.getSelectedStacks(screen.selectedIngredients))) {
+                screen.onClose();
+                Minecraft.getInstance().setScreen(new AssemblyMiniGame(screen.selectedRecipe, screen.moduleCache.get(),screen.selectedRecipe.getSelectedStacks(screen.selectedIngredients)));
+            }
+        });
         this.screen = screen;
     }
 
@@ -31,7 +38,6 @@ public class AssemblyCraftButton extends InterfaceButton{
 
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        //super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.pose().pushPose();
         float addedTicks = Minecraft.getInstance().player.tickCount + partialTick;
 

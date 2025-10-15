@@ -3,6 +3,7 @@ package com.anonym.astran.registries;
 import com.anonym.astran.Astran;
 import com.anonym.astran.systems.assembly.storage.InterfaceStorageData;
 import com.anonym.astran.systems.attachments.SteelHeartReservoirData;
+import com.anonym.astran.systems.cybernetics.CachedModuleData;
 import com.anonym.astran.systems.cybernetics.StorageForLimbData;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -71,5 +72,10 @@ public class AstranAttachmentTypeRegistry {
             ATTACHMENT_TYPES.register("left_leg_storage",
                     () -> AttachmentType.builder(() -> new StorageForLimbData())
                             .serialize(StorageForLimbData.CODEC).sync(StorageForLimbData.STREAM_CODEC).copyOnDeath().build());
+
+    public static final Supplier<AttachmentType<CachedModuleData>> MODULE_CACHE_DATA =
+            ATTACHMENT_TYPES.register("cached_module_data",
+                    () -> AttachmentType.builder(() -> new CachedModuleData(new HashMap<>(), new HashMap<>(), new HashMap<>(),0.0f))
+                            .serialize(CachedModuleData.CODEC).sync(CachedModuleData.STREAM_CODEC).copyOnDeath().build());
 
 }

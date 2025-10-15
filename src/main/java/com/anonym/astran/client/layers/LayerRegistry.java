@@ -7,6 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 public class LayerRegistry {
 
     public static final ModelLayerLocation ASTRANIUM_METEOR = register("astranium_meteor");
+    public static final ModelLayerLocation MINIGAME_ANVIL = register("minigame_anvil");
+    public static final ModelLayerLocation MINIGAME_HAMMER = register("minigame_hammer");
 
 
 

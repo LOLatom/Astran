@@ -38,11 +38,17 @@ public class AssemblyRecipeButton extends InformativeButton{
         super(x, y, width, height, (button) -> {
             if (screen.selectedRecipe != null) {
                 if (!screen.selectedRecipe.equals(recipe)) {
+                    int v[] = {0,0,0,0,0,0};
+                    screen.selectedIngredients = v;
                     screen.selectedRecipe = recipe;
                 } else {
+                    int v[] = {0,0,0,0,0,0};
+                    screen.selectedIngredients = v;
                     screen.selectedRecipe = null;
                 }
             } else {
+                int v[] = {0,0,0,0,0,0};
+                screen.selectedIngredients = v;
                 screen.selectedRecipe = recipe;
             }
             screen.cyberModuleDirty = true;

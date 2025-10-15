@@ -24,8 +24,6 @@ import java.util.Locale;
 @Mod(Astran.MODID)
 public class Astran {
 
-    //First
-
     public static final String MODID = "astran";
     public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -42,7 +40,10 @@ public class Astran {
         AstranBlockRegistry.BLOCKS.register(modEventBus);
         AstranBlockRegistry.ORE_BLOCKS.register(modEventBus);
         AstranItemRegistry.ITEMS.register(modEventBus);
+
         AstranAttachmentTypeRegistry.ATTACHMENT_TYPES.register(modEventBus);
+        AstranBoneDataRegistry.ATTACHMENT_TYPES.register(modEventBus);
+
         AstranItemBlockRegistry.BLOCK_ITEMS.register(modEventBus);
         AstranCyberModuleRegistry.CYBER_MODULE_TYPE.register(modEventBus);
         AstranAssemblyRecipesRegistry.ASSEMBLY_RECIPES.register(modEventBus);

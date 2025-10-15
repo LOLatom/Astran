@@ -66,4 +66,8 @@ public class StorageForLimbData {
     public void clear() {
         this.cyberModuleMap.clear();
     }
+
+    public StorageForLimbData copy() {
+        return new StorageForLimbData(new HashMap<>(this.cyberModuleMap));
+    }
 }

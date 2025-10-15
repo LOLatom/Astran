@@ -10,9 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class BasicAssemblyRecipe extends AssemblyAbstractRecipe{
-    public BasicAssemblyRecipe(AssemblyType type) {
+
+    private final String id;
+
+    public BasicAssemblyRecipe(AssemblyType type, String id) {
         super(type);
+        this.id = id;
     }
+
 
     @Override
     public LinkedHashMap<String, List<ItemStack>> namedIngredientsSetup() {
@@ -33,6 +38,11 @@ public class BasicAssemblyRecipe extends AssemblyAbstractRecipe{
     @Override
     public Optional<ItemStack> getResultStack() {
         return Optional.empty();
+    }
+
+    @Override
+    public String getAssemblyID() {
+        return this.id;
     }
 
     @Override

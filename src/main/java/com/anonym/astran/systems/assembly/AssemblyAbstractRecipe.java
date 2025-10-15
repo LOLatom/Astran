@@ -25,6 +25,8 @@ public abstract class AssemblyAbstractRecipe {
     public abstract Optional<CyberModule> getResultModule();
     public abstract Optional<ItemStack> getResultStack();
 
+    public abstract String getAssemblyID();
+
     public abstract Component getRecipeName();
 
     public Component getDescription() {
@@ -74,6 +76,14 @@ public abstract class AssemblyAbstractRecipe {
         return hasIngredients;
     }
 
+    public boolean isValidCraft(LinkedHashMap<String, ItemStack> ingredientsChosen) {
+        boolean hasIngredients = true;
+        for (String ing : this.getNamedIngredients().keySet()) {
+            if (!ingredientsChosen.containsKey(ing)) hasIngredients = false;
+        }
+        return hasIngredients;
+    }
+
     public LinkedHashMap<String, ItemStack> getSelectedStacks(int[] indexes) {
         LinkedHashMap<String, ItemStack> mapping = new LinkedHashMap<>();
 
@@ -114,6 +124,29 @@ public abstract class AssemblyAbstractRecipe {
         }
 
         return Optional.of(module.withMaterials(materialMap));
+    }
+
+    public boolean canCraftWithChosen(Player player, Map<String, ItemStack> chosen) {
+        if (chosen == null || chosen.isEmpty()) return false;
+
+        Map<Item, Integer> required = new HashMap<>();
+        for (ItemStack stack : chosen.values()) {
+            if (stack == null || stack.isEmpty()) return false;
+            required.merge(stack.getItem(), stack.getCount(), Integer::sum);
+        }
+
+        Map<Item, Integer> available = new HashMap<>();
+        for (ItemStack slot : player.getInventory().items) {
+            if (slot == null || slot.isEmpty()) continue;
+            available.merge(slot.getItem(), slot.getCount(), Integer::sum);
+        }
+
+        for (Map.Entry<Item, Integer> e : required.entrySet()) {
+            int have = available.getOrDefault(e.getKey(), 0);
+            if (have < e.getValue()) return false;
+        }
+
+        return true;
     }
 
 

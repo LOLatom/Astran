@@ -128,7 +128,7 @@ public class CyberModule {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void render(CyberModule module, AbstractClientPlayer entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, boolean inDisplay) {
+    public void render(CyberModule module, AbstractClientPlayer player, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, boolean inDisplay) {
         this.setModelIfAbsent();
     }
 
@@ -173,6 +173,19 @@ public class CyberModule {
         }
     }
 
+    public float[] getRotations(CyberModule module, AbstractClientPlayer player, float partialTicks) {
+        float[] rot = {0f,0f,0f};
+        return rot;
+    }
+    public float[] getPositionOffset(CyberModule module, AbstractClientPlayer player, float partialTicks) {
+        float[] pos = {0f,0f,0f};
+        return pos;
+    }
+    public float[] getScale(CyberModule module, AbstractClientPlayer player, float partialTicks) {
+        float[] scale = {1f,1f,1f};
+        return scale;
+    }
+
     public ModuleModel model() {
         return this.model;
     }
@@ -215,6 +228,10 @@ public class CyberModule {
 
     public int getTier() {
         return this.tier;
+    }
+
+    public String getSubType() {
+        return "none";
     }
 
     public UUID getInstanceId() {

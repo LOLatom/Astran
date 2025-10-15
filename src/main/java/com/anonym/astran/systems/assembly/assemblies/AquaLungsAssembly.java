@@ -4,29 +4,27 @@ import com.anonym.astran.registries.AstranItemRegistry;
 import com.anonym.astran.systems.assembly.AssemblyAbstractRecipe;
 import com.anonym.astran.systems.cybernetics.CyberModule;
 import com.anonym.astran.systems.cybernetics.head.EyeModule;
+import com.anonym.astran.systems.cybernetics.torso.AquaLungsModule;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
-import java.util.*;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
-public class EyeAssembly extends AssemblyAbstractRecipe {
-    public EyeAssembly(AssemblyType type) {
+public class AquaLungsAssembly extends AssemblyAbstractRecipe {
+    public AquaLungsAssembly(AssemblyType type) {
         super(type);
     }
 
     @Override
     public LinkedHashMap<String, List<ItemStack>> namedIngredientsSetup() {
         Builder builder = new Builder();
-        builder.addIngredientsUnder("plate", AstranItemRegistry.ELECTRUM_PLATE.get(),3);
-        builder.addIngredientsUnder("plate", AstranItemRegistry.BRONZINE_PLATE.get(),3);
-        builder.addIngredientsUnder("adaptor", AstranItemRegistry.ELECTRUM_ADAPTOR.get(),4);
-        builder.addIngredientsUnder("adaptor", AstranItemRegistry.BRONZINE_ADAPTOR.get(),4);
-        builder.addIngredientsUnder("ingot", AstranItemRegistry.ELECTRUM_INGOT.get(),2);
-        builder.addIngredientsUnder("ingot", AstranItemRegistry.BRONZINE_INGOT.get(),2);
-
+        builder.addIngredientsUnder("plate", AstranItemRegistry.ELECTRUM_PLATE.get(),5);
+        builder.addIngredientsUnder("plate", AstranItemRegistry.BRONZINE_PLATE.get(),5);
+        builder.addIngredientsUnder("adaptor", AstranItemRegistry.ELECTRUM_ADAPTOR.get(),10);
+        builder.addIngredientsUnder("adaptor", AstranItemRegistry.BRONZINE_ADAPTOR.get(),10);
 
         return builder.build();
     }
@@ -38,7 +36,7 @@ public class EyeAssembly extends AssemblyAbstractRecipe {
 
     @Override
     public Optional<CyberModule> getResultModule() {
-        return Optional.of(new EyeModule());
+        return Optional.of(new AquaLungsModule());
     }
 
     @Override
@@ -48,16 +46,16 @@ public class EyeAssembly extends AssemblyAbstractRecipe {
 
     @Override
     public String getAssemblyID() {
-        return "eyes";
+        return "aqua_lungs";
     }
 
     @Override
     public Component getRecipeName() {
-        return Component.nullToEmpty("Eye Module");
+        return Component.nullToEmpty("Aqua Lungs Module");
     }
 
     @Override
     public Component getDescription() {
-        return Component.nullToEmpty("This module allow a user to modify their vision");
+        return Component.nullToEmpty("Allows a User to Breath under water");
     }
 }

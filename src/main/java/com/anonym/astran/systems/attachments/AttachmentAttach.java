@@ -1,9 +1,13 @@
 package com.anonym.astran.systems.attachments;
 
 import com.anonym.astran.registries.AstranAttachmentTypeRegistry;
+import com.anonym.astran.registries.AstranBoneDataRegistry;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import org.antlr.v4.runtime.misc.Triple;
+
+import java.util.UUID;
 
 @EventBusSubscriber
 public class AttachmentAttach {
@@ -21,6 +25,19 @@ public class AttachmentAttach {
         System.out.println("[ASTRAN/DEBUG]: " + " LEFT SHOULDER Storage Created : \n" + event.getEntity().getData(AstranAttachmentTypeRegistry.LEFT_SHOULDER_STORAGE));
         System.out.println("[ASTRAN/DEBUG]: " + " RIGHT HAND Storage Created : \n" + event.getEntity().getData(AstranAttachmentTypeRegistry.RIGHT_HAND_STORAGE));
         System.out.println("[ASTRAN/DEBUG]: " + " LEFT HAND Storage Created : \n" + event.getEntity().getData(AstranAttachmentTypeRegistry.LEFT_HAND_STORAGE));
+
+
+        System.out.println("[ASTRAN/DEBUG/BONE]: " + " HEAD Created : \n" + event.getEntity().getData(AstranBoneDataRegistry.HEAD));
+        System.out.println("[ASTRAN/DEBUG/BONE]: " + " TORSO Created : \n" + event.getEntity().getData(AstranBoneDataRegistry.TORSO));
+        System.out.println("[ASTRAN/DEBUG/BONE]: " + " HIP Created : \n" + event.getEntity().getData(AstranBoneDataRegistry.HIP));
+        System.out.println("[ASTRAN/DEBUG/BONE]: " + " RIGHT LEG Created : \n" + event.getEntity().getData(AstranBoneDataRegistry.RIGHT_LEG));
+        System.out.println("[ASTRAN/DEBUG/BONE]: " + " LEFT LEG Created : \n" + event.getEntity().getData(AstranBoneDataRegistry.LEFT_LEG));
+        System.out.println("[ASTRAN/DEBUG/BONE]: " + " RIGHT SHOULDER Created : \n" + event.getEntity().getData(AstranBoneDataRegistry.RIGHT_SHOULDER));
+        System.out.println("[ASTRAN/DEBUG/BONE]: " + " LEFT SHOULDER Created : \n" + event.getEntity().getData(AstranBoneDataRegistry.LEFT_SHOULDER));
+        System.out.println("[ASTRAN/DEBUG/BONE]: " + " RIGHT HAND Created : \n" + event.getEntity().getData(AstranBoneDataRegistry.RIGHT_HAND));
+        System.out.println("[ASTRAN/DEBUG/BONE]: " + " LEFT HAND Created : \n" + event.getEntity().getData(AstranBoneDataRegistry.LEFT_HAND));
+
+        System.out.println("[ASTRAN/DEBUG/CACHE]: " + " Module CACHE Created : \n" + event.getEntity().getData(AstranAttachmentTypeRegistry.MODULE_CACHE_DATA));
 
     }
 

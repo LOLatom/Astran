@@ -14,7 +14,24 @@ public class BoneData {
             questInstance.group(
                     Codec.list(SocketData.CODEC).fieldOf("Sockets").forGetter(BoneData::getSockets),
                     CyberModule.LIMB_TYPE_CODEC.fieldOf("Type").forGetter(BoneData::getType)
-            ).apply(questInstance, BoneData::new));
+            ).apply(questInstance, (sockets, limbType) -> {
+                if (sockets == null) {
+                    List<SocketData> list = new ArrayList<>();
+                    for (int i = 1; i < 10; i++ ) {
+                        list.add(new SocketData(1));
+                    }
+
+                    return new BoneData(list,limbType);
+                }
+                if (sockets.isEmpty()) {
+                    List<SocketData> list = new ArrayList<>();
+                    for (int i = 1; i < 10; i++ ) {
+                        list.add(new SocketData(1));
+                    }
+                    return new BoneData(list,limbType);
+                }
+                return new BoneData(sockets,limbType);
+            }));
     public static final StreamCodec<ByteBuf, BoneData> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
 
@@ -23,8 +40,25 @@ public class BoneData {
 
 
     public BoneData(List<SocketData> sockets, LimbType type) {
-        this.sockets = sockets;
+        if (sockets.isEmpty()) {
+            List<SocketData> list = new ArrayList<>();
+            for (int i = 1; i < 10; i++ ) {
+                list.add(new SocketData(1));
+            }
+            this.sockets = list;
+        } else {
+            this.sockets = sockets;
+        }
         this.type = type;
+    }
+
+    public BoneData(BoneData data) {
+        this(data.sockets,data.type);
+    }
+
+
+    public BoneData(LimbType type) {
+        this(new ArrayList<>(),type);
     }
 
     public List<SocketData> getSockets() {
@@ -43,5 +77,9 @@ public class BoneData {
 
     public LimbType getType() {
         return this.type;
+    }
+
+    public BoneData copy() {
+        return new BoneData(new ArrayList<>(this.sockets),this.type);
     }
 }
