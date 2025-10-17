@@ -189,7 +189,7 @@ public class CameraCyberInterfaceScreen extends CyberInterfaceScreen {
     public void animatePlayerModel(Player player , float limbSwing, float limbSwingAmount,
                                    float ageInTicks, float netHeadYaw, float headPitch,
                                    ModelPart head, ModelPart body, ModelPart rightArm,
-                                   ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg) {
+                                   ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg, ModelPart hat) {
             float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 
             float addedTicks = (this.tickCount + partialTicks);
@@ -210,8 +210,12 @@ public class CameraCyberInterfaceScreen extends CyberInterfaceScreen {
                     (float) (leftArm.getInitialPose().y + (Math.sin(addedTicks * 0.1)*0.3f + 0.3f)),
                     leftArm.getInitialPose().z);
 
-            head.setRotation((float) Math.toRadians(-Math.sin(addedTicks * 0.1)*5f  +10f),(float) Math.toRadians(Math.cos(addedTicks * 0.1)*3f - 20),0);
-            body.setPos(body.getInitialPose().x,
+        double radians = Math.toRadians(Math.cos(addedTicks * 0.1) * 3f - 20);
+        double radians2 = Math.toRadians(-Math.sin(addedTicks * 0.1)*5f  +10f);
+        head.setRotation((float) radians2,(float) radians,0);
+            hat.setRotation((float) radians2,(float) radians,0);
+
+        body.setPos(body.getInitialPose().x,
                     (float) (body.getInitialPose().y + (Math.sin(addedTicks * 0.1)*0.1f +0.1)),
                     (float) (body.getInitialPose().z + (Math.cos(addedTicks * 0.1)*0.1f)));
             body.setRotation((float) Math.toRadians(-Math.sin(addedTicks * 0.1)*2f - 2f),0,(float) Math.toRadians(Math.cos(addedTicks * 0.1)*1f));

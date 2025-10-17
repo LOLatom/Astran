@@ -28,6 +28,8 @@ public class PlayerAnimationMixin<T extends LivingEntity> {
 
     @Shadow @Final public ModelPart leftLeg;
 
+    @Shadow @Final public ModelPart hat;
+
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("HEAD"), cancellable = true)
     public void setupNewerAnimations(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci) {
         if (entity instanceof Player player) {
@@ -36,9 +38,10 @@ public class PlayerAnimationMixin<T extends LivingEntity> {
                     cyberInterface.animatePlayerModel(
                             player,limbSwing,limbSwingAmount,
                             ageInTicks,netHeadYaw,headPitch,
-                            this.head,this.body,this.rightArm,this.leftArm,this.rightLeg,this.leftLeg);
+                            this.head,this.body,this.rightArm,this.leftArm,this.rightLeg,this.leftLeg, this.hat);
                     ci.cancel();
                 } else {
+                    this.hat.resetPose();
                     this.leftArm.resetPose();
                     this.rightArm.resetPose();
                     this.rightLeg.resetPose();

@@ -17,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -42,6 +43,23 @@ public class PoisonFilterModule extends CyberModule {
         super.tick(module, player);
         if (player.hasEffect(MobEffects.POISON) && module.getQuality() != Quality.LESSER) {
             player.removeEffect(MobEffects.POISON);
+        }
+        CyberneticsManager manager = CyberneticsManager.getManager(player);
+        if (module.getAdditionalData().isEmpty()) {
+            manager.setAdditionalData(module,new CompoundTag());
+        } else {
+            CompoundTag data = module.getAdditionalData().get();
+            if (data.contains("ticks")) {
+                System.out.println(data.getInt("ticks"));
+                if (data.getInt("ticks") < 25) {
+                    data.putInt("ticks", data.getInt("ticks") + 1);
+                } else {
+                    data.putInt("ticks", 0);
+                }
+            } else {
+                data.putInt("ticks", 0);
+            }
+            manager.setAdditionalData(module,data);
         }
     }
 

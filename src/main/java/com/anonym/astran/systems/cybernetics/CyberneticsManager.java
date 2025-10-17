@@ -8,7 +8,10 @@ import com.anonym.astran.systems.cybernetics.network.AddModulePayload;
 import com.anonym.astran.systems.cybernetics.network.EquipModulePayload;
 import com.anonym.astran.systems.cybernetics.network.RemoveModulePayload;
 import com.anonym.astran.systems.cybernetics.network.UnEquipModulePayload;
+import com.mojang.serialization.Codec;
 import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -75,6 +78,20 @@ public class CyberneticsManager {
             serverPlayer.connection.send(new UnEquipModulePayload(socketIndex,module));
         }
     }
+    public void syncUpdateModule(CyberModule module) {
+        if (this.player.level().isClientSide) {
+            this.changeModule(module);
+            Minecraft.getInstance().getConnection().send(new AddModulePayload(module));
+        } else {
+            this.changeModule(module);
+            ServerPlayer serverPlayer = (ServerPlayer) this.player;
+            serverPlayer.connection.send(new AddModulePayload(module));
+        }
+    }
+    public void syncSetAdditionalData(CyberModule module, @Nullable CompoundTag nbt) {
+        module.setAdditionalData(nbt);
+        syncUpdateModule(module);
+    }
 
     public void addModule(CyberModule module) {
         StorageForLimbData storage = getStorageForLimb(module).copy();
@@ -89,6 +106,11 @@ public class CyberneticsManager {
         if (moduleCache().getEquippedModuleInstances().containsKey(module.getInstanceId())) {
             addToCache(module);
         }
+    }
+
+    public void setAdditionalData(CyberModule module, @Nullable CompoundTag nbt) {
+        module.setAdditionalData(nbt);
+        changeModule(module);
     }
 
     public void removeModule(CyberModule module) {

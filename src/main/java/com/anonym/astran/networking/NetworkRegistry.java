@@ -88,5 +88,12 @@ public class NetworkRegistry {
                         UnEquipModuleHandler.Server::handleDataOnNetwork
                 ));
 
+        registrar.playBidirectional(ChangeModulePayload.TYPE,
+                ChangeModulePayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        ChangeModuleHandler.Client::handleDataOnNetwork,
+                        ChangeModuleHandler.Server::handleDataOnNetwork
+                ));
+
     }
 }

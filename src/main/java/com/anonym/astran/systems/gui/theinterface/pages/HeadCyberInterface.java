@@ -33,8 +33,8 @@ public class HeadCyberInterface extends LimbInterface {
     }
 
     @Override
-    public void animatePlayerModel(Player player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, ModelPart head, ModelPart body, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg) {
-        super.animatePlayerModel(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, head, body, rightArm, leftArm, rightLeg, leftLeg);
+    public void animatePlayerModel(Player player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, ModelPart head, ModelPart body, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg, ModelPart hat) {
+        super.animatePlayerModel(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, head, body, rightArm, leftArm, rightLeg, leftLeg,hat);
         float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 
         float addedTicks = (this.tickCount + partialTicks);
@@ -45,6 +45,8 @@ public class HeadCyberInterface extends LimbInterface {
 
 
         head.setRotation((float) Math.toRadians(-35f  + (Math.cos(addedTicks * 0.1)*5.5f) + (headP*35f)),(float) Math.toRadians((headY * 40f)-25f),(float) Math.toRadians(10f + (Math.sin(addedTicks * 0.1)*5.5f)));
+        hat.setRotation((float) Math.toRadians(-35f  + (Math.cos(addedTicks * 0.1)*5.5f) + (headP*35f)),(float) Math.toRadians((headY * 40f)-25f),(float) Math.toRadians(10f + (Math.sin(addedTicks * 0.1)*5.5f)));
+
         rightArm.setRotation((float) Math.toRadians(25f),0,(float) Math.toRadians(-9f));
         leftArm.setRotation((float) Math.toRadians(25f),0,(float) Math.toRadians(9f));
 

@@ -29,8 +29,8 @@ public class TorsoCyberInterface extends LimbInterface {
     }
 
     @Override
-    public void animatePlayerModel(Player player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, ModelPart head, ModelPart body, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg) {
-        super.animatePlayerModel(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, head, body, rightArm, leftArm, rightLeg, leftLeg);
+    public void animatePlayerModel(Player player, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, ModelPart head, ModelPart body, ModelPart rightArm, ModelPart leftArm, ModelPart rightLeg, ModelPart leftLeg, ModelPart hat) {
+        super.animatePlayerModel(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, head, body, rightArm, leftArm, rightLeg, leftLeg,hat);
         float partialTicks = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true);
 
         float addedTicks = (this.tickCount + partialTicks);
@@ -44,6 +44,10 @@ public class TorsoCyberInterface extends LimbInterface {
                 (float) Math.toRadians(headY * -7.5f),
                 (float) Math.toRadians((Math.sin(addedTicks * 0.1)*5.5f)));
         head.setPos(head.getInitialPose().x,head.getInitialPose().y,head.getInitialPose().z - (headP * 1.2f));
+        hat.setRotation((float) Math.toRadians(10f  + (Math.cos(addedTicks * 0.1)*5.5f) - (headP * 10f)),
+                (float) Math.toRadians(headY * -7.5f),
+                (float) Math.toRadians((Math.sin(addedTicks * 0.1)*5.5f)));
+        hat.setPos(head.getInitialPose().x,head.getInitialPose().y,head.getInitialPose().z - (headP * 1.2f));
         rightArm.setRotation((float) Math.toRadians(-15f - (headY * 15f)),0,(float) Math.toRadians(11f));
         rightArm.setPos(rightArm.x,rightArm.y,rightArm.z  - (headY - 0.5f) - (headP * 1.2f));
         leftArm.setRotation((float) Math.toRadians(-15f + (headY * 15f)),0,(float) Math.toRadians(-11f));

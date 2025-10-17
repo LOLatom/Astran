@@ -16,6 +16,8 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -224,6 +226,11 @@ public class CyberModule {
         return AstranRegistries.CYBER_MODULE_REGISTRY
                 .get(ResourceLocation.fromNamespaceAndPath(Astran.MODID,this.getModuleID()));
     }
+
+    public void setAdditionalData(@Nullable CompoundTag additionalData) {
+        this.additionalData = additionalData;
+    }
+
 
     public CyberModule withColor(Integer first, Integer second, Integer third) {
         this.color1 = first;
