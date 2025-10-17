@@ -14,32 +14,22 @@ import java.util.Map;
 
 public class InterfaceStorageData {
 
-    public static final Codec<Map<String, Integer>> STRING_INT_MAP =
+    public static final Codec<Map<String, Integer>> FORMULAS =
             Codec.unboundedMap(Codec.STRING, Codec.INT);
 
     public static final Codec<InterfaceStorageData> CODEC = RecordCodecBuilder.create(questInstance ->
             questInstance.group(
-                    Codec.list(CyberModule.CODEC).fieldOf("modules").forGetter(InterfaceStorageData::getCyberModules),
-                    STRING_INT_MAP.fieldOf("formulas").forGetter(InterfaceStorageData::getFormulas)
+                    FORMULAS.fieldOf("formulas").forGetter(InterfaceStorageData::getFormulas)
             ).apply(questInstance, InterfaceStorageData::new));
     public static final StreamCodec<ByteBuf, InterfaceStorageData> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
-    private List<CyberModule> cyberModules;
     private Map<String, Integer> formulas;
 
 
-    public InterfaceStorageData(List<CyberModule> modules, Map<String, Integer> formulas) {
-        this.cyberModules = modules;
+    public InterfaceStorageData(Map<String, Integer> formulas) {
         this.formulas = formulas;
     }
 
-    public List<CyberModule> getCyberModules() {
-        return this.cyberModules;
-    }
-
-    public void setCyberModules(List<CyberModule> cyberModules) {
-        this.cyberModules = cyberModules;
-    }
 
     public Map<String, Integer> getFormulas() {
         return this.formulas;
@@ -55,9 +45,4 @@ public class InterfaceStorageData {
         this.formulas = newMap;
     }
 
-    public void addModule(CyberModule module) {
-        List<CyberModule> list = new ArrayList<>(this.getCyberModules());
-        list.add(module);
-        this.cyberModules = list;
-    }
 }

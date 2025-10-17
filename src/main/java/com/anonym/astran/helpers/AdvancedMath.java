@@ -7,7 +7,7 @@ public class AdvancedMath {
     /*
     Used for naturalising different stuff (mostly shapes like snail shells)
      */
-    public static double PHI = 1.61803398875;
+    public static final double PHI = 1.61803398875;
 
     /*
     Mostly used for natural like progression and growth (less natural than PHI)
@@ -22,7 +22,7 @@ public class AdvancedMath {
     /*
     High precision double Check , so like basically mostly for physics stuff bla bla bla
      */
-    public static double EPSILON = 1e-9;
+    public static final double EPSILON = 1e-9;
 
     /*
     Used for Tiling geometry that has 45°/90° angles aka (Octagon and Square)

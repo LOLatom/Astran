@@ -13,11 +13,11 @@ public class BoneData {
     public static final Codec<BoneData> CODEC = RecordCodecBuilder.create(questInstance ->
             questInstance.group(
                     Codec.list(SocketData.CODEC).fieldOf("Sockets").forGetter(BoneData::getSockets),
-                    CyberModule.LIMB_TYPE_CODEC.fieldOf("Type").forGetter(BoneData::getType)
+                    LimbType.CODEC.fieldOf("Type").forGetter(BoneData::getType)
             ).apply(questInstance, (sockets, limbType) -> {
                 if (sockets == null) {
                     List<SocketData> list = new ArrayList<>();
-                    for (int i = 1; i < 10; i++ ) {
+                    for (int i = 1; i <= 10; i++ ) {
                         list.add(new SocketData(1));
                     }
 
@@ -25,7 +25,7 @@ public class BoneData {
                 }
                 if (sockets.isEmpty()) {
                     List<SocketData> list = new ArrayList<>();
-                    for (int i = 1; i < 10; i++ ) {
+                    for (int i = 1; i <= 10; i++ ) {
                         list.add(new SocketData(1));
                     }
                     return new BoneData(list,limbType);
@@ -42,7 +42,7 @@ public class BoneData {
     public BoneData(List<SocketData> sockets, LimbType type) {
         if (sockets.isEmpty()) {
             List<SocketData> list = new ArrayList<>();
-            for (int i = 1; i < 10; i++ ) {
+            for (int i = 1; i <= 10; i++ ) {
                 list.add(new SocketData(1));
             }
             this.sockets = list;

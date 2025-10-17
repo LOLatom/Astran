@@ -1,5 +1,6 @@
 package com.anonym.astran.networking;
 
+import com.anonym.astran.systems.cybernetics.network.*;
 import com.anonym.astran.systems.entity.breakableentity.BreakingStageHandler;
 import com.anonym.astran.systems.entity.breakableentity.BreakingStagePayload;
 import com.anonym.astran.systems.cybernetics.core.SetSteelHeartHandler;
@@ -42,6 +43,10 @@ public class NetworkRegistry {
                 AssembleModulePayload.STREAM_CODEC,
                 AssembleModuleHandler.Server::handleDataOnNetwork);
 
+
+
+
+
         //Structure Requests
         registrar.playToServer(RequestStructurePayload.TYPE,
                 RequestStructurePayload.STREAM_CODEC,
@@ -51,6 +56,37 @@ public class NetworkRegistry {
                 SendStructureDataPayload.STREAM_CODEC,
                 SendStructureDataHandler.Client::handleDataOnNetwork);
 
+
+
+
+        //CYBERNETICS-MANAGER
+        registrar.playBidirectional(AddModulePayload.TYPE,
+                AddModulePayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        AddModuleHandler.Client::handleDataOnNetwork,
+                        AddModuleHandler.Server::handleDataOnNetwork
+                ));
+
+        registrar.playBidirectional(RemoveModulePayload.TYPE,
+                RemoveModulePayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        RemoveModuleHandler.Client::handleDataOnNetwork,
+                        RemoveModuleHandler.Server::handleDataOnNetwork
+                ));
+
+        registrar.playBidirectional(EquipModulePayload.TYPE,
+                EquipModulePayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        EquipModuleHandler.Client::handleDataOnNetwork,
+                        EquipModuleHandler.Server::handleDataOnNetwork
+                ));
+
+        registrar.playBidirectional(UnEquipModulePayload.TYPE,
+                UnEquipModulePayload.STREAM_CODEC,
+                new DirectionalPayloadHandler<>(
+                        UnEquipModuleHandler.Client::handleDataOnNetwork,
+                        UnEquipModuleHandler.Server::handleDataOnNetwork
+                ));
 
     }
 }

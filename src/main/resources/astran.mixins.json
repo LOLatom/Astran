@@ -3,7 +3,8 @@
   "package": "com.anonym.astran.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "common.StructureTemplateAccessor"
+    "common.StructureTemplateAccessor",
+    "common.PlayerCyberManagerImp"
   ],
   "client": [
     "client.IconMixin",

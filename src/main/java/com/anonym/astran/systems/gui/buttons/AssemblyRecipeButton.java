@@ -1,6 +1,7 @@
 package com.anonym.astran.systems.gui.buttons;
 
 import com.anonym.astran.Astran;
+import com.anonym.astran.registries.client.AstranSoundRegistry;
 import com.anonym.astran.systems.assembly.AssemblyAbstractRecipe;
 import com.anonym.astran.systems.cybernetics.LimbType;
 import com.anonym.astran.systems.gui.theinterface.pages.AssemblyCyberInterface;
@@ -8,6 +9,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import foundry.veil.api.client.util.Easing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -60,6 +62,11 @@ public class AssemblyRecipeButton extends InformativeButton{
         if (this.recipe.canBeCrafted(stack)) {
             this.canBeCrafted = true;
         }
+    }
+
+    @Override
+    public void playDownSound(SoundManager handler) {
+        Minecraft.getInstance().player.playSound(AstranSoundRegistry.INTERFACE_SLOT_SELECT.get(),1f,1f);
     }
 
     @Override

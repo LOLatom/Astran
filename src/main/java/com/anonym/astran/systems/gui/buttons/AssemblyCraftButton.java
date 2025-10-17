@@ -1,13 +1,16 @@
 package com.anonym.astran.systems.gui.buttons;
 
 import com.anonym.astran.Astran;
+import com.anonym.astran.registries.client.AstranSoundRegistry;
 import com.anonym.astran.systems.gui.theinterface.AssemblyMiniGame;
 import com.anonym.astran.systems.gui.theinterface.pages.AssemblyCyberInterface;
 import com.mojang.math.Axis;
 import foundry.veil.api.client.util.Easing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 
 public class AssemblyCraftButton extends InterfaceButton{
 
@@ -33,6 +36,11 @@ public class AssemblyCraftButton extends InterfaceButton{
     public float getRealX() {
         float eased = Easing.EASE_IN_OUT_BACK.ease(this.screen.assemblyShown);
         return super.getRealX() + ((1 - eased) * 80);
+    }
+
+    @Override
+    public void playDownSound(SoundManager handler) {
+        Minecraft.getInstance().player.playSound(SoundEvents.ARMOR_EQUIP_LEATHER.value(),1f,2f);
     }
 
 

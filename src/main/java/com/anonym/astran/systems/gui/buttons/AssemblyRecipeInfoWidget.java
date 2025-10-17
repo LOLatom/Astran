@@ -1,6 +1,7 @@
 package com.anonym.astran.systems.gui.buttons;
 
 import com.anonym.astran.Astran;
+import com.anonym.astran.registries.client.AstranSoundRegistry;
 import com.anonym.astran.registries.custom.AstranMaterialTypeRegistry;
 import com.anonym.astran.systems.cybernetics.CyberModule;
 import com.anonym.astran.systems.cybernetics.LimbType;
@@ -11,6 +12,7 @@ import com.mojang.math.Axis;
 import foundry.veil.api.client.util.Easing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -123,7 +125,6 @@ public class AssemblyRecipeInfoWidget extends InformativeButton {
             guiGraphics.pose().mulPose(Axis.XP.rotationDegrees(15));
             guiGraphics.pose().mulPose(Axis.YP.rotationDegrees(Minecraft.getInstance().player.tickCount+partialTick));
             guiGraphics.setColor(40f,40f,40f,1);
-
             Optional<CyberModule> module = this.screen.moduleCache;
             if (module.isPresent()) {
                 module.get()
@@ -135,6 +136,9 @@ public class AssemblyRecipeInfoWidget extends InformativeButton {
 
         }
 
+    }
+    @Override
+    public void playDownSound(SoundManager handler) {
     }
 
     @Override

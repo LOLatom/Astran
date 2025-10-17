@@ -1,5 +1,6 @@
 package com.anonym.astran.systems.cybernetics;
 
+import com.anonym.astran.helpers.UUIDHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -14,7 +15,7 @@ public class SocketData {
     public static final Codec<SocketData> CODEC = RecordCodecBuilder.create(questInstance ->
             questInstance.group(
                     Codec.INT.fieldOf("SocketTier").forGetter(SocketData::getSocketTier),
-                    UUIDUtil.CODEC.optionalFieldOf("ModuleInstanceId").forGetter(sd ->
+                    UUIDHelper.CODEC.optionalFieldOf("ModuleInstanceId").forGetter(sd ->
                             Optional.ofNullable(sd.moduleInstanceId)
                     )
             ).apply(questInstance, (tier, idOpt) ->

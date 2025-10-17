@@ -7,6 +7,8 @@ import com.anonym.astran.systems.assembly.AssemblyAbstractRecipe;
 import com.anonym.astran.systems.assembly.IAssemblyComponent;
 import com.anonym.astran.systems.cybernetics.CyberModule;
 import com.anonym.astran.systems.assembly.network.AssembleModulePayload;
+import com.anonym.astran.systems.cybernetics.IContainCyberneticsManager;
+import com.anonym.astran.systems.cybernetics.network.AddModulePayload;
 import com.anonym.astran.systems.gui.objects.Anvil3DObject;
 import com.anonym.astran.systems.gui.objects.Hammer3DObject;
 import com.anonym.astran.systems.gui.scene.Scene3D;
@@ -93,6 +95,9 @@ public class AssemblyMiniGame extends Screen {
                 this.spaceBarProgress = (float) Math.clamp(this.spaceBarProgress - 0.1f, 0f, 1f);
                 if (this.assemblyProgress == 1 && this.tickCountSinceEnded > 20)  {
                     Minecraft.getInstance().getConnection().send(new AssembleModulePayload(this.recipe.getAssemblyID(),this.selectedIngredients));
+                    if (Minecraft.getInstance().player instanceof IContainCyberneticsManager manager) {
+                        manager.manager().syncAddModule(this.module);
+                    }
                     this.onClose();
                 }
             }

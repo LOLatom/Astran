@@ -4,10 +4,19 @@ import com.anonym.astran.Astran;
 import com.anonym.astran.registries.AstranAttachmentTypeRegistry;
 import com.anonym.astran.registries.AstranBoneDataRegistry;
 import com.anonym.astran.registries.custom.AstranRegistries;
+import com.anonym.astran.systems.cybernetics.network.AddModulePayload;
+import com.anonym.astran.systems.cybernetics.network.EquipModulePayload;
+import com.anonym.astran.systems.cybernetics.network.RemoveModulePayload;
+import com.anonym.astran.systems.cybernetics.network.UnEquipModulePayload;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CyberneticsManager {
@@ -22,14 +31,70 @@ public class CyberneticsManager {
         return this.player;
     }
 
+    public static CyberneticsManager getManager(Player player) {
+        return ((IContainCyberneticsManager)player).manager();
+    }
+
+    public void syncAddModule(CyberModule module) {
+        if (this.player.level().isClientSide) {
+            this.addModule(module);
+            Minecraft.getInstance().getConnection().send(new AddModulePayload(module));
+        } else {
+            this.addModule(module);
+            ServerPlayer serverPlayer = (ServerPlayer) this.player;
+            serverPlayer.connection.send(new AddModulePayload(module));
+        }
+    }
+    public void syncRemoveModule(CyberModule module) {
+        if (this.player.level().isClientSide) {
+            this.removeModule(module);
+            Minecraft.getInstance().getConnection().send(new RemoveModulePayload(module));
+        } else {
+            this.removeModule(module);
+            ServerPlayer serverPlayer = (ServerPlayer) this.player;
+            serverPlayer.connection.send(new RemoveModulePayload(module));
+        }
+    }
+    public void syncEquipModule(int socketIndex ,CyberModule module) {
+        if (this.player.level().isClientSide) {
+            this.equipModule(socketIndex,module);
+            Minecraft.getInstance().getConnection().send(new EquipModulePayload(socketIndex,module));
+        } else {
+            this.equipModule(socketIndex,module);
+            ServerPlayer serverPlayer = (ServerPlayer) this.player;
+            serverPlayer.connection.send(new EquipModulePayload(socketIndex,module));
+        }
+    }
+    public void syncUnEquipModule(int socketIndex ,CyberModule module) {
+        if (this.player.level().isClientSide) {
+            this.unEquipModule(socketIndex,module);
+            Minecraft.getInstance().getConnection().send(new UnEquipModulePayload(socketIndex,module));
+        } else {
+            this.unEquipModule(socketIndex,module);
+            ServerPlayer serverPlayer = (ServerPlayer) this.player;
+            serverPlayer.connection.send(new UnEquipModulePayload(socketIndex,module));
+        }
+    }
+
     public void addModule(CyberModule module) {
         StorageForLimbData storage = getStorageForLimb(module).copy();
         storage.addCyberModule(module);
         replaceLimbStorageData(storage, module.getAttachment());
     }
+
+    public void changeModule(CyberModule module) {
+        StorageForLimbData storage = getStorageForLimb(module).copy();
+        storage.putCyberModule(module.getInstanceId(),module);
+        replaceLimbStorageData(storage, module.getAttachment());
+        if (moduleCache().getEquippedModuleInstances().containsKey(module.getInstanceId())) {
+            addToCache(module);
+        }
+    }
+
     public void removeModule(CyberModule module) {
         removeModule(module.getInstanceId(),module.getAttachment());
     }
+
     public void removeModule(UUID uuid, LimbType type) {
         CachedModuleData cache = moduleCache();
         if (cache.getEquippedModules().containsKey(uuid)) {
@@ -47,27 +112,32 @@ public class CyberneticsManager {
         replaceLimbStorageData(storage, type);
     }
 
-    public void removeFromCache(CyberModule module) {
+    private void removeFromCache(CyberModule module) {
         removeFromCache(module.getInstanceId());
     }
-    public void removeFromCache(UUID uuid) {
+    private void removeFromCache(UUID uuid) {
         CachedModuleData cache = moduleCache().copy();
         cache.getEquippedModules().remove(uuid);
         cache.getEquippedModuleTypes().remove(uuid);
         cache.getEquippedModuleInstances().remove(uuid);
+        if (cache.getEquippedTickable().containsKey(uuid)) cache.getEquippedTickable().remove(uuid);
         setCache(cache);
     }
-    public void addToCache(CyberModule module) {
+    private void addToCache(CyberModule module) {
         CachedModuleData cache = moduleCache().copy();
         cache.getEquippedModules().put(module.getInstanceId(),module.getModuleID());
-        cache.getEquippedModuleTypes().put(module.getInstanceId(),module.getSubType());
         cache.getEquippedModuleInstances().put(module.getInstanceId(),module);
+        cache.getEquippedModuleTypes().put(module.getInstanceId(), module.getPrimitiveClass().getSubType());
+        if (module.isTicking()) cache.getEquippedTickable().put(module.getInstanceId(),module);
         setCache(cache);
     }
 
     public void equipModule(int socketIndex, CyberModule module) {
         if (socketIndex < 10 && socketIndex > -1) {
             BoneData bone = getBoneDataFromModule(module).copy();
+            if (bone.getSockets().get(socketIndex).hasModule()) {
+                removeFromCache(bone.getSockets().get(socketIndex).getModuleInstanceId());
+            }
             bone.getSockets().get(socketIndex).setModuleInstanceId(module.getInstanceId());
             addToCache(module);
             replaceBoneData(bone);
@@ -81,6 +151,21 @@ public class CyberneticsManager {
             replaceBoneData(bone);
         }
     }
+
+    public Map<UUID,CyberModule> collectFromLimb(LimbType type) {
+        StorageForLimbData storage = getStorageForLimb(type);
+        Map<UUID,CyberModule> map = new HashMap<>();
+        if (!storage.getCyberModuleMap().isEmpty()) {
+            for (CyberModule module : storage.getCyberModuleMap().values()) {
+                System.err.println(module.getModuleID());
+                if (module.isCollectable(module, this)) {
+                    map.put(module.getInstanceId(), module);
+                }
+            }
+        }
+        return map;
+    }
+
     public @Nullable CyberModule getModule(UUID uuid) {
         if (this.player.getData(AstranAttachmentTypeRegistry.HEAD_STORAGE).getCyberModuleMap().containsKey(uuid)) {
             return this.player.getData(AstranAttachmentTypeRegistry.HEAD_STORAGE).getCyberModuleMap().get(uuid);
@@ -131,6 +216,9 @@ public class CyberneticsManager {
     public boolean hasEquippedModule(CyberModule module) {
         return hasEquippedModule(module.getInstanceId());
     }
+    public boolean hasEquippedModule(DeferredHolder<CyberModule, ? extends CyberModule> holder) {
+        return moduleCache().isModuleEquipped(holder.get().getModuleID());
+    }
     public boolean hasEquippedModule(UUID uuid) {
         return moduleCache().isModuleEquipped(uuid);
     }
@@ -139,6 +227,9 @@ public class CyberneticsManager {
     }
     public boolean hasModuleTypeEquipped(CyberModule module) {
         return moduleCache().isModuleTypeEquipped(module.getSubType());
+    }
+    public boolean hasModuleTypeEquipped(DeferredHolder<CyberModule, ? extends CyberModule> holder) {
+        return moduleCache().isModuleTypeEquipped(holder.get().getSubType());
     }
     public boolean hasModuleTypeEquipped(UUID uuid) {
         return moduleCache().isModuleTypeEquipped(uuid);

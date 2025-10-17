@@ -1,9 +1,9 @@
 package com.anonym.astran.systems.cybernetics;
 
+import com.anonym.astran.helpers.UUIDHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 
@@ -13,7 +13,7 @@ import java.util.*;
 public class StorageForLimbData {
     public static final Codec<StorageForLimbData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    Codec.unboundedMap(UUIDUtil.CODEC, CyberModule.CODEC)
+                    Codec.unboundedMap(UUIDHelper.CODEC, CyberModule.CODEC)
                             .fieldOf("CyberModuleStorage")
                             .forGetter(StorageForLimbData::getCyberModuleMap)
             ).apply(instance, StorageForLimbData::new)
@@ -37,10 +37,11 @@ public class StorageForLimbData {
     }
 
     public UUID addCyberModule(CyberModule module) {
-        UUID id = UUID.randomUUID();
-        this.cyberModuleMap.put(id, module);
-        return id;
+        this.cyberModuleMap.put(module.getInstanceId(), module);
+        return module.getInstanceId();
     }
+
+
 
     public void putCyberModule(UUID id, CyberModule module) {
         this.cyberModuleMap.put(id, module);

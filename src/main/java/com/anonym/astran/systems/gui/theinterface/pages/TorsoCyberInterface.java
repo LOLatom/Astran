@@ -1,5 +1,6 @@
 package com.anonym.astran.systems.gui.theinterface.pages;
 
+import com.anonym.astran.systems.cybernetics.LimbType;
 import com.anonym.astran.systems.gui.theinterface.CameraCyberInterfaceScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
@@ -8,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.glfw.GLFW;
 
-public class TorsoCyberInterface extends CameraCyberInterfaceScreen {
+public class TorsoCyberInterface extends LimbInterface {
 
     private float headYawInc = 0f;
     private float headPitchInc = 0f;
@@ -18,7 +19,7 @@ public class TorsoCyberInterface extends CameraCyberInterfaceScreen {
 
 
     public TorsoCyberInterface() {
-        super(8, 9, false);
+        super(8, 9, false, LimbType.TORSO);
         Player player = Minecraft.getInstance().player;
         Vec3 transformed = player.position();
         Vec3 dir = player.getViewVector(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true));

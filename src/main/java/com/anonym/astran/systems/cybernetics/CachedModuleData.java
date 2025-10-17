@@ -1,6 +1,7 @@
 package com.anonym.astran.systems.cybernetics;
 
 import com.anonym.astran.Astran;
+import com.anonym.astran.helpers.UUIDHelper;
 import com.anonym.astran.registries.custom.AstranRegistries;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -18,15 +19,18 @@ import java.util.UUID;
 public class CachedModuleData {
     public static final Codec<CachedModuleData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    Codec.unboundedMap(UUIDUtil.CODEC, Codec.STRING)
+                    Codec.unboundedMap(UUIDHelper.CODEC, Codec.STRING)
                             .fieldOf("EquippedModules")
                             .forGetter(CachedModuleData::getEquippedModules),
-                    Codec.unboundedMap(UUIDUtil.CODEC, Codec.STRING)
+                    Codec.unboundedMap(UUIDHelper.CODEC, Codec.STRING)
                             .fieldOf("EquippedModuleTypes")
                             .forGetter(CachedModuleData::getEquippedModuleTypes),
-                    Codec.unboundedMap(UUIDUtil.CODEC, CyberModule.CODEC)
+                    Codec.unboundedMap(UUIDHelper.CODEC, CyberModule.CODEC)
                             .fieldOf("EquippedModuleInstances")
-                            .forGetter(CachedModuleData::getEquippedModuleInstances)
+                            .forGetter(CachedModuleData::getEquippedModuleInstances),
+                    Codec.unboundedMap(UUIDHelper.CODEC, CyberModule.CODEC)
+                            .fieldOf("EquippedTickable")
+                            .forGetter(CachedModuleData::getEquippedTickable)
                     , Codec.FLOAT.fieldOf("WeightCached").forGetter(CachedModuleData::getWeightCached)
             ).apply(instance, CachedModuleData::new)
     );
@@ -37,13 +41,15 @@ public class CachedModuleData {
     private final Map<UUID, String> equippedModules;
     private final Map<UUID, String> equippedModuleTypes;
     private final Map<UUID, CyberModule> equippedModuleInstances;
+    private final Map<UUID, CyberModule> equippedTickable;
 
     private float weightCached;
 
-    public CachedModuleData(Map<UUID, String> equippedModules, Map<UUID, String> equippedModuleTypes, Map<UUID, CyberModule> equippedModuleInstances, float weightCached) {
+    public CachedModuleData(Map<UUID, String> equippedModules, Map<UUID, String> equippedModuleTypes, Map<UUID, CyberModule> equippedModuleInstances, Map<UUID, CyberModule> equippedTickable, float weightCached) {
         this.equippedModules = equippedModules;
         this.equippedModuleTypes = equippedModuleTypes;
         this.equippedModuleInstances = equippedModuleInstances;
+        this.equippedTickable = equippedTickable;
         this.weightCached = weightCached;
     }
 
@@ -74,7 +80,11 @@ public class CachedModuleData {
     }
 
     public Map<UUID, String> getEquippedModuleTypes() {
-        return equippedModuleTypes;
+        return this.equippedModuleTypes;
+    }
+
+    public Map<UUID, CyberModule> getEquippedTickable() {
+        return this.equippedTickable;
     }
 
     public Map<UUID, CyberModule> getEquippedModuleInstances() {
@@ -94,6 +104,7 @@ public class CachedModuleData {
                 new HashMap<>(this.equippedModules),
                 new HashMap<>(this.equippedModuleTypes),
                 new HashMap<>(this.equippedModuleInstances),
+                new HashMap<>(this.equippedTickable),
                 this.weightCached);
     }
 }

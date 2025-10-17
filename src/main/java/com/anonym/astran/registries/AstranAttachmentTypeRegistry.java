@@ -25,7 +25,7 @@ public class AstranAttachmentTypeRegistry {
 
     public static final Supplier<AttachmentType<InterfaceStorageData>> INTERFACE_STORAGE_DATA =
             ATTACHMENT_TYPES.register("interface_storage_data",
-                    () -> AttachmentType.builder(() -> new InterfaceStorageData(new ArrayList<>(),new HashMap<>()))
+                    () -> AttachmentType.builder(() -> new InterfaceStorageData(new HashMap<>()))
                             .serialize(InterfaceStorageData.CODEC).sync(InterfaceStorageData.STREAM_CODEC).copyOnDeath().build());
 
     public static final Supplier<AttachmentType<StorageForLimbData>> HEAD_STORAGE =
@@ -75,7 +75,7 @@ public class AstranAttachmentTypeRegistry {
 
     public static final Supplier<AttachmentType<CachedModuleData>> MODULE_CACHE_DATA =
             ATTACHMENT_TYPES.register("cached_module_data",
-                    () -> AttachmentType.builder(() -> new CachedModuleData(new HashMap<>(), new HashMap<>(), new HashMap<>(),0.0f))
+                    () -> AttachmentType.builder(() -> new CachedModuleData(new HashMap<>(), new HashMap<>(), new HashMap<>(), new HashMap<>(),0.0f))
                             .serialize(CachedModuleData.CODEC).sync(CachedModuleData.STREAM_CODEC).copyOnDeath().build());
 
 }

@@ -163,6 +163,7 @@ public class AssemblyStackWidget extends InterfaceButton implements IGlowModifie
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if (this.isMouseOver(mouseX,mouseY)) {
+            System.err.println("HERE");
             if (this.screen.selectedRecipe != null) {
                 AssemblyAbstractRecipe recipe = this.screen.selectedRecipe;
                 LinkedHashMap<String, List<ItemStack>> itemInInv = recipe.getInInventoryIngredients(Minecraft.getInstance().player);

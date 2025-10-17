@@ -23,15 +23,15 @@ public class DiamondDetectionButton extends Button implements IGlowModifier, IHa
     private static final ResourceLocation LOCKED =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/interface_locked_part.png");
 
-    private float radius;
-    private ResourceLocation texture;
-    private float addedScaleXY = 0f;
-    private boolean isLocked = false;
-    private float shakeDecrease = 0f;
-    private CyberInterfaceScreen screen;
-    private String name;
-    private float realX;
-    private float realY;
+    public float radius;
+    public ResourceLocation texture;
+    public float addedScaleXY = 0f;
+    public boolean isLocked = false;
+    public float shakeDecrease = 0f;
+    public CyberInterfaceScreen screen;
+    public String name;
+    public float realX;
+    public float realY;
 
     public DiamondDetectionButton(ResourceLocation texture, float x, float y, int size, OnPress onPress, CyberInterfaceScreen screen, String name) {
         super((int) x, (int) y, size, size, Component.empty(), onPress, Button.DEFAULT_NARRATION);

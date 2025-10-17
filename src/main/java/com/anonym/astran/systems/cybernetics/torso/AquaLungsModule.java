@@ -9,7 +9,9 @@ import com.anonym.astran.registries.AstranAttachmentTypeRegistry;
 import com.anonym.astran.registries.AstranDataComponentRegistry;
 import com.anonym.astran.systems.attachments.SteelHeartReservoirData;
 import com.anonym.astran.systems.cybernetics.CyberModule;
+import com.anonym.astran.systems.cybernetics.CyberneticsManager;
 import com.anonym.astran.systems.cybernetics.LimbType;
+import com.anonym.astran.systems.cybernetics.SocketData;
 import com.anonym.astran.systems.cybernetics.material.MaterialType;
 import com.anonym.astran.systems.energy.INodeItem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -27,7 +29,7 @@ public class AquaLungsModule extends CyberModule {
 
 
     public AquaLungsModule() {
-        super("aqua_lungs_module", LimbType.TORSO);
+        super("aqua_lungs", LimbType.TORSO);
     }
 
     @Override
@@ -36,28 +38,20 @@ public class AquaLungsModule extends CyberModule {
 
 
         if (inDisplay) {
-            VertexConsumer consumer;
-            int i = 0;
-            for (MaterialType type : module.getMaterials().values()) {
-
-                poseStack.pushPose();
-                consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
-                        ResourceLocation.fromNamespaceAndPath(Astran.MODID, "textures/module/torso/aqualungs/aqua_lungs_" + type.getMaterialID() + String.valueOf(i + 1) + ".png")));
-                if (i == 0) {
-                    this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
-                } else {
-                    this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY);
-                }
-                poseStack.popPose();
-                i++;
-            }
+            renderWithMaterialLayer(entity,poseStack,module,buffer,packedLight,"textures/module/torso/aqualungs/aqua_lungs_",2,true);
 
 
         }
+    }
+    @Override
+    protected boolean canBeEquipped(CyberModule module, CyberneticsManager manager, SocketData socket) {
+        if (manager.moduleCache().getEquippedModules().containsValue(this.getModuleID())) return false;
+        return super.canBeEquipped(module, manager, socket);
     }
 
     @Override
     public ModuleModel getModelLayer() {
         return new AquaLungsModel(Minecraft.getInstance().getEntityModels().bakeLayer(ModuleLayerRegistry.AQUA_LUNGS_MODULE));
     }
+
 }

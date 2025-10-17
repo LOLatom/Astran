@@ -1,19 +1,27 @@
 package com.anonym.astran.systems.cybernetics;
 
+import com.anonym.astran.Astran;
 import com.anonym.astran.client.models.modules.ModuleModel;
+import com.anonym.astran.helpers.UUIDHelper;
+import com.anonym.astran.registries.custom.AstranRegistries;
 import com.anonym.astran.systems.cybernetics.material.MaterialType;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.realmsclient.dto.Ops;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import foundry.veil.api.client.render.rendertype.VeilRenderType;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagNetworkSerialization;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -43,14 +51,13 @@ public class CyberModule {
     public static final Codec<Map<String, MaterialType>> MATERIAL_MAP_CODEC =
             Codec.unboundedMap(Codec.STRING, MaterialType.CODEC);
 
-    public static final Codec<LimbType> LIMB_TYPE_CODEC = Codec.STRING.xmap(LimbType::valueOf, Enum::name);
     public static final Codec<Quality> QUALITY_CODEC = Codec.STRING.xmap(Quality::valueOf, Enum::name);
 
     public static final Codec<CyberModule> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    UUIDUtil.CODEC.optionalFieldOf("instanceId").forGetter(cm -> Optional.ofNullable(cm.instanceId)),
+                    UUIDHelper.CODEC.optionalFieldOf("instanceId").forGetter(cm -> Optional.ofNullable(cm.instanceId)),
                     Codec.STRING.fieldOf("moduleID").forGetter(CyberModule::getModuleID),
-                    LIMB_TYPE_CODEC.fieldOf("attachment").forGetter(CyberModule::getAttachment),
+                    LimbType.CODEC.fieldOf("attachment").forGetter(CyberModule::getAttachment),
                     QUALITY_CODEC.fieldOf("quality").forGetter(CyberModule::getQuality),
                     Codec.INT.fieldOf("tier").forGetter(CyberModule::getTier),
 
@@ -130,6 +137,92 @@ public class CyberModule {
     @OnlyIn(Dist.CLIENT)
     public void render(CyberModule module, AbstractClientPlayer player, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, boolean inDisplay) {
         this.setModelIfAbsent();
+    }
+
+    public void renderWithMaterialLayer(AbstractClientPlayer player, PoseStack poseStack, CyberModule module, MultiBufferSource buffer, int packedLight, String locationStart, int materialAmount, boolean isLastModified) {
+        VertexConsumer consumer;
+        int i = 0;
+        for (MaterialType type : module.getMaterials().values()) {
+            if (isLastModified) {
+                if (i < materialAmount) {
+                    poseStack.pushPose();
+                    consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
+                            ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + String.valueOf(i + 1) + ".png")));
+
+                    this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+                    poseStack.popPose();
+                }
+                poseStack.pushPose();
+                poseStack.scale(0,0,0);
+                consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
+                        ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + "1" + ".png")));
+
+                this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+                poseStack.popPose();
+            } else {
+                if (i < materialAmount - 1) {
+                    poseStack.pushPose();
+                    consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
+                            ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + String.valueOf(i + 1) + ".png")));
+
+                    this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+                    poseStack.popPose();
+                } else if (i < materialAmount) {
+                    poseStack.pushPose();
+                    consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
+                            ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + String.valueOf(i + 1) + ".png")));
+
+                    this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.getRGB());
+                    poseStack.popPose();
+                }
+                poseStack.pushPose();
+                poseStack.scale(0,0,0);
+                consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
+                        ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + "1" + ".png")));
+
+                this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+                poseStack.popPose();
+            }
+            i++;
+        }
+
+    }
+
+    protected boolean canTick() {
+        return false;
+    }
+
+    public final boolean isTicking() {
+        return this.getPrimitiveClass().canTick();
+    }
+
+    protected boolean canBeEquipped(CyberModule module, CyberneticsManager manager, SocketData socket) {
+        return true;
+    }
+
+    public final boolean isEquippable(CyberModule module, CyberneticsManager manager, SocketData socket) {
+        return this.getPrimitiveClass().canBeEquipped(module, manager,socket);
+    }
+
+    protected boolean canBeCollected(CyberModule module, CyberneticsManager manager) {
+        return true;
+    }
+
+    public final boolean isCollectable(CyberModule module, CyberneticsManager manager) {
+        return this.getPrimitiveClass().canBeCollected(module, manager);
+    }
+
+    protected void tick(CyberModule module, Player player) {
+
+    }
+
+    public final void tickModule(Player player) {
+        this.getPrimitiveClass().tick(this,player);
+    }
+
+    public CyberModule getPrimitiveClass() {
+        return AstranRegistries.CYBER_MODULE_REGISTRY
+                .get(ResourceLocation.fromNamespaceAndPath(Astran.MODID,this.getModuleID()));
     }
 
     public CyberModule withColor(Integer first, Integer second, Integer third) {

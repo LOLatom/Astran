@@ -1,14 +1,19 @@
 package com.anonym.astran.systems.gui.theinterface.pages;
 
+import com.anonym.astran.systems.cybernetics.CyberneticsManager;
+import com.anonym.astran.systems.cybernetics.IContainCyberneticsManager;
+import com.anonym.astran.systems.cybernetics.LimbType;
+import com.anonym.astran.systems.gui.buttons.cybernetics.SocketButton;
 import com.anonym.astran.systems.gui.theinterface.CameraCyberInterfaceScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.glfw.GLFW;
 
-public class HeadCyberInterface extends CameraCyberInterfaceScreen {
+public class HeadCyberInterface extends LimbInterface {
 
     private float headYawInc = 0f;
     private float headPitchInc = 0f;
@@ -18,7 +23,7 @@ public class HeadCyberInterface extends CameraCyberInterfaceScreen {
 
 
     public HeadCyberInterface() {
-        super(8, 9, false);
+        super(8, 9, false, LimbType.HEAD);
         Player player = Minecraft.getInstance().player;
         Vec3 dir = player.getViewVector(Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true));
         Vec3 normalizeDir = dir.subtract(0,dir.y,0).normalize();
@@ -42,6 +47,13 @@ public class HeadCyberInterface extends CameraCyberInterfaceScreen {
         head.setRotation((float) Math.toRadians(-35f  + (Math.cos(addedTicks * 0.1)*5.5f) + (headP*35f)),(float) Math.toRadians((headY * 40f)-25f),(float) Math.toRadians(10f + (Math.sin(addedTicks * 0.1)*5.5f)));
         rightArm.setRotation((float) Math.toRadians(25f),0,(float) Math.toRadians(-9f));
         leftArm.setRotation((float) Math.toRadians(25f),0,(float) Math.toRadians(9f));
+
+    }
+
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
 
     }
 
