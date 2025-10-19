@@ -44,23 +44,6 @@ public class PoisonFilterModule extends CyberModule {
         if (player.hasEffect(MobEffects.POISON) && module.getQuality() != Quality.LESSER) {
             player.removeEffect(MobEffects.POISON);
         }
-        CyberneticsManager manager = CyberneticsManager.getManager(player);
-        if (module.getAdditionalData().isEmpty()) {
-            manager.setAdditionalData(module,new CompoundTag());
-        } else {
-            CompoundTag data = module.getAdditionalData().get();
-            if (data.contains("ticks")) {
-                System.out.println(data.getInt("ticks"));
-                if (data.getInt("ticks") < 25) {
-                    data.putInt("ticks", data.getInt("ticks") + 1);
-                } else {
-                    data.putInt("ticks", 0);
-                }
-            } else {
-                data.putInt("ticks", 0);
-            }
-            manager.setAdditionalData(module,data);
-        }
     }
 
     @Override

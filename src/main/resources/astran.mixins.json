@@ -13,7 +13,9 @@
     "client.MouseHandlerMixin",
     "client.CameraMixin",
     "client.PlayerAnimationMixin",
-    "client.GameRendererMixin"
+    "client.GameRendererMixin",
+    "client.PlayerRendererMixin",
+    "client.LivingEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -68,8 +68,8 @@ public class LimbInterface extends CameraCyberInterfaceScreen {
                 -(Minecraft.getInstance().font.width("Press W, A, S, D to move")/2),8,Color.WHITE.getRGB());
         guiGraphics.drawString(Minecraft.getInstance().font,"Scroll to switch Modules",
                 -(Minecraft.getInstance().font.width("Scroll to switch Modules")/2),-this.height + 30,Color.WHITE.getRGB());
-        guiGraphics.drawString(Minecraft.getInstance().font,"Press Space to Equip",
-                -(Minecraft.getInstance().font.width("Press Space to Equip")/2),-this.height + 50,Color.WHITE.getRGB());
+        guiGraphics.drawString(Minecraft.getInstance().font,"Press E to Equip",
+                -(Minecraft.getInstance().font.width("Press E to Equip")/2),-this.height + 50,Color.WHITE.getRGB());
         guiGraphics.pose().popPose();
 
     }
@@ -170,7 +170,7 @@ public class LimbInterface extends CameraCyberInterfaceScreen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_SPACE) {
+        if (keyCode == GLFW.GLFW_KEY_E) {
             if (this.collectionShow == 1) {
                 if (!this.collectionMap.isEmpty()) {
                     int i = 0;

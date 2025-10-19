@@ -1,0 +1,7 @@
+{
+  "vertex": "astran:masked",
+  "fragment": "astran:masked",
+  "textures": {
+    "MaskSampler0": "astran:textures/entity/bodymask/mask_hips.png"
+  }
+}

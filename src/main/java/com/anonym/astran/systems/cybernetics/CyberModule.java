@@ -46,6 +46,7 @@ public class CyberModule {
     private Map<String, MaterialType> materials = new HashMap<>();
 
     private ModuleModel model = null;
+    private ModuleModel onPlayerModel = null;
 
     @Nullable
     private CompoundTag additionalData = null;
@@ -270,6 +271,7 @@ public class CyberModule {
     public void setModelIfAbsent() {
         if (this.model == null) {
             this.model = this.getModelLayer();
+            this.onPlayerModel = getOnModelLayer();
         }
     }
 
@@ -290,7 +292,15 @@ public class CyberModule {
         return this.model;
     }
 
+    public ModuleModel onPlayerModel() {
+        return this.onPlayerModel;
+    }
+
     public ModuleModel getModelLayer() {
+        return null;
+    }
+
+    public ModuleModel getOnModelLayer() {
         return null;
     }
 
@@ -309,6 +319,11 @@ public class CyberModule {
     public Quality getQuality() {
         return this.quality;
     }
+
+    public boolean hasMask() {return false;}
+
+    public boolean firstMaskActive() {return false;}
+    public boolean secondMaskActive() {return true;}
 
     public Optional<Integer> getColor1Optional() { return Optional.ofNullable(this.color1); }
     public Optional<Integer> getColor2Optional() { return Optional.ofNullable(this.color2); }

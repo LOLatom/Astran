@@ -1,5 +1,6 @@
 package com.anonym.astran.client.layers;
 
+import com.anonym.astran.client.models.PlayerBaseModel;
 import com.anonym.astran.client.models.entities.meteor.AstraniumMeteorModel;
 import com.anonym.astran.client.models.misc.MinigameAnvil;
 import com.anonym.astran.client.models.misc.MinigameHammer;
@@ -18,6 +19,7 @@ public class AstranLayerDefinition {
         event.registerLayerDefinition(LayerRegistry.ASTRANIUM_METEOR, AstraniumMeteorModel::createBodyLayer);
         event.registerLayerDefinition(LayerRegistry.MINIGAME_ANVIL, MinigameAnvil::createBodyLayer);
         event.registerLayerDefinition(LayerRegistry.MINIGAME_HAMMER, MinigameHammer::createBodyLayer);
+        event.registerLayerDefinition(LayerRegistry.PLAYER_MODEL, PlayerBaseModel::createBodyLayer);
 
     }
 

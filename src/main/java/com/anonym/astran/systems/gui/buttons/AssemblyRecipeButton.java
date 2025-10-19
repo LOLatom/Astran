@@ -21,14 +21,25 @@ import java.util.List;
 public class AssemblyRecipeButton extends InformativeButton{
 
     private LimbType type;
-    private static final ResourceLocation HEAD =
+    public static final ResourceLocation HEAD =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_head.png");
-    private static final ResourceLocation TORSO =
+    public static final ResourceLocation TORSO =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_torso.png");
-    private static final ResourceLocation LEFT_SHOULDER =
+    public static final ResourceLocation HIP =
+            ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_hips.png");
+    public static final ResourceLocation LEFT_SHOULDER =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_left_shoulder.png");
-    private static final ResourceLocation RIGHT_SHOULDER =
+    public static final ResourceLocation RIGHT_SHOULDER =
             ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_right_shoulder.png");
+    public static final ResourceLocation LEFT_HAND =
+            ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_left_hand.png");
+    public static final ResourceLocation RIGHT_HAND =
+            ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_right_hand.png");
+    public static final ResourceLocation LEFT_LEG =
+            ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_left_leg.png");
+    public static final ResourceLocation RIGHT_LEG =
+            ResourceLocation.fromNamespaceAndPath(Astran.MODID,"textures/gui/interface/cybernetics/c_right_leg.png");
+
 
 
     private final AssemblyAbstractRecipe recipe;
@@ -93,6 +104,15 @@ public class AssemblyRecipeButton extends InformativeButton{
         guiGraphics.pose().translate(this.getRealX() + 7, this.getRealY() + 7,0);
         ResourceLocation texture = TORSO;
         if (this.type == LimbType.HEAD) texture = HEAD;
+        if (this.type == LimbType.HIPS) texture = HIP;
+        if (this.type == LimbType.RIGHT_SHOULDER) texture = RIGHT_SHOULDER;
+        if (this.type == LimbType.LEFT_SHOULDER) texture = LEFT_SHOULDER;
+        if (this.type == LimbType.RIGHT_HAND) texture = RIGHT_HAND;
+        if (this.type == LimbType.LEFT_HAND) texture = LEFT_HAND;
+        if (this.type == LimbType.RIGHT_LEG) texture = RIGHT_LEG;
+        if (this.type == LimbType.LEFT_LEG) texture = LEFT_LEG;
+
+
         guiGraphics.blit(texture,0,0,0,0,36,36,36,36);
         guiGraphics.pose().popPose();
         guiGraphics.pose().pushPose();

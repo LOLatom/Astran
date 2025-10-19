@@ -5,6 +5,10 @@ import com.anonym.astran.registries.client.AstranSoundRegistry;
 import com.anonym.astran.registries.custom.AstranAssemblyRecipesRegistry;
 import com.anonym.astran.registries.custom.AstranCyberModuleRegistry;
 import com.anonym.astran.registries.custom.AstranMaterialTypeRegistry;
+import com.anonym.astran.systems.cybernetics.event.ModuleAddEvent;
+import com.anonym.astran.systems.cybernetics.event.ModuleEquipEvent;
+import com.anonym.astran.systems.cybernetics.event.ModuleRemoveEvent;
+import com.anonym.astran.systems.cybernetics.event.ModuleUnEquipEvent;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -32,7 +36,6 @@ public class Astran {
 
         NeoForge.EVENT_BUS.register(this);
 
-
         AstranMaterialTypeRegistry.MATERIAL_TYPE.register(modEventBus);
         AstranSoundRegistry.SOUND_EVENTS.register(modEventBus);
         AstranDataComponentRegistry.DATA_COMPONENTS.register(modEventBus);
@@ -55,6 +58,8 @@ public class Astran {
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
+
+
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
 

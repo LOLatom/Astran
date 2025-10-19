@@ -1,7 +1,7 @@
 package com.anonym.astran.client;
 
 import com.anonym.astran.helpers.VertexHelper;
-import com.anonym.astran.registries.client.ElectronRenderTypes;
+import com.anonym.astran.registries.client.AstranRenderTypes;
 import com.anonym.astran.server.TestEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -22,7 +22,7 @@ public class TestRender extends EntityRenderer<TestEntity> {
     @Override
     public void render(TestEntity p_entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         super.render(p_entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
-        RenderType type = ElectronRenderTypes.getTrailRenderType(ResourceLocation.fromNamespaceAndPath("astran","textures/entity/random_texture.png"));
+        RenderType type = AstranRenderTypes.getTrailRenderType(ResourceLocation.fromNamespaceAndPath("astran","textures/entity/random_texture.png"));
         if (type!= null) {
             VertexConsumer vertexconsumer = bufferSource.getBuffer(type);
             poseStack.pushPose();

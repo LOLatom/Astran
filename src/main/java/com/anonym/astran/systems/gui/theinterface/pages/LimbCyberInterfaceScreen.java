@@ -14,25 +14,28 @@ public class LimbCyberInterfaceScreen extends CameraCyberInterfaceScreen {
     @Override
     protected void init() {
         super.init();
-        this.addGlowingRenderable(new LimbInspectionButton(LimbType.HEAD,this.getOffsetX() - 18f,this.getOffsetY() -28f,button -> {
+        this.addGlowingRenderable(new LimbInspectionButton(LimbType.HEAD,this.getOffsetX() - 18f,this.getOffsetY() -40f,button -> {
             this.addTransition(new HeadCyberInterface(),20, Easing.EASE_IN_BACK);
         },this,"HEAD"));
-        this.addGlowingRenderable(new LimbInspectionButton(LimbType.TORSO,this.getOffsetX() - 18f,this.getOffsetY() -28f + 40,button -> {
+        this.addGlowingRenderable(new LimbInspectionButton(LimbType.TORSO,this.getOffsetX() - 18f,this.getOffsetY() -40f + 40,button -> {
             this.addTransition(new TorsoCyberInterface(),20, Easing.EASE_IN_BACK);
         },this,"TORSO"));
-        this.addGlowingRenderable(new LimbInspectionButton(LimbType.RIGHT_SHOULDER,this.getOffsetX() -18f - 23f,this.getOffsetY() -28f + 20,button -> {
+        this.addGlowingRenderable(new LimbInspectionButton(LimbType.HIPS,this.getOffsetX() - 18f,this.getOffsetY() -40f + 80,button -> {
+            this.addTransition(new HipsCyberInterface(),20, Easing.EASE_IN_BACK);
+        },this,"HIPS"));
+        this.addGlowingRenderable(new LimbInspectionButton(LimbType.RIGHT_SHOULDER,this.getOffsetX() -18f - 23f,this.getOffsetY() -40f + 20,button -> {
 
             },this,"RIGHT SHOULDER",true));
-        this.addGlowingRenderable(new LimbInspectionButton(LimbType.LEFT_SHOULDER,this.getOffsetX() -18f + 23f,this.getOffsetY() -28f + 20,button -> {
+        this.addGlowingRenderable(new LimbInspectionButton(LimbType.LEFT_SHOULDER,this.getOffsetX() -18f + 23f,this.getOffsetY() -40f + 20,button -> {
 
             },this,"LEFT SHOULDER",true));
 
-        this.addGlowingRenderable(new LimbInspectionButton(LimbType.RIGHT_LEG,this.getOffsetX() -18f - 23f,this.getOffsetY() -28f + 20 + 40,button -> {
+        this.addGlowingRenderable(new LimbInspectionButton(LimbType.RIGHT_HAND,this.getOffsetX() -18f - 23f,this.getOffsetY() -40f + 20 + 40,button -> {
 
-        },this,"RIGHT LEG",true));
-        this.addGlowingRenderable(new LimbInspectionButton(LimbType.LEFT_LEG,this.getOffsetX() -18f + 23f,this.getOffsetY() -28f + 20 + 40,button -> {
+        },this,"RIGHT HAND",true));
+        this.addGlowingRenderable(new LimbInspectionButton(LimbType.LEFT_HAND,this.getOffsetX() -18f + 23f,this.getOffsetY() -40f + 20 + 40,button -> {
 
-        },this,"LEFT LEG",true));
+        },this,"LEFT HAND",true));
 
     }
 }

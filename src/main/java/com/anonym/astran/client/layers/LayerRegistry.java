@@ -10,6 +10,8 @@ public class LayerRegistry {
     public static final ModelLayerLocation MINIGAME_ANVIL = register("minigame_anvil");
     public static final ModelLayerLocation MINIGAME_HAMMER = register("minigame_hammer");
 
+    public static final ModelLayerLocation PLAYER_MODEL = register("player_model");
+
 
 
     private static ModelLayerLocation register(String loc) {

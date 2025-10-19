@@ -4,11 +4,10 @@ import com.anonym.astran.Astran;
 import com.anonym.astran.client.layers.LayerRegistry;
 import com.anonym.astran.common.entities.AstraniumMeteor;
 import com.anonym.astran.helpers.VertexHelper;
-import com.anonym.astran.registries.client.ElectronRenderTypes;
+import com.anonym.astran.registries.client.AstranRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import foundry.veil.api.quasar.particle.ParticleEmitter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,7 +17,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 
 import java.awt.*;
 
@@ -74,7 +72,7 @@ public class AstraniumMeteorRender extends EntityRenderer<AstraniumMeteor> {
 
             float a = (float) ((Math.clamp(p_entity.getFloorDistance(),5,105)-5) / 100);
 
-            RenderType bloom = ElectronRenderTypes.getBloomRenderType(TEXTURE_BLOOM);
+            RenderType bloom = AstranRenderTypes.getBloomRenderType(TEXTURE_BLOOM);
             if (bloom != null) {
 
                 if (a < 0.2f) {
@@ -85,7 +83,7 @@ public class AstraniumMeteorRender extends EntityRenderer<AstraniumMeteor> {
 
             }
             poseStack.translate(0,-0.5,0);
-            RenderType type = ElectronRenderTypes.getTrailRenderType(RENDERTYPE_FALL);
+            RenderType type = AstranRenderTypes.getTrailRenderType(RENDERTYPE_FALL);
             if (type!= null) {
                 VertexConsumer vertexconsumer = bufferSource.getBuffer(type);
 

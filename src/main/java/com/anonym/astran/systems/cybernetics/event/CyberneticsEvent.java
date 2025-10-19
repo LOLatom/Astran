@@ -33,4 +33,9 @@ public class CyberneticsEvent {
         }
     }
 
+    @SubscribeEvent
+    public static void onEquipModule(ModuleEquipEvent.Pre event) {
+        //event.setCanceled(true);
+    }
+
 }

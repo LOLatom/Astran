@@ -3,11 +3,17 @@ package com.anonym.astran.systems.cybernetics;
 import com.anonym.astran.Astran;
 import com.anonym.astran.registries.AstranAttachmentTypeRegistry;
 import com.anonym.astran.registries.AstranBoneDataRegistry;
+import com.anonym.astran.registries.AstranDataComponentRegistry;
 import com.anonym.astran.registries.custom.AstranRegistries;
+import com.anonym.astran.systems.cybernetics.event.ModuleAddEvent;
+import com.anonym.astran.systems.cybernetics.event.ModuleEquipEvent;
+import com.anonym.astran.systems.cybernetics.event.ModuleRemoveEvent;
+import com.anonym.astran.systems.cybernetics.event.ModuleUnEquipEvent;
 import com.anonym.astran.systems.cybernetics.network.AddModulePayload;
 import com.anonym.astran.systems.cybernetics.network.EquipModulePayload;
 import com.anonym.astran.systems.cybernetics.network.RemoveModulePayload;
 import com.anonym.astran.systems.cybernetics.network.UnEquipModulePayload;
+import com.anonym.astran.systems.energy.INodeItem;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -15,9 +21,11 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -94,9 +102,12 @@ public class CyberneticsManager {
     }
 
     public void addModule(CyberModule module) {
-        StorageForLimbData storage = getStorageForLimb(module).copy();
-        storage.addCyberModule(module);
-        replaceLimbStorageData(storage, module.getAttachment());
+        if (!NeoForge.EVENT_BUS.post(new ModuleAddEvent.Pre(this,module)).isCanceled()) {
+            StorageForLimbData storage = getStorageForLimb(module).copy();
+            storage.addCyberModule(module);
+            replaceLimbStorageData(storage, module.getAttachment());
+            NeoForge.EVENT_BUS.post(new ModuleAddEvent.Post(this,module));
+        }
     }
 
     public void changeModule(CyberModule module) {
@@ -108,13 +119,23 @@ public class CyberneticsManager {
         }
     }
 
+    public Color getCoreColor() {
+        return ((INodeItem) this.getPlayer()
+                .getData(AstranAttachmentTypeRegistry.STEEL_HEART_RESSERVOIR)
+                .getSteelHeart().get().get(AstranDataComponentRegistry.STEEL_HEART_DATA)
+                .firstNode().get().getItem()).getNodeColor();
+    }
+
     public void setAdditionalData(CyberModule module, @Nullable CompoundTag nbt) {
         module.setAdditionalData(nbt);
         changeModule(module);
     }
 
     public void removeModule(CyberModule module) {
-        removeModule(module.getInstanceId(),module.getAttachment());
+        if (!NeoForge.EVENT_BUS.post(new ModuleRemoveEvent.Pre(this,module)).isCanceled()) {
+            removeModule(module.getInstanceId(), module.getAttachment());
+            NeoForge.EVENT_BUS.post(new ModuleRemoveEvent.Post(this,module));
+        }
     }
 
     public void removeModule(UUID uuid, LimbType type) {
@@ -155,22 +176,28 @@ public class CyberneticsManager {
     }
 
     public void equipModule(int socketIndex, CyberModule module) {
-        if (socketIndex < 10 && socketIndex > -1) {
-            BoneData bone = getBoneDataFromModule(module).copy();
-            if (bone.getSockets().get(socketIndex).hasModule()) {
-                removeFromCache(bone.getSockets().get(socketIndex).getModuleInstanceId());
+        if (!NeoForge.EVENT_BUS.post(new ModuleEquipEvent.Pre(this,module,socketIndex)).isCanceled()) {
+            if (socketIndex < 10 && socketIndex > -1) {
+                BoneData bone = getBoneDataFromModule(module).copy();
+                if (bone.getSockets().get(socketIndex).hasModule()) {
+                    removeFromCache(bone.getSockets().get(socketIndex).getModuleInstanceId());
+                }
+                bone.getSockets().get(socketIndex).setModuleInstanceId(module.getInstanceId());
+                addToCache(module);
+                replaceBoneData(bone);
             }
-            bone.getSockets().get(socketIndex).setModuleInstanceId(module.getInstanceId());
-            addToCache(module);
-            replaceBoneData(bone);
+            NeoForge.EVENT_BUS.post(new ModuleEquipEvent.Post(this,module,socketIndex));
         }
     }
     public void unEquipModule(int socketIndex , CyberModule module) {
-        if (socketIndex < 10 && socketIndex > -1) {
-            BoneData bone = getBoneDataFromModule(module).copy();
-            bone.getSockets().get(socketIndex).setModuleInstanceId(null);
-            removeFromCache(module);
-            replaceBoneData(bone);
+        if (!NeoForge.EVENT_BUS.post(new ModuleUnEquipEvent.Pre(this,module,socketIndex)).isCanceled()) {
+            if (socketIndex < 10 && socketIndex > -1) {
+                BoneData bone = getBoneDataFromModule(module).copy();
+                bone.getSockets().get(socketIndex).setModuleInstanceId(null);
+                removeFromCache(module);
+                replaceBoneData(bone);
+            }
+            NeoForge.EVENT_BUS.post(new ModuleUnEquipEvent.Post(this,module,socketIndex));
         }
     }
 
