@@ -70,6 +70,7 @@ public class EyeModule extends CyberModule {
         //System.out.println("IsClientSide : " + player.level().isClientSide);
     }
 
+
     @Override
     protected boolean canTick() {
         return true;

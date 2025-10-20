@@ -33,76 +33,28 @@ public class CyberneticsLayer <T extends LivingEntity, M extends HumanoidModel<T
         CyberneticsManager manager = CyberneticsManager.getManager((Player) livingEntity);
 
         for (CyberModule module : manager.moduleCache().getEquippedModuleInstances().values()) {
-            float x = 0;
-            float y = 0;
-            float z = 0;
-            float xRot = 0;
-            float yRot = 0;
-            float zRot = 0;
+            poseStack.pushPose();
 
             switch (module.getAttachment()) {
-                case HEAD -> {
-                    x = this.getParentModel().head.getInitialPose().x;
-                    y = this.getParentModel().head.getInitialPose().y;
-                    z = this.getParentModel().head.getInitialPose().z;
-                    xRot = this.getParentModel().head.xRot;
-                    yRot = this.getParentModel().head.yRot;
-                    zRot = this.getParentModel().head.zRot;
-
-                }
-                case TORSO, HIPS -> {
-                    x = this.getParentModel().body.getInitialPose().x;
-                    y = this.getParentModel().body.getInitialPose().y;
-                    z = this.getParentModel().body.getInitialPose().z;
-                    xRot = this.getParentModel().body.xRot;
-                    yRot = this.getParentModel().body.yRot;
-                    zRot = this.getParentModel().body.zRot;
-                }
-                case RIGHT_SHOULDER, RIGHT_HAND -> {
-                    x = this.getParentModel().rightArm.getInitialPose().x;
-                    y = this.getParentModel().rightArm.getInitialPose().y;
-                    z = this.getParentModel().rightArm.getInitialPose().z;
-                    xRot = this.getParentModel().rightArm.xRot;
-                    yRot = this.getParentModel().rightArm.yRot;
-                    zRot = this.getParentModel().rightArm.zRot;
-                }
-                case LEFT_SHOULDER, LEFT_HAND -> {
-                    x = this.getParentModel().leftArm.getInitialPose().x;
-                    y = this.getParentModel().leftArm.getInitialPose().y;
-                    z = this.getParentModel().leftArm.getInitialPose().z;
-                    xRot = this.getParentModel().leftArm.xRot;
-                    yRot = this.getParentModel().leftArm.yRot;
-                    zRot = this.getParentModel().leftArm.zRot;
-                }
-                case RIGHT_LEG -> {
-                    x = this.getParentModel().rightLeg.getInitialPose().x;
-                    y = this.getParentModel().rightLeg.getInitialPose().y;
-                    z = this.getParentModel().rightLeg.getInitialPose().z;
-                    xRot = this.getParentModel().rightLeg.xRot;
-                    yRot = this.getParentModel().rightLeg.yRot;
-                    zRot = this.getParentModel().rightLeg.zRot;
-                }
-                case LEFT_LEG -> {
-                    x = this.getParentModel().leftLeg.getInitialPose().x;
-                    y = this.getParentModel().leftLeg.getInitialPose().y;
-                    z = this.getParentModel().leftLeg.getInitialPose().z;
-                    xRot = this.getParentModel().leftLeg.xRot;
-                    yRot = this.getParentModel().leftLeg.yRot;
-                    zRot = this.getParentModel().leftLeg.zRot;
-                }}
-
-
-            poseStack.pushPose();
-            poseStack.translate(x,y,z);
-            poseStack.mulPose((new Quaternionf()).rotationZYX(zRot, yRot, xRot));
-
+                case HEAD -> this.getParentModel().head.translateAndRotate(poseStack);
+                case TORSO, HIPS -> this.getParentModel().body.translateAndRotate(poseStack);
+                case RIGHT_SHOULDER, RIGHT_HAND -> this.getParentModel().rightArm.translateAndRotate(poseStack);
+                case LEFT_SHOULDER, LEFT_HAND -> this.getParentModel().leftArm.translateAndRotate(poseStack);
+                case RIGHT_LEG -> this.getParentModel().rightLeg.translateAndRotate(poseStack);
+                case LEFT_LEG -> this.getParentModel().leftLeg.translateAndRotate(poseStack);
+            }
+            if (module.getPrimitiveClass().model() != null) module.getPrimitiveClass().model().animate(poseStack, (AbstractClientPlayer) livingEntity,module,limbSwing,limbSwingAmount,partialTicks,ageInTicks,netHeadYaw,headPitch);
             module.getPrimitiveClass().render(
-                    module, (AbstractClientPlayer) livingEntity, partialTicks
-                    ,poseStack,
-                    buffer,packedLight,
-                    false);
-            poseStack.popPose();
+                    module,
+                    (AbstractClientPlayer) livingEntity,
+                    partialTicks,
+                    poseStack,
+                    buffer,
+                    packedLight,
+                    false
+            );
 
+            poseStack.popPose();
 
         }
     }

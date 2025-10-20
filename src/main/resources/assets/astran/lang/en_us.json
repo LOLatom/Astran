@@ -1,6 +1,15 @@
 {
-  "itemGroup.electron": "Example Mod Tab",
   "block.astran.electrum_chunk_block": "Electrum Chunk Block",
+  "block.astran.electrum_block": "Electrum Block",
+  "block.astran.electrum_bricks": "Electrum Bricks",
+  "block.astran.bronzine_chunk_block": "Bronzine Chunk Block",
+  "block.astran.bronzine_block": "Bronzine Block",
+  "block.astran.bronzine_bricks": "Bronzine Bricks",
+  "block.astran.infernium_chunk_block": "Infernium Chunk Block",
+  "block.astran.infernium_block": "Infernium Block",
+  "block.astran.infernium_bricks": "Infernium Bricks",
+
+
   "item.astran.steel_heart": "Steel Heart",
   "item.astran.astranium_node": "Astranium Node",
 
@@ -9,10 +18,26 @@
   "item.astran.electrum_adaptor": "Electrum Adaptor",
   "item.astran.electrum_cluster": "Electrum Cluster",
   "item.astran.electrum_node_bracket": "Electrum Node Bracket",
+  "item.astran.electrum_sword": "Electrum Sword",
+  "item.astran.electrum_pickaxe": "Electrum Pickaxe",
+  "item.astran.electrum_axe": "Electrum Axe",
+  "item.astran.electrum_shovel": "Electrum Shovel",
+  "item.astran.electrum_hoe": "Electrum Hoe",
 
   "item.astran.bronzine_ingot": "Bronzine Ingot",
   "item.astran.bronzine_plate": "Bronzine Plate",
   "item.astran.bronzine_adaptor": "Bronzine Adaptor",
+  "item.astran.bronzine_sword": "Bronzine Sword",
+  "item.astran.bronzine_pickaxe": "Bronzine Pickaxe",
+  "item.astran.bronzine_axe": "Bronzine Axe",
+  "item.astran.bronzine_shovel": "Bronzine Shovel",
+  "item.astran.bronzine_hoe": "Bronzine Hoe",
+
+  "item.astran.infernium_sword": "Infernium Sword",
+  "item.astran.infernium_pickaxe": "Infernium Pickaxe",
+  "item.astran.infernium_axe": "Infernium Axe",
+  "item.astran.infernium_shovel": "Infernium Shovel",
+  "item.astran.infernium_hoe": "Infernium Hoe",
 
   "key.categories.astran.cyber": "Cybernetics",
   "key.astran.modula": "Mode Switch",

@@ -5,6 +5,7 @@ import com.anonym.astran.client.models.modules.ModuleModel;
 import com.anonym.astran.helpers.UUIDHelper;
 import com.anonym.astran.registries.custom.AstranRegistries;
 import com.anonym.astran.systems.cybernetics.material.MaterialType;
+import com.anonym.astran.systems.gui.theinterface.pages.LimbInterface;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.realmsclient.dto.Ops;
@@ -12,6 +13,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import foundry.veil.api.client.render.rendertype.VeilRenderType;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -23,6 +25,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagNetworkSerialization;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -142,37 +145,132 @@ public class CyberModule {
         this.setModelIfAbsent();
     }
 
-    public void renderWithMaterialLayer(AbstractClientPlayer player, PoseStack poseStack, CyberModule module, MultiBufferSource buffer, int packedLight, String locationStart, int materialAmount, boolean isLastModified) {
+    public void renderWithMaterialLayer(AbstractClientPlayer player, PoseStack poseStack, CyberModule module, MultiBufferSource buffer, int packedLight, String locationStart, int materialAmount, boolean isLastModified
+    ) {
+        if (materialAmount <= 0) return;
+
+        List<MaterialType> materials = new ArrayList<>(module.getMaterials().values());
+        int count = Math.min(materials.size(), materialAmount);
+
+        for (int i = 0; i < count; i++) {
+            MaterialType type = materials.get(i);
+            boolean isFinal = (i == count - 1);
+
+            poseStack.pushPose();
+
+            ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
+                    Astran.MODID,
+                    locationStart + type.getMaterialID() + (i + 1) + ".png"
+            );
+
+            VertexConsumer consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(texture));
+
+            int color = (isFinal && !isLastModified) ? Color.WHITE.getRGB() : ADJUSTMENT_COLOR.getRGB();
+
+            this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, color);
+
+            poseStack.popPose();
+        }
+
+        MaterialType lastType = materials.get(count - 1);
+
+        poseStack.pushPose();
+        poseStack.scale(0, 0, 0);
+        ResourceLocation fakeTexture = ResourceLocation.fromNamespaceAndPath(
+                Astran.MODID,
+                locationStart + lastType.getMaterialID() + "1.png"
+        );
+
+        VertexConsumer fakeConsumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(fakeTexture));
+        this.model().getMainPart().render(poseStack, fakeConsumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+
+
+        poseStack.popPose();
+    }
+    public void renderOnPlayer(AbstractClientPlayer player, PoseStack poseStack, CyberModule module, MultiBufferSource buffer, int packedLight, String locationStart, int materialAmount, boolean isLastModified
+    ) {
+        if (materialAmount <= 0) return;
+
+        List<MaterialType> materials = new ArrayList<>(module.getMaterials().values());
+        int count = Math.min(materials.size(), materialAmount);
+
+        for (int i = 0; i < count; i++) {
+            MaterialType type = materials.get(i);
+            boolean isFinal = (i == count - 1);
+
+            poseStack.pushPose();
+
+            ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
+                    Astran.MODID,
+                    locationStart + type.getMaterialID() + (i + 1) + ".png"
+            );
+
+            VertexConsumer consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(texture));
+
+            int color = Color.WHITE.getRGB();
+
+            this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, color);
+
+            poseStack.popPose();
+        }
+
+        MaterialType lastType = materials.get(count - 1);
+
+        poseStack.pushPose();
+        poseStack.scale(0, 0, 0);
+        ResourceLocation fakeTexture = ResourceLocation.fromNamespaceAndPath(
+                Astran.MODID,
+                locationStart + lastType.getMaterialID() + "1.png"
+        );
+
+        VertexConsumer fakeConsumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(fakeTexture));
+        this.model().getMainPart().render(poseStack, fakeConsumer, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.getRGB());
+
+
+        poseStack.popPose();
+    }
+    public void renderSingleMaterialLayer(AbstractClientPlayer player, PoseStack poseStack, CyberModule module, MultiBufferSource buffer, int packedLight, String locationStart) {
+
+        List<MaterialType> materials = new ArrayList<>(module.getMaterials().values());
+
+            poseStack.pushPose();
+
+            ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
+                    Astran.MODID,
+                    locationStart + materials.get(0).getMaterialID() + "1.png"
+            );
+
+            VertexConsumer consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(texture));
+        if (Minecraft.getInstance().screen instanceof LimbInterface) {
+            this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+
+        } else {
+            this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.getRGB());
+
+        }
+
+            poseStack.popPose();
+
+
+        poseStack.popPose();
+    }
+
+    public void renderMaterialLayer(AbstractClientPlayer player, PoseStack poseStack, CyberModule module, MultiBufferSource buffer, int packedLight,float partialTicks, String locationStart, int materialAmount) {
         VertexConsumer consumer;
         int i = 0;
         for (MaterialType type : module.getMaterials().values()) {
-            if (isLastModified) {
-                if (i < materialAmount) {
-                    poseStack.pushPose();
-                    consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
-                            ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + String.valueOf(i + 1) + ".png")));
 
-                    this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
-                    poseStack.popPose();
-                }
-                poseStack.pushPose();
-                poseStack.scale(0,0,0);
+            if (i < materialAmount - 1) {
+                    poseStack.pushPose();
                 consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
-                        ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + "1" + ".png")));
-
-                this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
-                poseStack.popPose();
-            } else {
-                if (i < materialAmount - 1) {
-                    poseStack.pushPose();
-                    consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
                             ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + String.valueOf(i + 1) + ".png")));
 
-                    this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+                    this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.getRGB());
                     poseStack.popPose();
                 } else if (i < materialAmount) {
+
                     poseStack.pushPose();
-                    consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
+                consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
                             ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + String.valueOf(i + 1) + ".png")));
 
                     this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.getRGB());
@@ -182,14 +280,21 @@ public class CyberModule {
                 poseStack.scale(0,0,0);
                 consumer = buffer.getBuffer(VeilRenderType.entityCutoutNoCull(
                         ResourceLocation.fromNamespaceAndPath(Astran.MODID, locationStart + type.getMaterialID() + "1" + ".png")));
+            this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.getRGB());
 
-                this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
-                poseStack.popPose();
-            }
+            poseStack.popPose();
             i++;
         }
 
     }
+
+    protected float onPlayerTakeDamage(CyberModule module, DamageSource source, Player player, float damage) {
+        return damage;
+    }
+    public final float playerTakeDamage(CyberModule module, DamageSource source, Player player, float damage) {
+        return this.getPrimitiveClass().onPlayerTakeDamage(module,source,player, damage);
+    }
+
 
     protected boolean canTick() {
         return false;
@@ -323,7 +428,7 @@ public class CyberModule {
     public boolean hasMask() {return false;}
 
     public boolean firstMaskActive() {return false;}
-    public boolean secondMaskActive() {return true;}
+    public boolean secondMaskActive() {return false;}
 
     public Optional<Integer> getColor1Optional() { return Optional.ofNullable(this.color1); }
     public Optional<Integer> getColor2Optional() { return Optional.ofNullable(this.color2); }

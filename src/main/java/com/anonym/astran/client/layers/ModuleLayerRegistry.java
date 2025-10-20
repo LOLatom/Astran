@@ -9,6 +9,11 @@ public class ModuleLayerRegistry {
     public static final ModelLayerLocation EYE_MODULE = register("eye_module");
     public static final ModelLayerLocation AQUA_LUNGS_MODULE = register("aqua_lungs_module");
     public static final ModelLayerLocation POISON_FILTER_MODULE = register("poison_filter_module");
+    public static final ModelLayerLocation BACK_BASE = register("back_base");
+    public static final ModelLayerLocation BACK_COVER = register("back_cover");
+    public static final ModelLayerLocation KINETIC_ACCUMULATOR = register("kinetic_accumulator");
+    public static final ModelLayerLocation KINETIC_DISTRIBUTOR = register("kinetic_distributor");
+    public static final ModelLayerLocation BACK_WINGS = register("back_wings");
 
 
 

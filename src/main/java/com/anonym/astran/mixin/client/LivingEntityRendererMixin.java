@@ -29,42 +29,42 @@ public class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityM
     public void getMaskedRender(T livingEntity, boolean bodyVisible, boolean translucent, boolean glowing, CallbackInfoReturnable<RenderType> cir) {
         if (livingEntity instanceof AbstractClientPlayer player) {
             CyberneticsManager manager = CyberneticsManager.getManager(player);
-            boolean face = true;
-            boolean skull = true;
-            boolean torso = true;
-            boolean legs = true;
-            boolean back = true;
-            boolean rshoulder = true;
-            boolean lshoulder = true;
-            boolean rhand = true;
-            boolean lhand = true;
+            boolean face = false;
+            boolean skull = false;
+            boolean torso = false;
+            boolean legs = false;
+            boolean back = false;
+            boolean rshoulder = false;
+            boolean lshoulder = false;
+            boolean rhand = false;
+            boolean lhand = false;
 
             for (CyberModule module : manager.moduleCache().getEquippedModuleInstances().values()) {
                 CyberModule primitive = module.getPrimitiveClass();
                 if (primitive.hasMask()) {
                     switch (module.getAttachment()) {
                         case HEAD -> {
-                            if (primitive.firstMaskActive()) face = false;
-                            if (primitive.secondMaskActive()) skull = false;
+                            if (primitive.firstMaskActive()) face = true;
+                            if (primitive.secondMaskActive()) skull = true;
                         }
                         case HIPS, RIGHT_LEG, LEFT_LEG -> {
-                            if (primitive.firstMaskActive()) legs = false;
+                            if (primitive.firstMaskActive()) legs = true;
                         }
                         case RIGHT_HAND -> {
-                            if (primitive.firstMaskActive()) rhand = false;
+                            if (primitive.firstMaskActive()) rhand = true;
                         }
                         case LEFT_HAND -> {
-                            if (primitive.firstMaskActive()) lhand = false;
+                            if (primitive.firstMaskActive()) lhand = true;
                         }
                         case TORSO -> {
-                            if (primitive.firstMaskActive()) torso = false;
-                            if (primitive.secondMaskActive()) back = false;
+                            if (primitive.firstMaskActive()) torso = true;
+                            if (primitive.secondMaskActive()) back = true;
                         }
                         case RIGHT_SHOULDER -> {
-                            if (primitive.firstMaskActive()) rshoulder = false;
+                            if (primitive.firstMaskActive()) rshoulder = true;
                         }
                         case LEFT_SHOULDER -> {
-                            if (primitive.firstMaskActive()) lshoulder = false;
+                            if (primitive.firstMaskActive()) lshoulder = true;
                         }
                     }
                 }

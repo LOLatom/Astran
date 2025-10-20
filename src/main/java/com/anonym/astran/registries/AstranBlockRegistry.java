@@ -14,5 +14,21 @@ public class AstranBlockRegistry {
 
     public static final DeferredHolder<Block, Block> ELECTRUM_CHUNK_BLOCK = BLOCKS.register("electrum_chunk_block", () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.1f,10f)));
 
+    public static final DeferredHolder<Block, Block> ELECTRUM_BLOCK = BLOCKS.register("electrum_block", () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.1f,10f)));
+
+    public static final DeferredHolder<Block, Block> ELECTRUM_BRICKS = BLOCKS.register("electrum_bricks", () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.1f,10f)));
+
+    public static final DeferredHolder<Block, Block> BRONZINE_CHUNK_BLOCK = BLOCKS.register("bronzine_chunk_block", () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.1f,10f)));
+
+    public static final DeferredHolder<Block, Block> BRONZINE_BLOCK = BLOCKS.register("bronzine_block", () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.1f,10f)));
+
+    public static final DeferredHolder<Block, Block> BRONZINE_BRICKS = BLOCKS.register("bronzine_bricks", () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.1f,10f)));
+
+    public static final DeferredHolder<Block, Block> INFERNIUM_CHUNK_BLOCK = BLOCKS.register("infernium_chunk_block", () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.1f,10f)));
+
+    public static final DeferredHolder<Block, Block> INFERNIUM_BLOCK = BLOCKS.register("infernium_block", () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.1f,10f)));
+
+    public static final DeferredHolder<Block, Block> INFERNIUM_BRICKS = BLOCKS.register("infernium_bricks", () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.STONE).strength(3.1f,10f)));
+
 
 }

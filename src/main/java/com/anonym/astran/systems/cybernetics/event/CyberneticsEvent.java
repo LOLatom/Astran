@@ -1,11 +1,14 @@
 package com.anonym.astran.systems.cybernetics.event;
 
 import com.anonym.astran.systems.cybernetics.CyberModule;
+import com.anonym.astran.systems.cybernetics.CyberneticsManager;
 import com.anonym.astran.systems.cybernetics.IContainCyberneticsManager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.effects.DamageEntity;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 @EventBusSubscriber
@@ -34,8 +37,13 @@ public class CyberneticsEvent {
     }
 
     @SubscribeEvent
-    public static void onEquipModule(ModuleEquipEvent.Pre event) {
-        //event.setCanceled(true);
+    public static void takeDamageEvent(LivingDamageEvent.Pre event) {
+        if (event.getEntity() instanceof Player player) {
+            CyberneticsManager manager = CyberneticsManager.getManager(player);
+            for (CyberModule  module : manager.moduleCache().getEquippedModuleInstances().values()) {
+                event.setNewDamage(module.playerTakeDamage(module, event.getSource(), player, event.getNewDamage()));
+            }
+        }
     }
 
 }

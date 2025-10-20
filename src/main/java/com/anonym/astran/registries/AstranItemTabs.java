@@ -21,6 +21,10 @@ public class AstranItemTabs {
                     output.accept(itemDeferredHolder.get().getDefaultInstance());
 
                 });
+                AstranItemBlockRegistry.BLOCK_ITEMS.getEntries().forEach(itemDeferredHolder -> {
+                    output.accept(itemDeferredHolder.get().getDefaultInstance());
+
+                });
             }).build());
 
 }

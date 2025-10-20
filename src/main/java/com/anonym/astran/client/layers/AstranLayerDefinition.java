@@ -5,8 +5,7 @@ import com.anonym.astran.client.models.entities.meteor.AstraniumMeteorModel;
 import com.anonym.astran.client.models.misc.MinigameAnvil;
 import com.anonym.astran.client.models.misc.MinigameHammer;
 import com.anonym.astran.client.models.modules.head.EyeModuleModel;
-import com.anonym.astran.client.models.modules.torso.AquaLungsModel;
-import com.anonym.astran.client.models.modules.torso.PoisonFilterModel;
+import com.anonym.astran.client.models.modules.torso.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -28,6 +27,11 @@ public class AstranLayerDefinition {
         event.registerLayerDefinition(ModuleLayerRegistry.EYE_MODULE, EyeModuleModel::createBodyLayer);
         event.registerLayerDefinition(ModuleLayerRegistry.AQUA_LUNGS_MODULE, AquaLungsModel::createBodyLayer);
         event.registerLayerDefinition(ModuleLayerRegistry.POISON_FILTER_MODULE, PoisonFilterModel::createBodyLayer);
+        event.registerLayerDefinition(ModuleLayerRegistry.BACK_BASE, BackBaseModel::createBodyLayer);
+        event.registerLayerDefinition(ModuleLayerRegistry.BACK_COVER, BackCoverModel::createBodyLayer);
+        event.registerLayerDefinition(ModuleLayerRegistry.KINETIC_ACCUMULATOR, KineticAccumulatorModel::createBodyLayer);
+        event.registerLayerDefinition(ModuleLayerRegistry.KINETIC_DISTRIBUTOR, KineticDistributorModel::createBodyLayer);
+        event.registerLayerDefinition(ModuleLayerRegistry.BACK_WINGS, BackWingsModel::createBodyLayer);
 
     }
 

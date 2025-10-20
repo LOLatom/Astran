@@ -31,8 +31,9 @@ public class LimbCyberInterfaceScreen extends CameraCyberInterfaceScreen {
             },this,"LEFT SHOULDER",true));
 
         this.addGlowingRenderable(new LimbInspectionButton(LimbType.RIGHT_HAND,this.getOffsetX() -18f - 23f,this.getOffsetY() -40f + 20 + 40,button -> {
+            this.addTransition(new RightHandCyberInterface(),20, Easing.EASE_IN_BACK);
+        },this,"RIGHT HAND"));
 
-        },this,"RIGHT HAND",true));
         this.addGlowingRenderable(new LimbInspectionButton(LimbType.LEFT_HAND,this.getOffsetX() -18f + 23f,this.getOffsetY() -40f + 20 + 40,button -> {
 
         },this,"LEFT HAND",true));
