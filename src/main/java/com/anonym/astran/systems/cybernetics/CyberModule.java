@@ -26,6 +26,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagNetworkSerialization;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -322,6 +324,12 @@ public class CyberModule {
 
     protected void tick(CyberModule module, Player player) {
 
+    }
+    protected void onAttackEntity(CyberModule module, Player player, Entity target) {
+
+    }
+    public final void attackEntity(CyberModule module, Player player, Entity target) {
+        this.getPrimitiveClass().onAttackEntity(this,player,target);
     }
 
     public final void tickModule(Player player) {

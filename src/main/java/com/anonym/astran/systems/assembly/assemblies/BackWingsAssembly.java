@@ -23,8 +23,11 @@ public class BackWingsAssembly extends AssemblyAbstractRecipe {
         Builder builder = new Builder();
         builder.addIngredientsUnder("ingot", AstranItemRegistry.ELECTRUM_INGOT.get(),8);
         builder.addIngredientsUnder("ingot", AstranItemRegistry.BRONZINE_INGOT.get(),8);
+        builder.addIngredientsUnder("ingot", AstranItemRegistry.INFERNIUM_INGOT.get(),8);
+
         builder.addIngredientsUnder("plate", AstranItemRegistry.ELECTRUM_PLATE.get(),8);
         builder.addIngredientsUnder("plate", AstranItemRegistry.BRONZINE_PLATE.get(),8);
+        builder.addIngredientsUnder("plate", AstranItemRegistry.INFERNIUM_PLATE.get(),8);
 
 
 

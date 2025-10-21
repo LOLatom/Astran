@@ -4,29 +4,25 @@ import com.anonym.astran.registries.AstranItemRegistry;
 import com.anonym.astran.systems.assembly.AssemblyAbstractRecipe;
 import com.anonym.astran.systems.cybernetics.CyberModule;
 import com.anonym.astran.systems.cybernetics.torso.BackBaseModule;
-import com.anonym.astran.systems.cybernetics.torso.PoisonFilterModule;
+import com.anonym.astran.systems.cybernetics.torso.FrontBaseModule;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
-public class BackBaseAssembly extends AssemblyAbstractRecipe {
-    public BackBaseAssembly(AssemblyType type) {
+public class FrontBaseAssembly extends AssemblyAbstractRecipe {
+    public FrontBaseAssembly(AssemblyType type) {
         super(type);
     }
 
     @Override
     public LinkedHashMap<String, List<ItemStack>> namedIngredientsSetup() {
         Builder builder = new Builder();
-        builder.addIngredientsUnder("plate", AstranItemRegistry.ELECTRUM_PLATE.get(),7);
-        builder.addIngredientsUnder("plate", AstranItemRegistry.BRONZINE_PLATE.get(),7);
-        builder.addIngredientsUnder("plate", AstranItemRegistry.INFERNIUM_PLATE.get(),7);
+        builder.addIngredientsUnder("plate", AstranItemRegistry.ELECTRUM_INGOT.get(),12);
 
-        builder.addIngredientsUnder("secondPlating", AstranItemRegistry.ELECTRUM_PLATE.get(),10);
 
 
 
@@ -40,7 +36,7 @@ public class BackBaseAssembly extends AssemblyAbstractRecipe {
 
     @Override
     public Optional<CyberModule> getResultModule() {
-        return Optional.of(new BackBaseModule());
+        return Optional.of(new FrontBaseModule());
     }
 
     @Override
@@ -50,16 +46,16 @@ public class BackBaseAssembly extends AssemblyAbstractRecipe {
 
     @Override
     public String getAssemblyID() {
-        return "back_base";
+        return "front_base";
     }
 
     @Override
     public Component getRecipeName() {
-        return Component.nullToEmpty("Back Base Module");
+        return Component.nullToEmpty("Front Base Module");
     }
 
     @Override
     public Component getDescription() {
-        return Component.nullToEmpty("Allows Back Module Addition");
+        return Component.nullToEmpty("Allow to place modules on the torso");
     }
 }

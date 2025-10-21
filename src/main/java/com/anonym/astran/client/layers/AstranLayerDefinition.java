@@ -4,7 +4,9 @@ import com.anonym.astran.client.models.PlayerBaseModel;
 import com.anonym.astran.client.models.entities.meteor.AstraniumMeteorModel;
 import com.anonym.astran.client.models.misc.MinigameAnvil;
 import com.anonym.astran.client.models.misc.MinigameHammer;
+import com.anonym.astran.client.models.modules.head.AztecFaceModel;
 import com.anonym.astran.client.models.modules.head.EyeModuleModel;
+import com.anonym.astran.client.models.modules.head.FrontFaceModel;
 import com.anonym.astran.client.models.modules.torso.*;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -32,6 +34,10 @@ public class AstranLayerDefinition {
         event.registerLayerDefinition(ModuleLayerRegistry.KINETIC_ACCUMULATOR, KineticAccumulatorModel::createBodyLayer);
         event.registerLayerDefinition(ModuleLayerRegistry.KINETIC_DISTRIBUTOR, KineticDistributorModel::createBodyLayer);
         event.registerLayerDefinition(ModuleLayerRegistry.BACK_WINGS, BackWingsModel::createBodyLayer);
+        event.registerLayerDefinition(ModuleLayerRegistry.FRONT_BASE, FrontBaseModel::createBodyLayer);
+        event.registerLayerDefinition(ModuleLayerRegistry.FRONT_COVER, FrontCoverModel::createBodyLayer);
+        event.registerLayerDefinition(ModuleLayerRegistry.FRONT_FACE, FrontFaceModel::createBodyLayer);
+        event.registerLayerDefinition(ModuleLayerRegistry.AZTEC_FACE, AztecFaceModel::createBodyLayer);
 
     }
 

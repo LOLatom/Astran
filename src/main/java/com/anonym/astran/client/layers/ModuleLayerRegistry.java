@@ -14,6 +14,10 @@ public class ModuleLayerRegistry {
     public static final ModelLayerLocation KINETIC_ACCUMULATOR = register("kinetic_accumulator");
     public static final ModelLayerLocation KINETIC_DISTRIBUTOR = register("kinetic_distributor");
     public static final ModelLayerLocation BACK_WINGS = register("back_wings");
+    public static final ModelLayerLocation FRONT_BASE = register("front_base");
+    public static final ModelLayerLocation FRONT_COVER = register("front_cover");
+    public static final ModelLayerLocation FRONT_FACE = register("front_face");
+    public static final ModelLayerLocation AZTEC_FACE = register("aztec_face");
 
 
 

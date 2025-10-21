@@ -20,8 +20,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 import java.awt.*;
 
@@ -51,10 +59,26 @@ public class KineticDistributorModule extends CyberModule {
         poseStack.popPose();
     }
 
-    @Override
-    protected void tick(CyberModule module, Player player) {
-        super.tick(module, player);
 
+    @Override
+    protected void onAttackEntity(CyberModule module, Player player, Entity target) {
+        super.onAttackEntity(module, player, target);
+        if (target instanceof LivingEntity entity) {
+            CyberneticsManager manager = CyberneticsManager.getManager(player);
+            for (CyberModule mod : manager.moduleCache().getEquippedTickable().values()) {
+                if (mod.getModuleID().equals("kinetic_accumulator")) {
+                    if (mod.getAdditionalData().isPresent()) {
+                        if (mod.getAdditionalData().get().contains("storedKineticCharge")) {
+                            float v = mod.getAdditionalData().get().getFloat("storedKineticCharge");
+                            target.addDeltaMovement(player.getLookAngle().multiply(v/25,v/25,v/25));
+                            target.hurt(target.damageSources().mobAttack(player),(v/9) * 2.2f);
+                            mod.getAdditionalData().get().putFloat("storedKineticCharge",0);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -64,11 +88,6 @@ public class KineticDistributorModule extends CyberModule {
 
     @Override
     public boolean firstMaskActive() {
-        return true;
-    }
-
-    @Override
-    protected boolean canTick() {
         return true;
     }
 

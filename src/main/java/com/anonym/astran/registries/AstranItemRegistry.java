@@ -51,6 +51,16 @@ public class AstranItemRegistry {
     public static final DeferredItem<Item> BRONZINE_ADAPTOR = ITEMS.register("bronzine_adaptor",
             () -> new ComponentItem(AstranMaterialTypeRegistry.BRONZINE,new Item.Properties()));
 
+    public static final DeferredItem<Item> INFERNIUM_INGOT = ITEMS.register("infernium_ingot",
+            () -> new ComponentItem(AstranMaterialTypeRegistry.INFERNIUM,new Item.Properties()));
+
+    public static final DeferredItem<Item> INFERNIUM_PLATE = ITEMS.register("infernium_plate",
+            () -> new ComponentItem(AstranMaterialTypeRegistry.INFERNIUM,new Item.Properties()));
+
+    public static final DeferredItem<Item> INFERNIUM_ADAPTOR = ITEMS.register("infernium_adaptor",
+            () -> new ComponentItem(AstranMaterialTypeRegistry.INFERNIUM,new Item.Properties()));
+
+
     public static final DeferredItem<Item> ELECTRUM_SWORD = ITEMS.register("electrum_sword",
             () -> new SwordItem(Tiers.IRON,new Item.Properties().stacksTo(1)
                     .attributes(SwordItem.createAttributes(Tiers.IRON, 7f,2f))));

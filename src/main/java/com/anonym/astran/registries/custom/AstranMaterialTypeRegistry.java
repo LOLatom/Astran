@@ -33,8 +33,8 @@ public class AstranMaterialTypeRegistry {
                             new Color(56,38,33),
                             new Color(33,25,24)));
 
-    public static final DeferredHolder<MaterialType, MaterialType> INFERNUM = MATERIAL_TYPE.register("infernum",
-            () -> new MaterialType("infernum").heatResistance(3500F).corrosionResistance(3.8D).protection(6.0D).weight(2.8D)
+    public static final DeferredHolder<MaterialType, MaterialType> INFERNIUM = MATERIAL_TYPE.register("infernium",
+            () -> new MaterialType("infernium").heatResistance(3500F).corrosionResistance(3.8D).protection(6.0D).weight(2.8D)
                     .colorPalette(
                             new Color(255,171,115),
                             new Color(189,100,55),

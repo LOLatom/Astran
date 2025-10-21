@@ -24,8 +24,12 @@ public class KineticAccumulatorAssembly extends AssemblyAbstractRecipe {
         Builder builder = new Builder();
         builder.addIngredientsUnder("ingot", AstranItemRegistry.ELECTRUM_INGOT.get(),7);
         builder.addIngredientsUnder("ingot", AstranItemRegistry.BRONZINE_INGOT.get(),7);
+        builder.addIngredientsUnder("ingot", AstranItemRegistry.INFERNIUM_INGOT.get(),7);
+
         builder.addIngredientsUnder("adaptor", AstranItemRegistry.ELECTRUM_ADAPTOR.get(),3);
         builder.addIngredientsUnder("adaptor", AstranItemRegistry.BRONZINE_ADAPTOR.get(),3);
+        builder.addIngredientsUnder("adaptor", AstranItemRegistry.INFERNIUM_ADAPTOR.get(),3);
+
         builder.addIngredientsUnder("shield", Items.SHIELD,2);
         builder.addIngredientsUnder("slime", Items.SLIME_BLOCK,3);
 

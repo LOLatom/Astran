@@ -27,4 +27,12 @@ public class AstranAssemblyRecipesRegistry {
             () -> new KineticDistributorAssembly(AssemblyAbstractRecipe.AssemblyType.MODULE));
     public static final DeferredHolder<AssemblyAbstractRecipe, ? extends AssemblyAbstractRecipe> BACK_WINGS = ASSEMBLY_RECIPES.register("back_wings",
             () -> new BackWingsAssembly(AssemblyAbstractRecipe.AssemblyType.MODULE));
+    public static final DeferredHolder<AssemblyAbstractRecipe, ? extends AssemblyAbstractRecipe> FRONT_BASE = ASSEMBLY_RECIPES.register("front_base",
+            () -> new FrontBaseAssembly(AssemblyAbstractRecipe.AssemblyType.MODULE));
+    public static final DeferredHolder<AssemblyAbstractRecipe, ? extends AssemblyAbstractRecipe> FRONT_COVER = ASSEMBLY_RECIPES.register("front_cover",
+            () -> new FrontCoverAssembly(AssemblyAbstractRecipe.AssemblyType.MODULE));
+    public static final DeferredHolder<AssemblyAbstractRecipe, ? extends AssemblyAbstractRecipe> FRONT_FACE = ASSEMBLY_RECIPES.register("front_face",
+            () -> new FrontFaceAssembly(AssemblyAbstractRecipe.AssemblyType.MODULE));
+    public static final DeferredHolder<AssemblyAbstractRecipe, ? extends AssemblyAbstractRecipe> AZTEC_FACE = ASSEMBLY_RECIPES.register("aztec_face",
+            () -> new AztecFaceAssembly(AssemblyAbstractRecipe.AssemblyType.MODULE));
 }

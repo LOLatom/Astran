@@ -9,6 +9,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 @EventBusSubscriber
@@ -42,6 +43,16 @@ public class CyberneticsEvent {
             CyberneticsManager manager = CyberneticsManager.getManager(player);
             for (CyberModule  module : manager.moduleCache().getEquippedModuleInstances().values()) {
                 event.setNewDamage(module.playerTakeDamage(module, event.getSource(), player, event.getNewDamage()));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void takeDamageEvent(AttackEntityEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            CyberneticsManager manager = CyberneticsManager.getManager(player);
+            for (CyberModule  module : manager.moduleCache().getEquippedModuleInstances().values()) {
+                module.attackEntity(module,event.getEntity(),event.getTarget());
             }
         }
     }

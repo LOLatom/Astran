@@ -22,8 +22,11 @@ public class KineticDistributorAssembly extends AssemblyAbstractRecipe {
         Builder builder = new Builder();
         builder.addIngredientsUnder("ingot", AstranItemRegistry.ELECTRUM_INGOT.get(),7);
         builder.addIngredientsUnder("ingot", AstranItemRegistry.BRONZINE_INGOT.get(),7);
+        builder.addIngredientsUnder("ingot", AstranItemRegistry.INFERNIUM_INGOT.get(),7);
+
         builder.addIngredientsUnder("adaptor", AstranItemRegistry.ELECTRUM_PLATE.get(),3);
         builder.addIngredientsUnder("adaptor", AstranItemRegistry.BRONZINE_PLATE.get(),3);
+        builder.addIngredientsUnder("adaptor", AstranItemRegistry.INFERNIUM_PLATE.get(),3);
 
 
 

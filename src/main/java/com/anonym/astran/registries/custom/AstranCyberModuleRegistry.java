@@ -3,7 +3,9 @@ package com.anonym.astran.registries.custom;
 import com.anonym.astran.Astran;
 import com.anonym.astran.systems.cybernetics.CyberModule;
 import com.anonym.astran.systems.cybernetics.hands.KineticDistributorModule;
+import com.anonym.astran.systems.cybernetics.head.AztecFaceModule;
 import com.anonym.astran.systems.cybernetics.head.EyeModule;
+import com.anonym.astran.systems.cybernetics.head.FrontFaceModule;
 import com.anonym.astran.systems.cybernetics.torso.*;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -28,4 +30,12 @@ public class AstranCyberModuleRegistry {
             KineticDistributorModule::new);
     public static final DeferredHolder<CyberModule, BackWingsModule> BACK_WINGS = CYBER_MODULE_TYPE.register("back_wings",
             BackWingsModule::new);
+    public static final DeferredHolder<CyberModule, FrontBaseModule> FRONT_BASE = CYBER_MODULE_TYPE.register("front_base",
+            FrontBaseModule::new);
+    public static final DeferredHolder<CyberModule, FrontCoverModule> FRONT_COVER = CYBER_MODULE_TYPE.register("front_cover",
+            FrontCoverModule::new);
+    public static final DeferredHolder<CyberModule, FrontFaceModule> FRONT_FACE = CYBER_MODULE_TYPE.register("front_face",
+            FrontFaceModule::new);
+    public static final DeferredHolder<CyberModule, AztecFaceModule> AZTEC_FACE = CYBER_MODULE_TYPE.register("aztec_face",
+            AztecFaceModule::new);
 }
