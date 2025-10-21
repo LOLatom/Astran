@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "",
+  "ingredients": [
+    {
+      "item": "astran:electrum_cluster"
+    },
+    {
+      "item": "astran:electrum_cluster"
+    },
+    {
+      "item": "astran:electrum_cluster"
+    },
+    {
+      "item": "astran:electrum_cluster"
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "astran:bronzine_ingot"
+  }
+}

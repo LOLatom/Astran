@@ -12,6 +12,10 @@
 
   "item.astran.steel_heart": "Steel Heart",
   "item.astran.astranium_node": "Astranium Node",
+  "item.astran.astranium_core": "Astranium Core",
+
+  "item.astran.bedrock_powder": "Bedrock Powder",
+  "item.astran.bedrock_coated_stick": "Bedrock Coated Stick",
 
   "item.astran.electrum_ingot": "Electrum Ingot",
   "item.astran.electrum_plate": "Electrum Plate",

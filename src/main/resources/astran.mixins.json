@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "common.StructureTemplateAccessor",
-    "common.PlayerCyberManagerImp"
+    "common.PlayerCyberManagerImp",
+    "common.BrushItemMixinEvent"
   ],
   "client": [
     "client.IconMixin",

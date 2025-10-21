@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "astran:electrum_cluster"
+  },
+  "result": {
+    "id": "astran:electrum_ingot"
+  },
+  "experience": 5,
+  "cookingtime": 180
+}

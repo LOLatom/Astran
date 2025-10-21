@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_nugget"
+    },
+    "X": {
+      "item": "astran:electrum_ingot"
+    }
+  },
+  "pattern": [
+    " X ",
+    "X#X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "astran:electrum_node_bracket"
+  }
+}

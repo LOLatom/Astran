@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "astran:astranium_core"
+    },
+    "X": {
+      "item": "astran:electrum_node_bracket"
+    }
+  },
+  "pattern": [
+    "X",
+    "#",
+    "X"
+  ],
+  "result": {
+    "count": 1,
+    "id": "astran:astranium_node"
+  }
+}

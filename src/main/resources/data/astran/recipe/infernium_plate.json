@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": {
+      "item": "astran:infernium_ingot"
+    }
+  },
+  "pattern": [
+    "XX"
+  ],
+  "result": {
+    "count": 4,
+    "id": "astran:infernium_plate"
+  }
+}

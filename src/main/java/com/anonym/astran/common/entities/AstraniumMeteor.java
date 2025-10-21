@@ -1,6 +1,7 @@
 package com.anonym.astran.common.entities;
 
 import com.anonym.astran.registries.AstranBlockRegistry;
+import com.anonym.astran.registries.AstranItemRegistry;
 import com.anonym.astran.systems.entity.breakableentity.BreakableEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -9,6 +10,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -130,6 +134,18 @@ public class AstraniumMeteor extends BreakableEntity {
         return Mth.lerp(0.2F, currentRotation, targetRotation);
     }
 
+    @Override
+    public void onBreak() {
+        if (!level().isClientSide) {
+
+            for (int i = 0; i < 6; i++) {
+                spawnAtLocation(new ItemStack(AstranItemRegistry.ELECTRUM_CLUSTER.get(),random.nextInt(12)));
+                System.out.println("spawn");
+            }
+            spawnAtLocation(new ItemStack(AstranItemRegistry.ASTRANIUM_CORE.get(),1));
+
+        }
+    }
 
     @Override
     public void setOnGround(boolean onGround) {

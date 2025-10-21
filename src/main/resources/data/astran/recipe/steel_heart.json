@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "astran:bedrock_powder"
+    },
+    "X": {
+      "item": "astran:electrum_ingot"
+    },
+    "V": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "XXX",
+    "#V#",
+    "XXX"
+  ],
+  "result": {
+    "count": 1,
+    "id": "astran:steel_heart"
+  }
+}
