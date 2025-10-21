@@ -56,7 +56,9 @@ public class KineticAccumulatorModel extends ModuleModel {
 	public void animate(PoseStack poseStack, AbstractClientPlayer player, CyberModule module, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		float rotation = 0f;
 		if (module.getAdditionalData().isPresent()) {
-			rotation = Math.clamp(module.getAdditionalData().get().getFloat("storedKineticCharge")/100f,0f,1f);
+			if (module.getAdditionalData().get().contains("storedKineticCharge")) {
+				rotation = Math.clamp(module.getAdditionalData().get().getFloat("storedKineticCharge") / 100f, 0f, 1f);
+			}
 		}
 		this.rotor.zRot = (player.tickCount + partialTicks) * rotation;
 		this.rotor.setInitialPose(this.rotor.storePose());

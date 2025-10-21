@@ -218,6 +218,7 @@ public class LimbInterface extends CameraCyberInterfaceScreen {
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if (this.collectionShow == 1) {
             if (this.collectionMap.size() > 1) {
+                System.out.println(this.selection);
                 if (scrollY > 0) {
                     if (this.selection == 0) {
                         this.selection = this.collectionMap.size() - 1;
@@ -232,6 +233,8 @@ public class LimbInterface extends CameraCyberInterfaceScreen {
                     }
 
                 }
+                System.out.println(this.selection);
+
             }
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);

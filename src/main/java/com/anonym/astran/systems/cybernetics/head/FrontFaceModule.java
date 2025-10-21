@@ -13,6 +13,7 @@ import com.anonym.astran.systems.cybernetics.CyberneticsManager;
 import com.anonym.astran.systems.cybernetics.LimbType;
 import com.anonym.astran.systems.cybernetics.SocketData;
 import com.anonym.astran.systems.energy.INodeItem;
+import com.anonym.astran.systems.gui.theinterface.pages.LimbInterface;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -43,8 +44,14 @@ public class FrontFaceModule extends CyberModule {
             poseStack.scale(1f/1.2f,1f/1.2f,1f/1.2f);
             VertexConsumer cons;
             cons = buffer.getBuffer(RenderType.entityCutoutNoCull(
-                    ResourceLocation.fromNamespaceAndPath(Astran.MODID, "textures/module/torso/frontface/front_base.png")));
-            this.model().getMainPart().render(poseStack, cons, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+                    ResourceLocation.fromNamespaceAndPath(Astran.MODID, "textures/module/torso/frontface/front_face.png")));
+            if (Minecraft.getInstance().screen instanceof LimbInterface) {
+                this.model().getMainPart().render(poseStack, cons, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+
+            } else {
+                this.model().getMainPart().render(poseStack, cons, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.getRGB());
+
+            }
         } else {
             poseStack.translate(0,-6/16f,-3f/16f);
             VertexConsumer cons;

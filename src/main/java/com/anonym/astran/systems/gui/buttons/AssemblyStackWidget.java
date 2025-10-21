@@ -120,7 +120,6 @@ public class AssemblyStackWidget extends InterfaceButton implements IGlowModifie
 
         if (s > 1) {
             guiGraphics.setColor(1f, 1f, 1f, 0.4f);
-            // next
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(14 + 8, 8, 0);
             guiGraphics.pose().scale(
@@ -163,7 +162,6 @@ public class AssemblyStackWidget extends InterfaceButton implements IGlowModifie
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if (this.isMouseOver(mouseX,mouseY)) {
-            System.err.println("HERE");
             if (this.screen.selectedRecipe != null) {
                 AssemblyAbstractRecipe recipe = this.screen.selectedRecipe;
                 LinkedHashMap<String, List<ItemStack>> itemInInv = recipe.getInInventoryIngredients(Minecraft.getInstance().player);
@@ -174,20 +172,20 @@ public class AssemblyStackWidget extends InterfaceButton implements IGlowModifie
                                 recipeItems.values().stream().toList().get(this.id) : new ArrayList<>();
 
                 if (list.size()-1 >= this.screen.selectedIngredients[this.id] + 1) {
-                    if (scrollY>0) {
+                    if (scrollY<0) {
                         this.screen.selectedIngredients[this.id] = this.screen.selectedIngredients[this.id] + 1;
                     }
                 } else {
-                    if (scrollY>0){
+                    if (scrollY<0){
                         this.screen.selectedIngredients[this.id] = 0;
                     }
                 }
                 if (this.screen.selectedIngredients[this.id] > 0) {
-                    if (scrollY<0){
+                    if (scrollY>0){
                         this.screen.selectedIngredients[this.id] = this.screen.selectedIngredients[this.id] - 1;
                     }
                 } else {
-                    if (scrollY<0){
+                    if (scrollY>0){
                         this.screen.selectedIngredients[this.id] = list.size() - 1;
                     }
                 }

@@ -14,6 +14,7 @@ import com.anonym.astran.systems.cybernetics.CyberneticsManager;
 import com.anonym.astran.systems.cybernetics.LimbType;
 import com.anonym.astran.systems.cybernetics.SocketData;
 import com.anonym.astran.systems.energy.INodeItem;
+import com.anonym.astran.systems.gui.theinterface.pages.LimbInterface;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -46,7 +47,13 @@ public class FrontBaseModule extends CyberModule {
             VertexConsumer cons;
             cons = buffer.getBuffer(RenderType.entityCutoutNoCull(
                     ResourceLocation.fromNamespaceAndPath(Astran.MODID, "textures/module/torso/frontbase/front_base.png")));
-            this.model().getMainPart().render(poseStack, cons, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+            if (Minecraft.getInstance().screen instanceof LimbInterface) {
+                this.model().getMainPart().render(poseStack, cons, packedLight, OverlayTexture.NO_OVERLAY, ADJUSTMENT_COLOR.getRGB());
+
+            } else {
+                this.model().getMainPart().render(poseStack, cons, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.getRGB());
+
+            }
         } else {
             poseStack.translate(0,6f/16f,-2f/16f);
             VertexConsumer cons;

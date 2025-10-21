@@ -235,7 +235,7 @@ public class CyberModule {
 
         List<MaterialType> materials = new ArrayList<>(module.getMaterials().values());
 
-            poseStack.pushPose();
+        poseStack.pushPose();
 
             ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(
                     Astran.MODID,
@@ -250,9 +250,6 @@ public class CyberModule {
             this.model().getMainPart().render(poseStack, consumer, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.getRGB());
 
         }
-
-            poseStack.popPose();
-
 
         poseStack.popPose();
     }
