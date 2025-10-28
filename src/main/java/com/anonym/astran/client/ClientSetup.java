@@ -16,5 +16,7 @@ public class ClientSetup {
     public static void clientSetup(FMLClientSetupEvent event) {
         PostProcessingManager postManager = VeilRenderSystem.renderer().getPostProcessingManager();
         postManager.add(ResourceLocation.fromNamespaceAndPath(MODID,"bloom_pipeline"));
+        postManager.add(ResourceLocation.fromNamespaceAndPath(MODID,"test_pipeline"));
+
     }
 }

@@ -21,6 +21,7 @@ public class TestingStuffForCyb {
 
     @SubscribeEvent
     public static void spawnTimer(PlayerTickEvent.Post event) {
+        /*
         if (!event.getEntity().level().isClientSide) {
             if (event.getEntity().level().getGameTime() % 12000 == 0) {
                 AstraniumMeteor meteor = new AstraniumMeteor(AstranEntityRegistry.ASTRANIUM_METEOR.get(), event.getEntity().level());
@@ -33,6 +34,8 @@ public class TestingStuffForCyb {
                 System.out.println("SPAWNED METEOR");
             }
         }
+
+         */
     }
 
     @SubscribeEvent

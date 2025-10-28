@@ -1,0 +1,19 @@
+{
+  "renderStage": "after_level",
+  "stages": [
+    {
+      "type": "veil:blit",
+      "shader": "astran:test_effect",
+      "in": "minecraft:main",
+      "out": "veil:post",
+      "clear": true
+    }
+  ],
+  "dynamicBuffers": [
+    "albedo",
+    "normal",
+    "light_uv",
+    "light_color",
+    "debug"
+  ]
+}

@@ -6,6 +6,7 @@ import com.anonym.astran.systems.cybernetics.CyberModule;
 import com.anonym.astran.systems.cybernetics.CyberneticsManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import foundry.veil.api.client.render.VeilRenderSystem;
 import foundry.veil.api.client.render.shader.program.ShaderProgram;
@@ -31,6 +32,7 @@ public class CyberneticsLayer <T extends LivingEntity, M extends HumanoidModel<T
     @Override
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         CyberneticsManager manager = CyberneticsManager.getManager((Player) livingEntity);
+
 
         for (CyberModule module : manager.moduleCache().getEquippedModuleInstances().values()) {
             poseStack.pushPose();

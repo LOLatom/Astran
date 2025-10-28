@@ -29,15 +29,19 @@ float fog_distance(vec3 pos, int shape) {
     }
 }
 uniform sampler2D Sampler0;
-uniform sampler2D Sampler3;
-uniform sampler2D Sampler4;
-uniform sampler2D Sampler5;
-uniform sampler2D Sampler6;
-uniform sampler2D Sampler7;
-uniform sampler2D Sampler8;
-uniform sampler2D Sampler9;
-uniform sampler2D Sampler10;
-uniform sampler2D Sampler11;
+uniform sampler2D Mask1;
+uniform sampler2D Mask2;
+uniform sampler2D Mask3;
+uniform sampler2D Mask4;
+uniform sampler2D Mask5;
+uniform sampler2D Mask6;
+uniform sampler2D Mask7;
+uniform sampler2D Mask8;
+uniform sampler2D Mask9;
+uniform sampler2D Mask10;
+uniform sampler2D Mask11;
+uniform sampler2D Mask12;
+uniform sampler2D Mask13;
 
 uniform vec4 ColorModulator;
 uniform float FogStart;
@@ -51,45 +55,60 @@ in vec2 texCoord0;
 out vec4 fragColor;
 void main() {
     vec4 color = texture(Sampler0, texCoord0);
-    vec4 mask1 = texture(Sampler3,texCoord0);
-    vec4 mask2 = texture(Sampler4,texCoord0);
-    vec4 mask3 = texture(Sampler5,texCoord0);
-    vec4 mask4 = texture(Sampler6,texCoord0);
-    vec4 mask5 = texture(Sampler7,texCoord0);
-    vec4 mask6 = texture(Sampler8,texCoord0);
-    vec4 mask7 = texture(Sampler9,texCoord0);
-    vec4 mask8 = texture(Sampler10,texCoord0);
-    vec4 mask9 = texture(Sampler11,texCoord0);
-
+    vec4 mask1 = texture(Mask1,texCoord0);
+    vec4 mask2 = texture(Mask2,texCoord0);
+    vec4 mask3 = texture(Mask3,texCoord0);
+    vec4 mask4 = texture(Mask4,texCoord0);
+    vec4 mask5 = texture(Mask5,texCoord0);
+    vec4 mask6 = texture(Mask6,texCoord0);
+    vec4 mask7 = texture(Mask7,texCoord0);
+    vec4 mask8 = texture(Mask8,texCoord0);
+    vec4 mask9 = texture(Mask9,texCoord0);
+    vec4 mask10 = texture(Mask9,texCoord0);
+    vec4 mask11 = texture(Mask9,texCoord0);
+    vec4 mask12 = texture(Mask9,texCoord0);
+    vec4 mask13 = texture(Mask9,texCoord0);
 
     if (color.a < 0.1) {
         discard;
     }
-    if (mask1.rgb == 0.) {
+    if (mask1.rgb == vec3(0.0F)) {
         discard;
     }
-    if (mask2.rgb == 0.) {
+    if (mask2.rgb == vec3(0.0F)) {
         discard;
     }
-    if (mask3.rgb == 0.) {
+    if (mask3.rgb == vec3(0.0F)) {
         discard;
     }
-    if (mask4.rgb == 0.) {
+    if (mask4.rgb == vec3(0.0F)) {
         discard;
     }
-    if (mask5.rgb == 0.) {
+    if (mask5.rgb == vec3(0.0F)) {
         discard;
     }
-    if (mask6.rgb == 0.) {
+    if (mask6.rgb == vec3(0.0F)) {
         discard;
     }
-    if (mask7.rgb == 0.) {
+    if (mask7.rgb == vec3(0.0F)) {
         discard;
     }
-    if (mask8.rgb == 0.) {
+    if (mask8.rgb == vec3(0.0F)) {
         discard;
     }
-    if (mask9.rgb == 0.) {
+    if (mask9.rgb == vec3(0.0F)) {
+        discard;
+    }
+    if (mask10.rgb == vec3(0.0F)) {
+        discard;
+    }
+    if (mask11.rgb == vec3(0.0F)) {
+        discard;
+    }
+    if (mask12.rgb == vec3(0.0F)) {
+        discard;
+    }
+    if (mask13.rgb == vec3(0.0F)) {
         discard;
     }
 
@@ -99,72 +118,3 @@ void main() {
     fragColor = color;
     //fragColor = linear_fog(color, vertexDistance, FogStart, FogEnd, FogColor);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

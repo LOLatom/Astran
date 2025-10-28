@@ -160,6 +160,7 @@ public class CyberneticsManager {
     }
     private void removeFromCache(UUID uuid) {
         CachedModuleData cache = moduleCache().copy();
+        cache.getEquippedUUIDs().remove(cache.getEquippedModules().get(uuid));
         cache.getEquippedModules().remove(uuid);
         cache.getEquippedModuleTypes().remove(uuid);
         cache.getEquippedModuleInstances().remove(uuid);
@@ -168,6 +169,7 @@ public class CyberneticsManager {
     }
     private void addToCache(CyberModule module) {
         CachedModuleData cache = moduleCache().copy();
+        cache.getEquippedUUIDs().put(module.getModuleID(),module.getInstanceId());
         cache.getEquippedModules().put(module.getInstanceId(),module.getModuleID());
         cache.getEquippedModuleInstances().put(module.getInstanceId(),module);
         cache.getEquippedModuleTypes().put(module.getInstanceId(), module.getPrimitiveClass().getSubType());

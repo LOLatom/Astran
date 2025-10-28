@@ -36,19 +36,20 @@ public class SteelHeartInsertionOverlay {
         } else {
             easedDelta = Easing.EASE_IN_BACK.ease(appearing/2);
         }
+        if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof SteelHeartItem steelHeartItem) {
+            float pT = deltaTracker.getGameTimeDeltaPartialTick(true);
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(guiGraphics.guiWidth() / 2, guiGraphics.guiHeight(), 0);
+            guiGraphics.pose().translate(Math.sin((player.tickCount + pT) * 2) * 0.2, Math.cos((player.tickCount + pT) * 2) * 0.2, 0);
+            guiGraphics.pose().scale(2, 2, 0);
+            guiGraphics.pose().translate(-12, -40, 0);
 
-        float pT = deltaTracker.getGameTimeDeltaPartialTick(true);
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(guiGraphics.guiWidth()/2,guiGraphics.guiHeight(),0);
-        guiGraphics.pose().translate(Math.sin((player.tickCount+pT)*2)*0.2,Math.cos((player.tickCount+pT)*2)*0.2,0);
-        guiGraphics.pose().scale(2,2,0);
-        guiGraphics.pose().translate(- 12,-40,0);
-
-        RenderSystem.enableBlend();
-        guiGraphics.setColor(1,1,1,easedDelta);
-        guiGraphics.drawString(Minecraft.getInstance().font, "<[R]>",0,0, Color.WHITE.getRGB());
-        guiGraphics.setColor(1,1,1,1f);
-        guiGraphics.pose().popPose();
-        RenderSystem.disableBlend();
+            RenderSystem.enableBlend();
+            guiGraphics.setColor(1, 1, 1, easedDelta);
+            guiGraphics.drawString(Minecraft.getInstance().font, "<[R]>", 0, 0, Color.WHITE.getRGB());
+            guiGraphics.setColor(1, 1, 1, 1f);
+            guiGraphics.pose().popPose();
+            RenderSystem.disableBlend();
+        }
     }
 }

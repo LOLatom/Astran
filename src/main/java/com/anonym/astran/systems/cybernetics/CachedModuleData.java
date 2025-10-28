@@ -22,6 +22,9 @@ public class CachedModuleData {
                     Codec.unboundedMap(UUIDHelper.CODEC, Codec.STRING)
                             .fieldOf("EquippedModules")
                             .forGetter(CachedModuleData::getEquippedModules),
+                    Codec.unboundedMap(Codec.STRING, UUIDHelper.CODEC)
+                            .fieldOf("EquippedUUIDs")
+                            .forGetter(CachedModuleData::getEquippedUUIDs),
                     Codec.unboundedMap(UUIDHelper.CODEC, Codec.STRING)
                             .fieldOf("EquippedModuleTypes")
                             .forGetter(CachedModuleData::getEquippedModuleTypes),
@@ -39,14 +42,17 @@ public class CachedModuleData {
             ByteBufCodecs.fromCodec(CODEC);
 
     private final Map<UUID, String> equippedModules;
+    private final Map<String, UUID> equippedUUIDs;
+
     private final Map<UUID, String> equippedModuleTypes;
     private final Map<UUID, CyberModule> equippedModuleInstances;
     private final Map<UUID, CyberModule> equippedTickable;
 
     private float weightCached;
 
-    public CachedModuleData(Map<UUID, String> equippedModules, Map<UUID, String> equippedModuleTypes, Map<UUID, CyberModule> equippedModuleInstances, Map<UUID, CyberModule> equippedTickable, float weightCached) {
+    public CachedModuleData(Map<UUID, String> equippedModules,Map<String, UUID> equippedUUIDs, Map<UUID, String> equippedModuleTypes, Map<UUID, CyberModule> equippedModuleInstances, Map<UUID, CyberModule> equippedTickable, float weightCached) {
         this.equippedModules = equippedModules;
+        this.equippedUUIDs = equippedUUIDs;
         this.equippedModuleTypes = equippedModuleTypes;
         this.equippedModuleInstances = equippedModuleInstances;
         this.equippedTickable = equippedTickable;
@@ -83,6 +89,10 @@ public class CachedModuleData {
         return this.equippedModuleTypes;
     }
 
+    public Map<String, UUID> getEquippedUUIDs() {
+        return this.equippedUUIDs;
+    }
+
     public Map<UUID, CyberModule> getEquippedTickable() {
         return this.equippedTickable;
     }
@@ -102,6 +112,7 @@ public class CachedModuleData {
     public CachedModuleData copy() {
         return new CachedModuleData(
                 new HashMap<>(this.equippedModules),
+                new HashMap<>(this.equippedUUIDs),
                 new HashMap<>(this.equippedModuleTypes),
                 new HashMap<>(this.equippedModuleInstances),
                 new HashMap<>(this.equippedTickable),

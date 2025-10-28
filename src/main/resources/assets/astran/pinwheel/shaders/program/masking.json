@@ -1,41 +1,4 @@
 {
   "vertex": "astran:masking",
-  "fragment": "astran:masking",
-  "Mask1": {
-    "type": "location",
-    "sampler": 3
-  },
-  "Mask2": {
-    "type": "location",
-    "sampler": 4
-  },
-  "Mask3": {
-    "type": "location",
-    "sampler": 5
-  },
-  "Mask4": {
-    "type": "location",
-    "sampler": 6
-  },
-  "Mask5": {
-  "type": "location",
-  "sampler": 7
-},
-  "Mask6": {
-  "type": "location",
-  "sampler": 8
-},
-  "Mask7": {
-  "type": "location",
-  "sampler": 9
-},
-  "Mask8": {
-  "type": "location",
-  "sampler": 10
-},
-  "Mask9": {
-    "type": "location",
-    "sampler": 11
-  },
-  "flags": ["allow_alpha"]
+  "fragment": "astran:masking"
 }

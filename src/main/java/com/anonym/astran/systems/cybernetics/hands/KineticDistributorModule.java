@@ -8,10 +8,7 @@ import com.anonym.astran.registries.AstranAttachmentTypeRegistry;
 import com.anonym.astran.registries.AstranDataComponentRegistry;
 import com.anonym.astran.registries.client.AstranRenderTypes;
 import com.anonym.astran.systems.attachments.SteelHeartReservoirData;
-import com.anonym.astran.systems.cybernetics.CyberModule;
-import com.anonym.astran.systems.cybernetics.CyberneticsManager;
-import com.anonym.astran.systems.cybernetics.LimbType;
-import com.anonym.astran.systems.cybernetics.SocketData;
+import com.anonym.astran.systems.cybernetics.*;
 import com.anonym.astran.systems.energy.INodeItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -65,17 +62,19 @@ public class KineticDistributorModule extends CyberModule {
         super.onAttackEntity(module, player, target);
         if (target instanceof LivingEntity entity) {
             CyberneticsManager manager = CyberneticsManager.getManager(player);
-            for (CyberModule mod : manager.moduleCache().getEquippedTickable().values()) {
-                if (mod.getModuleID().equals("kinetic_accumulator")) {
-                    if (mod.getAdditionalData().isPresent()) {
-                        if (mod.getAdditionalData().get().contains("storedKineticCharge")) {
-                            float v = mod.getAdditionalData().get().getFloat("storedKineticCharge");
-                            target.addDeltaMovement(player.getLookAngle().multiply(v/25,v/25,v/25));
-                            target.hurt(target.damageSources().mobAttack(player),(v/9) * 2.2f);
-                            mod.getAdditionalData().get().putFloat("storedKineticCharge",0);
-                        }
+            CachedModuleData cache = manager.moduleCache();
+            System.out.println(cache.getEquippedUUIDs());
+            if (cache.getEquippedUUIDs().containsKey("kinetic_accumulator")) {
+                System.out.println("FOUND ACCUMULATOR");
+                CyberModule mod = cache.getEquippedModuleInstances().get(cache.getEquippedUUIDs().get("kinetic_accumulator"));
+                if (mod.getAdditionalData().isPresent()) {
+                    if (mod.getAdditionalData().get().contains("storedKineticCharge")) {
+                        float v = mod.getAdditionalData().get().getFloat("storedKineticCharge");
+                        target.addDeltaMovement(player.getLookAngle().multiply(v/25,v/25,v/25));
+                        LivingEntity et = ((LivingEntity) target);
+                        et.setHealth(Math.max(0,et.getHealth() - ((v/9) * 2.2f)));
+                        mod.getAdditionalData().get().putFloat("storedKineticCharge",0);
                     }
-                    break;
                 }
             }
         }
