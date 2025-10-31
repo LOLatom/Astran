@@ -14,6 +14,10 @@ import com.anonym.astran.systems.gui.buttons.IHasInterfaceName;
 import com.anonym.astran.systems.gui.theinterface.pages.HomePageCyberInterface;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
+import foundry.veil.api.client.render.framebuffer.AdvancedFbo;
+import foundry.veil.api.client.render.framebuffer.FramebufferAttachmentDefinition;
+import foundry.veil.api.client.render.framebuffer.FramebufferDefinition;
+import foundry.veil.api.client.render.texture.TextureFilter;
 import foundry.veil.api.client.util.Easing;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -82,6 +86,16 @@ public class CyberInterfaceScreen extends Screen {
                 this.currentColor = item.getNodeColor();
             }
         }
+
+        Minecraft mc = Minecraft.getInstance();
+
+        AdvancedFbo def = new FramebufferDefinition(FramebufferDefinition.DEFAULT_WIDTH,FramebufferDefinition.DEFAULT_HEIGHT,
+                new FramebufferAttachmentDefinition[]{new FramebufferAttachmentDefinition(FramebufferAttachmentDefinition.Type.TEXTURE,
+                        FramebufferAttachmentDefinition.Format.BGRA, false,
+                        TextureFilter.CLAMP, 1, "colorTest")},null,true)
+                .createBuilder(mc.getWindow().getWidth(), mc.getWindow().getHeight()).setName("colorTest").build(true);
+
+        def.create();
 
     }
     public CyberInterfaceScreen(float interfaceWidth, float interfaceHeight) {

@@ -1,4 +1,4 @@
-package com.anonym.astran.systems.gui.scene;
+package com.anonym.astran.api.swiff.scene;
 
 import com.anonym.astran.helpers.PickingHelper;
 import com.mojang.blaze3d.vertex.PoseStack;

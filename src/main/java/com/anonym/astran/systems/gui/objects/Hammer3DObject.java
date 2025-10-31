@@ -2,11 +2,9 @@ package com.anonym.astran.systems.gui.objects;
 
 import com.anonym.astran.Astran;
 import com.anonym.astran.client.layers.LayerRegistry;
-import com.anonym.astran.client.models.misc.MinigameAnvil;
 import com.anonym.astran.client.models.misc.MinigameHammer;
 import com.anonym.astran.systems.cybernetics.CyberModule;
-import com.anonym.astran.systems.gui.scene.Scene3D;
-import com.anonym.astran.systems.gui.scene.SceneObject;
+import com.anonym.astran.api.swiff.scene.SceneObject;
 import com.anonym.astran.systems.gui.theinterface.AssemblyMiniGame;
 import com.mojang.math.Axis;
 import foundry.veil.api.client.util.Easing;

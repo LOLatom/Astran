@@ -69,9 +69,19 @@ vec4 tex = texture(DiffuseSampler0, texCoord);
     vec4 dd = (addedDepth - vec4(depthR,depthR,depthR,1.));
 
 	vec4 seee = vec4(depthR*40.,depthG*40.,depthB*40.,1.);
-	fragColor = texture(VeilDynamicNormal, texCoord);
+	fragColor = normal;
 	
 	}
+
+
+
+
+
+
+
+
+
+
 
 
 

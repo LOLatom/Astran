@@ -6,6 +6,7 @@ import com.anonym.astran.registries.client.AstranSoundRegistry;
 import com.anonym.astran.systems.attachments.SteelHeartReservoirData;
 import com.anonym.astran.systems.cybernetics.core.SetSteelHeartPayload;
 import com.anonym.astran.systems.cybernetics.core.SteelHeartItem;
+import com.anonym.astran.systems.gui.swiffui.TestSwiff;
 import com.anonym.astran.systems.gui.theinterface.pages.HomePageCyberInterface;
 import com.anonym.astran.systems.keybind.base.AstranKeybinds;
 import net.minecraft.client.Minecraft;
@@ -31,7 +32,9 @@ public class InterfaceOpenEvent {
             if (data.getSteelHeart().isPresent()) {
                 if (Minecraft.getInstance().screen == null) {
                     player.playSound(AstranSoundRegistry.INTERFACE_START.get(), 1f, 1f);
-                    Minecraft.getInstance().setScreen(new HomePageCyberInterface(true));
+                    //Minecraft.getInstance().setScreen(new HomePageCyberInterface(true));
+                    Minecraft.getInstance().setScreen(new TestSwiff());
+
                 }
             } else {
                 if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof SteelHeartItem steelHeartItem) {

@@ -1,4 +1,4 @@
-package com.anonym.astran.systems.gui.scene;
+package com.anonym.astran.api.swiff.scene;
 
 public abstract class Button3D extends SceneObject {
 
