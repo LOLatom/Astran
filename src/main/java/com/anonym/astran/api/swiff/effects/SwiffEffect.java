@@ -33,7 +33,7 @@ public class SwiffEffect implements SwiffShaderEffect {
         int y2 = guiGraphics.guiHeight();
         RenderSystem.setShaderTexture(0, input.getColorTextureAttachment(0).getId());
         this.shader.setSampler("EffectSampler0",input.getColorTextureAttachment(0).getId());
-        this.shader.setSampler("DiffuseSampler0",AdvancedFbo.getMainFramebuffer().getId());
+        this.shader.setSampler("DiffuseSampler0",AdvancedFbo.getMainFramebuffer().getColorTextureAttachment(0).getId());
         prepare(this.shader);
         RenderSystem.setShader(this.shader::toShaderInstance);
         Matrix4f matrix4f = guiGraphics.pose().last().pose();
