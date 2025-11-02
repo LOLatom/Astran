@@ -1,10 +1,8 @@
 package com.anonym.astran.systems.gui.swiffui;
 
 import com.anonym.astran.api.swiff.SwiffUI;
-import com.anonym.astran.api.swiff.effects.basiceffects.BloomEffect;
-import com.anonym.astran.api.swiff.effects.basiceffects.BlurEffect;
-import com.anonym.astran.api.swiff.effects.basiceffects.ChromaticAberrationEffect;
-import com.anonym.astran.api.swiff.effects.basiceffects.FinalBlitEffect;
+import com.anonym.astran.api.swiff.effects.basiceffects.*;
+import com.anonym.astran.api.swiff.elements.AbstractElement;
 
 public class TestSwiff extends SwiffUI {
 
@@ -12,16 +10,22 @@ public class TestSwiff extends SwiffUI {
     @Override
     public void createElements() {
 
+        AbstractElement element = new TestElement(this)
+                .withPos(width/2f,height/2f)
+                .withScale(250,120);
+
+
+        this.addChild(element);
+
         this.addChild(new TestElement(this)
-                .withPos(width/2f - 50f,height/2f)
-                .withScale(10,10)
-                .withEffectPipeline(this.getEffectPipeline())
-                .withEffects(
-                        new ChromaticAberrationEffect(),
-                        new BlurEffect()
-                ));
-
-
+                .withPos(width/2f,height/2f)
+                .withScale(220,100));
+        this.addChild(new TestElement(this)
+                .withPos(width/2f,height/2f)
+                .withScale(200,80));
+        this.addChild(new TestElement(this)
+                .withPos(width/2f,height/2f)
+                .withScale(200,80));
 
     }
 }

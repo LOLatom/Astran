@@ -1,20 +1,22 @@
 package com.anonym.astran.systems.gui.swiffui;
 
-import com.anonym.astran.api.swiff.SwiffTexture;
+import com.anonym.astran.api.swiff.SwiffSprites;
 import com.anonym.astran.api.swiff.SwiffUI;
 import com.anonym.astran.api.swiff.elements.AbstractElement;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-
-import java.awt.*;
+import net.minecraft.world.item.Items;
 
 public class TestElement extends AbstractElement {
 
     public TestElement(SwiffUI root) {
         super(root);
     }
+
+    @Override
+    public void setup() {
+
+    }
+
     public TestElement(AbstractElement parent) {
         super(parent);
     }
@@ -22,8 +24,7 @@ public class TestElement extends AbstractElement {
     @Override
     public void renderAll(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().mulPose(Axis.ZN.rotationDegrees(Minecraft.getInstance().player.tickCount+partialTick));
-        guiGraphics.blit(SwiffTexture.DARK_BUTTON,-32,8,0,0,64,16,64,16);
+        SwiffSprites.DARK_BUTTON.draw(guiGraphics,-(this.getWidth()/2),-(this.getHeight()/2),this.getWidth(),this.getHeight());
         guiGraphics.pose().popPose();
 
     }

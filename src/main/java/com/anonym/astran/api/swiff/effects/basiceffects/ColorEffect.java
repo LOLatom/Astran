@@ -4,19 +4,22 @@ import com.anonym.astran.api.swiff.effects.SwiffEffect;
 import foundry.veil.api.client.render.shader.program.ShaderProgram;
 import net.minecraft.resources.ResourceLocation;
 
-public class BlurEffect extends SwiffEffect {
-    public BlurEffect() {
-        super(ResourceLocation.fromNamespaceAndPath("astran","swiff/blur"));
+public class ColorEffect extends SwiffEffect {
+
+    public ColorEffect() {
+        super(ResourceLocation.fromNamespaceAndPath("astran","swiff/color"));
     }
 
-    public BlurEffect radius(float radius) {
-        this.radius = Math.clamp(radius,0.f,5.f);
+    public ColorEffect color(float r, float g, float b) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
         return this;
     }
 
     @Override
     public void prepare(ShaderProgram shader) {
         super.prepare(shader);
-        applyRadius();
+        applyRGB();
     }
 }

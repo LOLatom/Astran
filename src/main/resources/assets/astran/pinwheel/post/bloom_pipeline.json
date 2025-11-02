@@ -1,5 +1,5 @@
 {
-  "renderStage": "after_block_entities",
+  "renderStage": "after_level",
   "stages": [
     {
       "type": "veil:blit",

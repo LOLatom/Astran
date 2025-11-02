@@ -8,28 +8,24 @@ out vec4 fragColor;
 void main() {
     vec4 scene = texture(EffectSampler0,texCoord);
     vec4 mainScene = texture(DiffuseSampler0,texCoord);
+    mainScene.a = 0;
 
     float offset = 0.0015;
-    float r = texture(EffectSampler0, texCoord + vec2(offset,offset)).r;
-    float g = texture(EffectSampler0, texCoord).g;
-    float b = texture(EffectSampler0, texCoord - vec2(offset,offset)).b;
+    vec4 r = texture(EffectSampler0, texCoord + vec2(offset,offset));
+    vec4 g = texture(EffectSampler0, texCoord);
+    vec4 b = texture(EffectSampler0, texCoord - vec2(offset,offset));
 
-    vec4 added = vec4(r,g,b,1.);
-
-    if (added.r < 0.1 && added.b < 0.1 && added.g < 0.1) {
-        discard;
-    }
-
+    vec4 added = vec4(r.r,g.g,b.b,r.a+g.a+b.a);
     if (scene.a > 0.1) {
-        fragColor = added;
+        vec4 final = mix(scene,added,1.);
+        final.a = clamp(final.a,0.,1.);
+        fragColor = final;
     } else {
         if (added.a > 0.1) {
-            fragColor = mainScene + added;
-        } else {
-            fragColor = scene;
+            added.a = 1;
         }
+        fragColor = mainScene + added;
     }
-
 
 }
 

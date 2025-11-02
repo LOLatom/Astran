@@ -15,6 +15,9 @@ import foundry.veil.impl.client.render.framebuffer.AdvancedFboImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
@@ -45,6 +48,7 @@ public abstract class AbstractElement extends AbstractWidget {
         super(0, 0, 0, 0, Component.empty());
         this.uuid = UUID.randomUUID();
         this.parent = null;
+        this.setup();
     }
 
     public AbstractElement(AbstractElement parent) {
@@ -111,6 +115,35 @@ public abstract class AbstractElement extends AbstractWidget {
         return this.posY;
     }
 
+
+    @Override
+    public int getWidth() {
+        return (int) this.scaleX;
+    }
+
+    @Override
+    public int getHeight() {
+        return (int) this.scaleY;
+    }
+
+    public float getScaleX() {
+        return this.scaleX;
+    }
+
+    public float getScaleY() {
+        return this.scaleY;
+    }
+
+    public void addChild(AbstractElement child) {
+        this.childrenElements.add(child);
+    }
+
+    public List<AbstractElement> children() {
+        return this.childrenElements;
+    }
+
+    public abstract void setup();
+
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (this.pipeline != null) {
@@ -122,11 +155,6 @@ public abstract class AbstractElement extends AbstractWidget {
             guiGraphics.pose().popPose();
 
 
-
-            for (AbstractElement child : this.childrenElements) {
-                child.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
-            }
-
             guiGraphics.flush();
 
             for (SwiffShaderEffect effect : this.effects) {
@@ -135,6 +163,9 @@ public abstract class AbstractElement extends AbstractWidget {
 
             pipeline.renderToScreen(guiGraphics);
             RenderSystem.disableBlend();
+            for (AbstractElement child : this.childrenElements) {
+                child.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+            }
 
         } else {
             guiGraphics.pose().pushPose();
@@ -145,6 +176,14 @@ public abstract class AbstractElement extends AbstractWidget {
             for (AbstractElement child : this.childrenElements) {
                 child.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
             }
+        }
+    }
+
+    public void remove() {
+        if (this.getParent() == null) {
+            this.root.children().remove(this);
+        } else {
+
         }
     }
 
@@ -159,8 +198,26 @@ public abstract class AbstractElement extends AbstractWidget {
 
     }
 
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+    }
 
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
 
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        return super.keyReleased(keyCode, scanCode, modifiers);
+    }
 
-
+    @Override
+    public void onClick(double mouseX, double mouseY, int button) {
+        super.onClick(mouseX, mouseY, button);
+        //for (AbstractElement element : this.children()) {
+        //    element.onClick(mouseX,mouseY,button);
+        //}
+    }
 }
