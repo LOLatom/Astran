@@ -29,9 +29,15 @@ public class InterfaceOpenEvent {
         if (AstranKeybinds.MODULA.consumeClick()) {
             Player player = Minecraft.getInstance().player;
             SteelHeartReservoirData data = player.getData(AstranAttachmentTypeRegistry.STEEL_HEART_RESSERVOIR);
+            if (Minecraft.getInstance().screen == null) {
+                //player.playSound(AstranSoundRegistry.INTERFACE_START.get(), 1f, 1f);
+                //Minecraft.getInstance().setScreen(new HomePageCyberInterface(true));
+                Minecraft.getInstance().setScreen(new TestSwiff());
+
+            }
             if (data.getSteelHeart().isPresent()) {
                 if (Minecraft.getInstance().screen == null) {
-                    player.playSound(AstranSoundRegistry.INTERFACE_START.get(), 1f, 1f);
+                    //player.playSound(AstranSoundRegistry.INTERFACE_START.get(), 1f, 1f);
                     //Minecraft.getInstance().setScreen(new HomePageCyberInterface(true));
                     Minecraft.getInstance().setScreen(new TestSwiff());
 

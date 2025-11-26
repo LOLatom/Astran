@@ -25,17 +25,15 @@ void main()
     vec4 g = texture(EffectSampler0, texCoord + vec2(offset((32.0/ Size), texCoord) * (0.01 * Intensity) * 0.16666666, 0.0));
     vec4 b = texture(EffectSampler0, texCoord + vec2(offset((16.0 / Size), texCoord) * (0.01 * Intensity), 0.0));
 
-    //vec4 added = vec4(r.r,g.g,b.b,r.a+g.a+b.a);
     vec4 added = r + g + b;
     added.a = clamp(added.a,0.,1.);
 
     if (added.a > 0.1) {
         vec4 final = mix(col , added * 0.35, 1.);
-        final.a = clamp(final.a,0.,1.);
+        final.a = 1;
         fragColor = final;
     } else {
         if (added.a > 0.1) {
-            //added.a = 1;
         }
         fragColor = mix(dif , added,1.);
     }

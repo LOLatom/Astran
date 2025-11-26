@@ -1,22 +1,18 @@
 package com.anonym.astran.api.swiff.effects;
 
-import com.anonym.astran.api.swiff.effects.basiceffects.GlitchEffect;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import foundry.veil.api.client.render.VeilRenderSystem;
 import foundry.veil.api.client.render.framebuffer.AdvancedFbo;
-import foundry.veil.api.client.render.framebuffer.FramebufferManager;
 import foundry.veil.api.client.render.shader.program.ShaderProgram;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 public class SwiffEffect implements SwiffShaderEffect {
 
-    private final ShaderProgram shader;
+    public final ShaderProgram shader;
     public float r = 1f, g = 1f, b = 1f;
     public float radius = 1.0f;
     public float size = 1.0f;
@@ -147,8 +143,6 @@ public class SwiffEffect implements SwiffShaderEffect {
         int x2 = guiGraphics.guiWidth();
         int y2 = guiGraphics.guiHeight();
         RenderSystem.setShaderTexture(0, input.getColorTextureAttachment(0).getId());
-        this.shader.setSampler("EffectSampler0",input.getColorTextureAttachment(0).getId());
-        this.shader.setSampler("DiffuseSampler0",AdvancedFbo.getMainFramebuffer().getColorTextureAttachment(0).getId());
         prepare(this.shader);
         RenderSystem.setShader(this.shader::toShaderInstance);
         Matrix4f matrix4f = guiGraphics.pose().last().pose();

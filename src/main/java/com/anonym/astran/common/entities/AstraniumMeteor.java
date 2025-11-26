@@ -73,7 +73,6 @@ public class AstraniumMeteor extends BreakableEntity {
                     serverLevel.getChunkSource().addRegionTicket(TicketType.FORCED, this.chunkPosition(), 31, this.chunkPosition(),true);
                     this.tickets.add(this.chunkPosition());
                 }
-                //System.out.println("FORCELOAD");
             }
 
         } else {

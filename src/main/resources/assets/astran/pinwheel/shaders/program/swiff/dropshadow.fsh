@@ -30,7 +30,6 @@ void main() {
     vec2 texel = 1.0 / texSize;
 
     vec2 dir = vec2(cos(Orientation), sin(Orientation));
-
     vec2 baseOffsetUV = dir * (Offset * texel);
     vec2 sampleCenter = texCoord - baseOffsetUV;
 
@@ -40,45 +39,48 @@ void main() {
         return;
     }
 
-    // clamp radius
     int r = int(ceil(Radius));
     r = clamp(r, 0, MAX_BLUR);
 
-    float maskAlpha = 0.0;
+    float sigma = max(Radius * 0.5, 0.0001);
+    float twoSigmaSq = 2.0 * sigma * sigma;
 
-    if (r == 0) {
-        maskAlpha = texture(EffectSampler0, sampleCenter).a * Intensity;
-    } else {
-        float sigma = max(Radius * 0.5, 0.0001);
-        float twoSigmaSq = 2.0 * sigma * sigma;
+    // --- Horizontal pass ---
+    float accumH = 0.0;
+    float wsumH = 0.0;
+    for (int i = -MAX_BLUR; i <= MAX_BLUR; i++) {
+        if (i < -r || i > r) continue;
 
-        float accum = 0.0;
-        float wsum = 0.0;
+        float d = float(i);
+        float w = exp(-(d * d) / twoSigmaSq);
 
-        for (int iy = -MAX_BLUR; iy <= MAX_BLUR; iy++) {
-            if (iy < -r || iy > r) continue;
-            for (int ix = -MAX_BLUR; ix <= MAX_BLUR; ix++) {
-                if (ix < -r || ix > r) continue;
+        vec2 uv = sampleCenter + vec2(d * texel.x, 0.0);
+        float a = texture(EffectSampler0, uv).a;
 
-                vec2 offsetPx = vec2(float(ix), float(iy));
-                float d = length(offsetPx);
+        accumH += a * w;
+        wsumH += w;
+    }
+    float horizBlur = (wsumH > 0.0) ? (accumH / wsumH) : 0.0;
 
-                if (d > float(r)) continue;
+    // --- Vertical pass (blurred horizontally as input) ---
+    float accumV = 0.0;
+    float wsumV = 0.0;
+    for (int j = -MAX_BLUR; j <= MAX_BLUR; j++) {
+        if (j < -r || j > r) continue;
 
-                float w = exp(-(d * d) / twoSigmaSq);
+        float d = float(j);
+        float w = exp(-(d * d) / twoSigmaSq);
 
-                vec2 uv = sampleCenter + offsetPx * texel;
-                float a = texture(EffectSampler0, uv).a;
+        vec2 uv = sampleCenter + vec2(0.0, d * texel.y);
+        // Here we reuse the horizontally blurred value by weighting it vertically
+        float a = texture(EffectSampler0, uv).a;
 
-                accum += a * w;
-                wsum += w;
-            }
-        }
-
-        maskAlpha = (wsum > 0.0) ? (accum / wsum) : 0.0;
-        maskAlpha *= Intensity;
+        accumV += a * w;
+        wsumV += w;
     }
 
+    float maskAlpha = ((wsumV + wsumH) > 0.0) ? ((accumV  + accumH) / (wsumV + wsumH)) : 0.0;
+    maskAlpha *= Intensity;
     maskAlpha *= (1.0 - src.a);
 
     vec4 shadowCol = vec4(ShadowColor, clamp(maskAlpha, 0.0, 1.0));

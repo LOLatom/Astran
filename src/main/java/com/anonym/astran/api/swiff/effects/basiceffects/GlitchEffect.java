@@ -1,7 +1,6 @@
 package com.anonym.astran.api.swiff.effects.basiceffects;
 
 import com.anonym.astran.api.swiff.effects.SwiffEffect;
-import com.mojang.blaze3d.systems.RenderSystem;
 import foundry.veil.api.client.render.shader.program.ShaderProgram;
 import net.minecraft.resources.ResourceLocation;
 
